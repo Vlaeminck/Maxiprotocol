@@ -1,0 +1,29 @@
+{
+  "name": "maxiprotocol-dashboard",
+  "version": "1.0.0",
+  "description": "MaxiProtocol: Extractor de datos en tiempo real y Dashboard analítico para Maxirest POS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "maxirest",
+    "firebird",
+    "pos",
+    "restaurant",
+    "dashboard",
+    "realtime",
+    "websocket"
+  ],
+  "author": "MaxiProtocol",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  },
+  "optionalDependencies": {
+    "node-firebird": "^1.1.8"
+  }
+}

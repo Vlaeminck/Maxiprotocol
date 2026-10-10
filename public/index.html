@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaxiProtocol — Dashboard en Tiempo Real para Maxirest</title>
+  
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons & Chart.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Socket.io Client -->
+  <script src="/socket.io/socket.io.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body class="dark-theme">
+
+  <!-- APP WRAPPER -->
+  <div class="app-layout">
+
+    <!-- TOP HEADER -->
+    <header class="top-nav">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <i class="fa-solid fa-utensils"></i>
+          <span class="pulse-indicator"></span>
+        </div>
+        <div class="brand-text">
+          <h1>MAXIPROTOCOL <span class="badge-version">v1.2 LIVE</span></h1>
+          <p>Conexión en Tiempo Real con Servidor Maxirest POS</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Summary -->
+      <div class="header-status-strip">
+        <div class="status-chip" id="chip-source">
+          <span class="chip-dot active"></span>
+          <span id="txt-source-mode">EMULADOR MAXIREST ACTIVO</span>
+        </div>
+        <div class="status-chip" id="chip-ping">
+          <i class="fa-solid fa-wifi"></i>
+          <span id="txt-latency">Latencia: &lt;10ms</span>
+        </div>
+        <div class="status-chip" id="chip-clock">
+          <i class="fa-regular fa-clock"></i>
+          <span id="clock-display">00:00:00</span>
+        </div>
+      </div>
+
+      <!-- Actions & Controls -->
+      <div class="header-actions">
+        <button id="btn-audio-toggle" class="btn-icon" title="Sonido de Alertas">
+          <i class="fa-solid fa-volume-high"></i>
+        </button>
+        <button id="btn-settings-open" class="btn-primary-outline">
+          <i class="fa-solid fa-database"></i> Conexión Firebird
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <main class="dashboard-body">
+
+      <!-- SECTION: KPI CARDS ROW -->
+      <section class="kpi-grid">
+        <!-- Card 1: Facturación Hoy -->
+        <div class="kpi-card highlight-green">
+          <div class="kpi-header">
+            <span class="kpi-label">Facturación del Día</span>
+            <div class="kpi-icon"><i class="fa-solid fa-cash-register"></i></div>
+          </div>
+          <div class="kpi-value-container">
+            <span class="currency-symbol">$</span>
+            <h2 id="kpi-facturacion" class="kpi-value">0</h2>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-subtext" id="kpi-tickets-count">0 tickets cobrados hoy</span>
+            <span class="trend-pill positive"><i class="fa-solid fa-arrow-up"></i> En vivo</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Ticket Promedio -->
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Ticket Promedio</span>
+            <div class="kpi-icon"><i class="fa-solid fa-receipt"></i></div>
+          </div>
+          <div class="kpi-value-container">
+            <span class="currency-symbol">$</span>
+            <h2 id="kpi-ticket-promedio" class="kpi-value">0</h2>
+          </div>
+          <div class="kpi-footer">
+            <span class="kpi-subtext" id="kpi-cubiertos-count">0 comensales atendidos</span>
+            <span class="trend-pill neutral">ARS por mesa</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Salón & Ocupación -->
+        <div class="kpi-card highlight-blue">
+          <div class="kpi-header">
+            <span class="kpi-label">Ocupación de Salón</span>
+            <div class="kpi-icon"><i class="fa-solid fa-chair"></i></div>
+          </div>
+          <div class="kpi-value-container">
+            <h2 id="kpi-ocupacion-pct" class="kpi-value">0%</h2>
+            <span class="kpi-unit" id="kpi-mesas-ratio">0/0 mesas</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-fill" id="kpi-progress-ocupacion" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Card 4: Comandas en Marcha & Cocina -->
+        <div class="kpi-card highlight-amber">
+          <div class="kpi-header">
+            <span class="kpi-label">Comandas en Producción</span>
+            <div class="kpi-icon"><i class="fa-solid fa-bell-concierge"></i></div>
+          </div>
+          <div class="kpi-value-container">
+            <h2 id="kpi-comandas-activas" class="kpi-value">0</h2>
+            <span class="kpi-unit">en cocina</span>
+          </div>
+          <div class="kpi-footer">
+            <span class="alert-tag" id="kpi-demoras-tag"><i class="fa-solid fa-circle-exclamation"></i> 0 demoradas</span>
+            <span class="trend-pill live-pulse">Cocina / Barra</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION: TWO-COLUMN WORKSPACE -->
+      <section class="workspace-grid">
+
+        <!-- LEFT COLUMN: LIVE RESTAURANT FLOOR PLAN (MAPA DE MESAS) -->
+        <div class="panel-container floor-plan-panel">
+          <div class="panel-header">
+            <div class="panel-title-group">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <h3>Plano de Salón en Vivo</h3>
+              <span class="badge-chip" id="lbl-total-mesas-badge">20 Mesas</span>
+            </div>
+            <!-- Sector Filters -->
+            <div class="filter-pills" id="sector-filters">
+              <button class="pill active" data-sector="ALL">Todos</button>
+              <button class="pill" data-sector="Salón Principal">Salón</button>
+              <button class="pill" data-sector="Patio & Deck">Patio</button>
+              <button class="pill" data-sector="Sector Barra / VIP">Barra / VIP</button>
+            </div>
+          </div>
+
+          <!-- Color Legend -->
+          <div class="floor-legend">
+            <div class="legend-item"><span class="legend-dot libre"></span> Libre</div>
+            <div class="legend-item"><span class="legend-dot ocupada"></span> Ocupada</div>
+            <div class="legend-item"><span class="legend-dot cuenta"></span> Pidiendo Cuenta</div>
+            <div class="legend-item"><span class="legend-dot alerta"></span> Demora Cocina</div>
+          </div>
+
+          <!-- Tables Grid Floor Canvas -->
+          <div class="tables-grid" id="tables-container">
+            <!-- Dynamically injected table cards -->
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: STREAM DE COMANDAS & METRICS TABS -->
+        <div class="panel-container side-feed-panel">
+          
+          <!-- Tabs Navigation -->
+          <div class="panel-tabs">
+            <button class="tab-btn active" data-tab="tab-comandas">
+              <i class="fa-solid fa-fire-burner"></i> Comandas en Vivo
+            </button>
+            <button class="tab-btn" data-tab="tab-mozos">
+              <i class="fa-solid fa-user-tie"></i> Rendimiento Mozos
+            </button>
+            <button class="tab-btn" data-tab="tab-ventas">
+              <i class="fa-solid fa-chart-pie"></i> Ventas & Rubros
+            </button>
+          </div>
+
+          <!-- TAB 1: COMANDAS EN VIVO -->
+          <div class="tab-content active" id="tab-comandas">
+            <div class="comandas-header-info">
+              <span>Pedidos marchando en tiempo real</span>
+              <span class="live-dot-pulse">Transmitiendo</span>
+            </div>
+            <div class="comandas-list" id="comandas-list-container">
+              <!-- Dynamically populated kitchen orders -->
+            </div>
+          </div>
+
+          <!-- TAB 2: RANKING DE MOZOS -->
+          <div class="tab-content" id="tab-mozos">
+            <div class="mozos-leaderboard" id="mozos-list-container">
+              <!-- Dynamically populated waiters -->
+            </div>
+          </div>
+
+          <!-- TAB 3: VENTAS Y RUBROS -->
+          <div class="tab-content" id="tab-ventas">
+            <div class="charts-wrapper">
+              <div class="chart-box">
+                <h4>Distribución por Rubro</h4>
+                <div class="canvas-holder">
+                  <canvas id="chartRubros"></canvas>
+                </div>
+              </div>
+              <div class="chart-box">
+                <h4>Medios de Pago del Día</h4>
+                <div class="canvas-holder">
+                  <canvas id="chartPagos"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- SECTION: FEED DE AUDITORÍA Y EVENTOS EN VIVO -->
+      <section class="live-ticker-bar">
+        <div class="ticker-label">
+          <i class="fa-solid fa-bolt"></i> STREAM DE EVENTOS MAXIPROTOCOL:
+        </div>
+        <div class="ticker-scroll" id="events-ticker">
+          <span class="ticker-entry">Esperando primeros paquetes de datos desde Maxirest...</span>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL: DETALLE DE MESA -->
+  <div class="modal-overlay" id="modal-mesa" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 id="modal-mesa-title">Detalle de Mesa #</h3>
+          <span id="modal-mesa-badge" class="badge-status">Ocupada</span>
+        </div>
+        <button class="modal-close-btn" id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="mesa-meta-grid">
+          <div class="meta-item">
+            <label>Mozo Asignado</label>
+            <p id="modal-mozo">-</p>
+          </div>
+          <div class="meta-item">
+            <label>Comensales</label>
+            <p id="modal-comensales">-</p>
+          </div>
+          <div class="meta-item">
+            <label>Hora Apertura</label>
+            <p id="modal-hora">-</p>
+          </div>
+          <div class="meta-item">
+            <label>Tiempo Ocupada</label>
+            <p id="modal-tiempo">-</p>
+          </div>
+        </div>
+
+        <h4>Consumos y Artículos Marchados:</h4>
+        <div class="modal-items-table-wrap">
+          <table class="modal-table">
+            <thead>
+              <tr>
+                <th>Cant.</th>
+                <th>Artículo</th>
+                <th>Rubro</th>
+                <th>Unitario</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody id="modal-items-tbody">
+              <!-- Dynamically populated items -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="modal-total-bar">
+          <span>Total Acumulado Comanda:</span>
+          <span class="modal-total-amount" id="modal-total-amount">$0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: CONFIGURACIÓN FIREBIRD / MAXIREST -->
+  <div class="modal-overlay" id="modal-settings" style="display: none;">
+    <div class="modal-card modal-settings-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3><i class="fa-solid fa-sliders"></i> Configuración de Conexión Maxirest POS</h3>
+          <p class="subtitle">Parámetros de conexión al motor Firebird SQL en el servidor local</p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-settings"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <form id="form-firebird-config">
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Host / Dirección IP Servidor Maxirest:</label>
+              <input type="text" id="cfg-host" value="127.0.0.1" placeholder="127.0.0.1 o IP local">
+            </div>
+            <div class="form-group flex-1">
+              <label>Puerto TCP Firebird:</label>
+              <input type="number" id="cfg-port" value="3050" placeholder="3050">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Ruta al archivo de Base de Datos (.FDB):</label>
+            <input type="text" id="cfg-db" value="C:\MaxiRest\Datos\MAXIREST.FDB" placeholder="C:\MaxiRest\Datos\MAXIREST.FDB">
+            <small class="helper-text">Ruta física en el disco del servidor donde reside la base de Maxirest.</small>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Usuario Firebird:</label>
+              <input type="text" id="cfg-user" value="SYSDBA">
+            </div>
+            <div class="form-group">
+              <label>Contraseña:</label>
+              <input type="password" id="cfg-pass" value="masterkey">
+            </div>
+          </div>
+
+          <div class="mode-selector-box">
+            <h4>Modo Operativo del Engine:</h4>
+            <div class="mode-radios">
+              <label class="radio-card">
+                <input type="radio" name="engineMode" value="SIMULATOR" checked>
+                <div class="radio-content">
+                  <span class="radio-title"><i class="fa-solid fa-gamepad"></i> Emulador Maxirest en Vivo</span>
+                  <span class="radio-desc">Genera comandas, mesas y cobros reales para pruebas sin alterar producción.</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" name="engineMode" value="FIREBIRD">
+                <div class="radio-content">
+                  <span class="radio-title"><i class="fa-solid fa-plug"></i> Conexión Directa Firebird</span>
+                  <span class="radio-desc">Consulta SQL de solo lectura directa al puerto 3050 del servidor Maxirest.</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="btn-test-firebird">
+              <i class="fa-solid fa-network-wired"></i> Probar Conexión
+            </button>
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar y Aplicar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATIONS CONTAINER -->
+  <div class="toasts-shelf" id="toasts-shelf"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
