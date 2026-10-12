@@ -6,11 +6,9 @@
 class RestaurantSimulator {
   constructor() {
     this.mozos = [
-      { id: 1, nombre: 'Gonzalo Méndez', ventas: 0, propinas: 0, mesasAtendidas: 0, avatar: '👨‍🍳' },
-      { id: 2, nombre: 'Martina Rossi', ventas: 0, propinas: 0, mesasAtendidas: 0, avatar: '👩‍🍳' },
-      { id: 3, nombre: 'Lucas Benítez', ventas: 0, propinas: 0, mesasAtendidas: 0, avatar: '👨‍💼' },
-      { id: 4, nombre: 'Florencia Varela', ventas: 0, propinas: 0, mesasAtendidas: 0, avatar: '👩‍💼' },
-      { id: 5, nombre: 'Santiago Paz', ventas: 0, propinas: 0, mesasAtendidas: 0, avatar: '🤵' }
+      { id: 1, nombre: 'STELLA', ventas: 0, propinas: 0, mesasAtendidas: 0, avatar: '👩‍🍳' },
+      { id: 2, nombre: 'BRENDA', ventas: 0, propinas: 0, mesasAtendidas: 0, avatar: '👩‍💼' },
+      { id: 3, nombre: 'MELANIE (952)', ventas: 0, propinas: 0, mesasAtendidas: 0, avatar: '🛵' }
     ];
 
     this.rubros = ['Cocina', 'Parrilla', 'Barra / Bebidas', 'Postres', 'Cafetería'];
@@ -66,9 +64,10 @@ class RestaurantSimulator {
 
   initMesas() {
     const sectores = [
-      { nombre: 'Salón Principal', count: 10, offset: 1 },
-      { nombre: 'Patio & Deck', count: 6, offset: 11 },
-      { nombre: 'Sector Barra / VIP', count: 4, offset: 17 }
+      { nombre: 'Vereda', count: 11, offset: 1 },
+      { nombre: 'Planta Baja', count: 20, offset: 12 },
+      { nombre: 'Planta Alta', count: 2, offset: 32 },
+      { nombre: 'Terraza', count: 18, offset: 34 }
     ];
 
     sectores.forEach(sec => {

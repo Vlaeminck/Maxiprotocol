@@ -25,9 +25,11 @@ Para leer el estudio completo de ingeniería inversa, tablas y queries SQL recom
 2.  **Monitor de Producción (Cocina & Barra)**: Stream de comandas entrantes con alertas visuales y auditivas ante pedidos con demoras excesivas (>12 min).
 3.  **Métricas Ejecutivas (KPIs)**: Facturación del día en ARS, Ticket Promedio, Porcentaje de Ocupación con barra de progreso, Cubiertos totales y Medios de Pago.
 4.  **Ranking de Mozos**: Leaderboard en tiempo real que mide volumen de ventas y cantidad de mesas atendidas por cada integrante del salón.
-5.  **Doble Modo Operativo**:
-    *   **Modo Firebird Real**: Conexión al motor de base de datos de Maxirest en el puerto 3050.
-    *   **Modo Emulador**: Motor simulador de alta fidelidad que genera transacciones gastronómicas realistas para pruebas y desarrollo.
+5.  **Arquitectura Multi-Protocolo Soportada**:
+    *   **Modo Maxirest Local (Recomendado)**: Extracción directa de alta velocidad de las 392 tablas DBF en `C:\MaxiRest` (ventas, tickets, mozos, artículos, comandas).
+    *   **Modo Servidor LAN Maxirest (CAJA)**: Conexión TCP al motor MariaDB de Maxirest en el puerto `3399` (`192.168.1.3:3399`, base `mx_10783`).
+    *   **Modo Firebird Real**: Conexión al motor Firebird SQL en el puerto `3050`.
+    *   **Modo Emulador**: Motor simulador de alta fidelidad para pruebas offline y desarrollo.
 
 ---
 

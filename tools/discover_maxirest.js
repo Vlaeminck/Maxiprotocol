@@ -1,193 +1,144 @@
 /**
- * MaxiProtocol - Herramienta de Descubrimiento Automático de Maxirest
- * Escanea rutas, detecta archivos .FDB, verifica el puerto 3050 y prueba credenciales.
+ * MaxiProtocol - Herramienta de Descubrimiento Integral de Maxirest
+ * Escanea rutas de POS, tablas DBF, puertos 3399 (MariaDB) y 3050 (Firebird), y servidores en red.
  */
 
 const fs = require('fs');
 const path = require('path');
 const net = require('net');
-const { execSync } = require('child_process');
 
 console.log('================================================================');
-console.log('🔍 MAXIPROTOCOL — ASISTENTE DE DETECCIÓN DE MAXIREST EN ESTA PC');
+console.log('🔍 MAXIPROTOCOL — ASISTENTE DE DETECCIÓN INTEGRAL DE MAXIREST');
 console.log('================================================================\n');
 
-// 1. Rutas comunes donde se instala Maxirest y Firebird
-const RUTA_CANDIDATAS = [
-  'C:\\MaxiRest',
-  'C:\\Maxirest',
-  'C:\\Archivos de programa\\MaxiRest',
-  'C:\\Archivos de programa (x86)\\MaxiRest',
-  'C:\\Program Files\\MaxiRest',
-  'C:\\Program Files (x86)\\MaxiRest',
-  'D:\\MaxiRest',
-  'D:\\Maxirest',
-  'C:\\Maxi Sistemas',
-  'C:\\MaxiSistemas'
-];
+const resultados = {
+  posInstalado: null,
+  datosDbf: null,
+  mariaDbLocal: null,
+  lanServerCaja: null,
+  firebird: null,
+  modoRecomendado: 'SIMULATOR'
+};
 
-const RUTA_FIREBIRD = [
-  'C:\\Program Files\\Firebird',
-  'C:\\Program Files (x86)\\Firebird'
-];
-
-let baseDatosEncontradas = [];
-let firebirdInstalado = null;
-
-// Paso 1: Buscar carpetas de Maxirest y archivos .FDB
-console.log('1️⃣  Escaneando directorios típicos de Maxirest...');
-RUTA_CANDIDATAS.forEach(dir => {
-  if (fs.existsSync(dir)) {
-    console.log(`   [✓] Carpeta encontrada: ${dir}`);
-    buscarArchivosFDB(dir);
+// 1. Detección de Instalación de Software Maxirest POS
+console.log('1️⃣  Buscando instalación de Maxirest POS...');
+const rutasPos = ['C:\\MaxiREST_SQL', 'C:\\Maxirest', 'C:\\Program Files\\MaxiRest', 'C:\\Program Files (x86)\\MaxiRest'];
+rutasPos.forEach(r => {
+  if (fs.existsSync(r)) {
+    const exe = path.join(r, 'MAXIREST.EXE');
+    if (fs.existsSync(exe)) {
+      console.log(`   [✓] Software Maxirest POS detectado en: ${r}`);
+      console.log(`       Ejecutable: ${exe}`);
+      resultados.posInstalado = { dir: r, exe };
+    }
   }
 });
 
-function buscarArchivosFDB(directorio, profundidad = 0) {
-  if (profundidad > 3) return; // Limitar profundidad
+// 2. Detección de Datos Operativos (Tablas DBF)
+console.log('\n2️⃣  Buscando tablas de datos operativos de Maxirest...');
+const rutaDatos = 'C:\\MaxiRest';
+if (fs.existsSync(rutaDatos)) {
   try {
-    const archivos = fs.readdirSync(directorio);
-    for (const arch of archivos) {
-      const rutaCompleta = path.join(directorio, arch);
-      const stat = fs.statSync(rutaCompleta);
-      if (stat.isDirectory()) {
-        buscarArchivosFDB(rutaCompleta, profundidad + 1);
-      } else if (arch.toLowerCase().endsWith('.fdb') || arch.toLowerCase().endsWith('.gdb')) {
-        const tamMb = (stat.size / (1024 * 1024)).toFixed(2);
-        console.log(`   🎯 Base de datos detectada: ${rutaCompleta} (${tamMb} MB)`);
-        baseDatosEncontradas.push(rutaCompleta);
-      }
+    const files = fs.readdirSync(rutaDatos);
+    const dbfFiles = files.filter(f => f.toLowerCase().endsWith('.dbf'));
+    if (dbfFiles.length > 0) {
+      console.log(`   [✓] Carpeta de datos Maxirest detectada en: ${rutaDatos}`);
+      console.log(`       Total de tablas DBF operativas: ${dbfFiles.length} tablas`);
+      resultados.datosDbf = { dir: rutaDatos, totalDbf: dbfFiles.length };
+      resultados.modoRecomendado = 'MAXIREST_LOCAL';
     }
-  } catch (e) {
-    // Permisos o carpetas protegidas
-  }
+  } catch (e) {}
 }
 
-// Paso 2: Verificar instalación de Firebird y aliases.conf
-console.log('\n2️⃣  Verificando motor Firebird SQL...');
-RUTA_FIREBIRD.forEach(dirFb => {
-  if (fs.existsSync(dirFb)) {
-    try {
-      const subdirs = fs.readdirSync(dirFb);
-      subdirs.forEach(sd => {
-        const rutaVersion = path.join(dirFb, sd);
-        console.log(`   [✓] Servidor Firebird instalado en: ${rutaVersion}`);
-        firebirdInstalado = rutaVersion;
+// 3. Comprobación de Motores SQL (MariaDB en puerto 3399 y Firebird en puerto 3050)
+console.log('\n3️⃣  Comprobando puertos y servicios de base de datos...');
 
-        // Leer aliases.conf si existe
-        const aliasFile = path.join(rutaVersion, 'aliases.conf');
-        if (fs.existsSync(aliasFile)) {
-          console.log(`   📄 Leyendo configuración de alias: ${aliasFile}`);
-          const contenido = fs.readFileSync(aliasFile, 'utf8');
-          contenido.split('\n').forEach(linea => {
-            const clean = linea.trim();
-            if (clean && !clean.startsWith('#') && clean.includes('=')) {
-              console.log(`      * Alias encontrado: ${clean}`);
-              const partes = clean.split('=');
-              if (partes.length === 2 && fs.existsSync(partes[1].trim())) {
-                baseDatosEncontradas.push(partes[1].trim());
-              }
-            }
-          });
-        }
-      });
-    } catch (e) {}
+function testPort(host, port, timeout = 1500) {
+  return new Promise((resolve) => {
+    const socket = new net.Socket();
+    socket.setTimeout(timeout);
+    socket.connect(port, host, () => {
+      socket.destroy();
+      resolve(true);
+    });
+    socket.on('error', () => resolve(false));
+    socket.on('timeout', () => {
+      socket.destroy();
+      resolve(false);
+    });
+  });
+}
+
+async function ejecutarDiagnosticoRed() {
+  // Probar MariaDB Local
+  const mariaLocal = await testPort('127.0.0.1', 3399);
+  if (mariaLocal) {
+    console.log('   [✓] Puerto 3399 (MariaDB Local Maxirest) ACTIVO y RESPONDIENDO.');
+    resultados.mariaDbLocal = { host: '127.0.0.1', port: 3399 };
+  } else {
+    console.log('   [-] Puerto 3399 en 127.0.0.1 inactivo (Servidor local detenido).');
   }
-});
 
-// Paso 3: Probar puerto 3050 (Firebird)
-console.log('\n3️⃣  Comprobando puerto de red TCP 3050 (Firebird)...');
-const socket = new net.Socket();
-socket.setTimeout(2500);
+  // Probar Servidor CAJA en LAN
+  const serverCaja = await testPort('192.168.1.3', 3399);
+  if (serverCaja) {
+    console.log('   [✓] ¡SERVIDOR MAXIREST EN RED DETECTADO!');
+    console.log('       Host: 192.168.1.3:3399 (Equipo CAJA)');
+    resultados.lanServerCaja = { host: '192.168.1.3', port: 3399 };
+  }
 
-socket.connect(3050, '127.0.0.1', () => {
-  console.log('   [✓] ¡PUERTO 3050 ABIERTO Y RESPONDIENDO!');
-  console.log('   El motor Firebird está corriendo activamente como servicio.');
-  socket.destroy();
-  procederPruebaConexion();
-});
+  // Probar Firebird 3050
+  const fbPort = await testPort('127.0.0.1', 3050);
+  if (fbPort) {
+    console.log('   [✓] Puerto 3050 (Firebird SQL) ACTIVO y RESPONDIENDO.');
+    resultados.firebird = { host: '127.0.0.1', port: 3050 };
+  } else {
+    console.log('   [-] Puerto 3050 (Firebird) no detectado.');
+  }
 
-socket.on('error', (err) => {
-  console.log('   [⚠️] No se pudo conectar al puerto 3050 en 127.0.0.1');
-  console.log('   Causa probable: El servicio de Firebird está detenido o corre en otra IP de la red.');
-  procederPruebaConexion();
-});
+  // Resumen y guardado
+  guardarConfiguracion();
+}
 
-socket.on('timeout', () => {
-  console.log('   [⚠️] Tiempo de espera agotado al conectar al puerto 3050.');
-  socket.destroy();
-  procederPruebaConexion();
-});
-
-// Paso 4: Probar conexión con node-firebird si hay bases detectadas
-function procederPruebaConexion() {
+function guardarConfiguracion() {
   console.log('\n4️⃣  Resultados y Configuración recomendada:');
-  
-  const rutaDbFinal = baseDatosEncontradas.length > 0 
-    ? baseDatosEncontradas[0] 
-    : 'C:\\MaxiRest\\Datos\\MAXIREST.FDB';
+  console.log(`   🎯 Modo de extracción activo: [${resultados.modoRecomendado}]`);
+  console.log(`   📍 Directorio de datos: ${resultados.datosDbf ? resultados.datosDbf.dir : 'No detectado'}`);
+  if (resultados.lanServerCaja) {
+    console.log(`   📡 Servidor LAN Maxirest: ${resultados.lanServerCaja.host}:${resultados.lanServerCaja.port}`);
+  }
 
-  console.log(`   📍 Ruta de Base de Datos recomendada: ${rutaDbFinal}`);
-  console.log(`   🔌 Host: 127.0.0.1`);
-  console.log(`   🚪 Puerto: 3050`);
-  console.log(`   👤 Usuario estándar: SYSDBA`);
-  console.log(`   🔑 Contraseña por defecto: masterkey`);
-
-  // Intentar probar conexión real si el driver está disponible
-  try {
-    const Firebird = require('node-firebird');
-    console.log('\n5️⃣  Probando autenticación directa con Firebird...');
-    
-    const config = {
+  const cfg = {
+    mode: resultados.modoRecomendado,
+    maxirestPath: resultados.datosDbf ? resultados.datosDbf.dir : 'C:\\MaxiRest',
+    systemPaths: {
+      posApp: resultados.posInstalado ? resultados.posInstalado.exe : 'C:\\MaxiREST_SQL\\MAXIREST.EXE',
+      dataDir: 'C:\\MaxiRest',
+      localMariaDbDir: 'C:\\Servidor_MariaDB',
+      lanServerHost: '192.168.1.3',
+      lanServerPort: 3399,
+      lanServerName: 'CAJA',
+      clienteId: '10783'
+    },
+    mariadb: {
+      host: resultados.lanServerCaja ? '192.168.1.3' : '127.0.0.1',
+      port: 3399,
+      database: 'mx_10783',
+      user: 'user_10783'
+    },
+    firebird: {
       host: '127.0.0.1',
       port: 3050,
-      database: rutaDbFinal,
+      database: 'C:\\MaxiRest\\Datos\\MAXIREST.FDB',
       user: 'SYSDBA',
-      password: 'masterkey',
-      lowercase_keys: false
-    };
-
-    Firebird.attach(config, (err, db) => {
-      if (err) {
-        console.log(`   [!] No se pudo conectar automáticamente: ${err.message}`);
-        console.log('   💡 Si la contraseña fue cambiada por el instalador, verifique con el administrador.');
-        guardarConfig(rutaDbFinal);
-      } else {
-        console.log('   🎉 ¡CONEXIÓN EXITOSA A LA BASE DE DATOS MAXIREST!');
-        
-        // Listar tablas existentes
-        db.query(`
-          SELECT TRIM(RDB$RELATION_NAME) AS TABLA 
-          FROM RDB$RELATIONS 
-          WHERE RDB$VIEW_BLR IS NULL AND (RDB$SYSTEM_FLAG IS NULL OR RDB$SYSTEM_FLAG = 0)
-          ORDER BY RDB$RELATION_NAME
-        `, (err, rows) => {
-          if (!err && rows) {
-            console.log(`\n📋 Se detectaron ${rows.length} tablas en la base de datos de Maxirest:`);
-            const nombres = rows.map(r => r.TABLA);
-            console.log('   Muestra de tablas:', nombres.slice(0, 15).join(', '), '...');
-          }
-          db.detach();
-          guardarConfig(rutaDbFinal);
-        });
-      }
-    });
-  } catch (e) {
-    guardarConfig(rutaDbFinal);
-  }
-}
-
-function guardarConfig(rutaDb) {
-  const cfg = {
-    host: '127.0.0.1',
-    port: 3050,
-    database: rutaDb,
-    user: 'SYSDBA',
-    password: 'masterkey'
+      password: 'masterkey'
+    }
   };
 
   const configPath = path.join(__dirname, '..', 'config.json');
   fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2), 'utf8');
-  console.log(`\n💾 Archivo de configuración guardado automáticamente en: ${configPath}`);
+  console.log(`\n💾 Archivo de configuración guardado en: ${configPath}`);
   console.log('================================================================\n');
 }
+
+ejecutarDiagnosticoRed();
