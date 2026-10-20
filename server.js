@@ -42,6 +42,8 @@ const firebird = new FirebirdClient(initialConfig.firebird || initialConfig);
 const simulator = new RestaurantSimulator();
 const MaxirestAnalytics = require('./extractor/maxirest_analytics');
 const analytics = new MaxirestAnalytics();
+const RangeAnalyticsEngine = require('./extractor/range_analytics');
+const rangeAnalytics = new RangeAnalyticsEngine(initialConfig.maxirestPath || 'C:\\MaxiRest', analytics);
 
 // Modo operativo por defecto: si Maxirest existe en C:\MaxiRest, activar MAXIREST_LOCAL
 let currentMode = initialConfig.mode || (dbfClient.isConnected ? 'MAXIREST_LOCAL' : 'SIMULATOR');
@@ -71,14 +73,181 @@ app.get('/api/status', async (req, res) => {
 });
 
 app.get('/api/analytics/days', (req, res) => {
-  res.json({ success: true, days: analytics.getAvailableDays() });
+  res.json({
+    success: true,
+    days: analytics.getAvailableDays(),
+    today: analytics.getTodayKey(),
+    yesterday: analytics.getYesterdayKey(),
+    latestClosedDay: analytics.getLatestClosedAuditedDay()
+  });
 });
 
 app.get('/api/analytics/day', (req, res) => {
-  const dateKey = req.query.date || '2026-10-10';
+  const dateKey = req.query.date || 'ayer';
   const data = analytics.getDayAnalytics(dateKey);
-  res.json({ success: true, data });
+  res.json({
+    success: true,
+    data,
+    today: analytics.getTodayKey(),
+    yesterday: analytics.getYesterdayKey(),
+    latestClosedDay: analytics.getLatestClosedAuditedDay()
+  });
 });
+
+/**
+ * End-point de Analítica Multidimensional por Rangos de Fechas
+ * Permite seleccionar desde X fecha hasta Y fecha (o presets como quarter, month, 30days, etc.)
+ * y entrega:
+ * 1. Platos más vendidos (por unidades y facturación)
+ * 2. Desglose por categoría/rubro
+ * 3. Desglose por franja horaria (cuándo se vende cada plato)
+ * 4. Desglose por día (evolución diaria en el período)
+ * 5. Quién lo suele vender más (Top Mozos por plato y por período)
+ */
+app.get('/api/analytics/range', (req, res) => {
+  const { preset, from, to, rubro, sort } = req.query;
+  const result = rangeAnalytics.queryRange({ preset, from, to, rubro, sort });
+  res.json(result);
+});
+
+/**
+ * Desglose comanda por comanda de artículos vendidos por un mozo
+ * Categorías desglosables (acordeón) y detalle plato a plato con cantidades
+ * Soporta fecha individual (date=YYYY-MM-DD) o rangos (preset, from, to)
+ */
+app.get('/api/mozo/sales-breakdown', (req, res) => {
+  const { mozo, date, from, to, preset } = req.query;
+  if (!mozo) {
+    return res.status(400).json({ success: false, error: 'Parámetro mozo requerido' });
+  }
+  const result = rangeAnalytics.getMozoSalesBreakdown({ mozo, date, from, to, preset });
+  res.json(result);
+});
+
+
+// ============================================================================
+// GESTIÓN Y ROTACIÓN DE PERSONAL (MOZOS)
+// ============================================================================
+
+app.get('/api/staff', (req, res) => {
+  const staff = analytics.getStaffRegistry();
+  res.json({
+    success: true,
+    staff,
+    total: staff.length,
+    activos: staff.filter(s => s.estado === 'ACTIVO').length,
+    bajas: staff.filter(s => s.estado === 'BAJA').length
+  });
+});
+
+app.post('/api/staff/update', (req, res) => {
+  const { id, nombre, estado, fechaIngreso, fechaEgreso, periodoActividad, platoMasVendido, postreMasVendido, observaciones } = req.body;
+  if (!id) return res.status(400).json({ error: 'ID de mozo requerido' });
+
+  const updated = analytics.updateStaffMember(id, {
+    nombre: nombre ? nombre.trim() : undefined,
+    estado: estado || undefined,
+    fechaIngreso: fechaIngreso !== undefined ? (fechaIngreso || null) : undefined,
+    fechaEgreso: fechaEgreso !== undefined ? (fechaEgreso || null) : undefined,
+    periodoActividad: periodoActividad || undefined,
+    platoMasVendido: platoMasVendido || undefined,
+    postreMasVendido: postreMasVendido || undefined,
+    observaciones: observaciones || undefined
+  });
+
+  if (!updated) {
+    return res.status(404).json({ error: 'Mozo no encontrado' });
+  }
+
+  const allStaff = analytics.getStaffRegistry();
+
+  // Notificar a clientes conectados con los datos actualizados
+  io.emit('staff_updated', { staff: updated, allStaff });
+  io.emit('data_synced', { timestamp: Date.now() });
+
+  res.json({ success: true, staff: updated, allStaff });
+});
+
+app.post('/api/staff/toggle', (req, res) => {
+  const { id, dateKey } = req.body;
+  if (!id) return res.status(400).json({ error: 'ID de mozo requerido' });
+
+  const updated = analytics.toggleStaffStatus(id, dateKey);
+  if (!updated) {
+    return res.status(404).json({ error: 'Mozo no encontrado' });
+  }
+
+  const allStaff = analytics.getStaffRegistry();
+  io.emit('staff_updated', { staff: updated, allStaff });
+  io.emit('data_synced', { timestamp: Date.now() });
+
+  res.json({ success: true, staff: updated, allStaff });
+});
+
+// Endpoint de sincronización forzada desde el botón de la UI
+app.post('/api/sync', (req, res) => {
+  try {
+    const result = analytics.syncAll();
+    io.emit('data_synced', {
+      timestamp: Date.now(),
+      today: result.today,
+      yesterday: result.yesterday,
+      yesterdayData: result.yesterdayData
+    });
+    io.emit('staff_updated', { staff: result.staff, allStaff: result.staff });
+    res.json({
+      success: true,
+      message: 'Sincronización completada con Maxirest POS',
+      yesterday: result.yesterday,
+      yesterdayFacturacion: result.yesterdayData ? result.yesterdayData.kpis.facturacionTotal : 0,
+      daysCount: result.availableDays.length,
+      staffCount: result.staff.length,
+      staff: result.staff
+    });
+  } catch (err) {
+    console.error('Error en /api/sync:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Endpoint de sincronización directa de informes de mozos de Maxirest POS
+app.post('/api/mozos/sync-maxirest', (req, res) => {
+  try {
+    const targetDate = (req.body && req.body.date) ? req.body.date : (req.query.date || analytics.getYesterdayKey());
+    const syncRes = analytics.scanAndSyncMozosReports(targetDate);
+    const dayData = analytics.getDayAnalytics(targetDate);
+    io.emit('staff_updated', { staff: dayData.mozos, allStaff: analytics.getStaffRegistry() });
+    io.emit('data_synced', { timestamp: Date.now() });
+
+    res.json({
+      success: true,
+      message: 'Informe de mozos sincronizado con éxito desde Maxirest POS',
+      date: targetDate,
+      mozos: dayData.mozos,
+      kpis: dayData.kpis
+    });
+  } catch (err) {
+    console.error('Error en /api/mozos/sync-maxirest:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Auto-sincronización con Maxirest POS (Monitoreo de bakinforme.dbf)
+let lastBakinformeMtime = 0;
+setInterval(() => {
+  try {
+    const bakPath = 'C:/MaxiREST_SQL/bakinforme.dbf';
+    if (fs.existsSync(bakPath)) {
+      const mtime = fs.statSync(bakPath).mtimeMs;
+      if (lastBakinformeMtime && mtime > lastBakinformeMtime) {
+        console.log('[AutoSync] Cambio detectado en bakinforme.dbf de Maxirest. Sincronizando...');
+        analytics.syncAll();
+        io.emit('data_synced', { timestamp: Date.now() });
+      }
+      lastBakinformeMtime = mtime;
+    }
+  } catch (e) {}
+}, 5000);
 
 app.get('/api/system-paths', (req, res) => {
   res.json({
@@ -105,8 +274,12 @@ app.get('/api/system-paths', (req, res) => {
 });
 
 app.get('/api/snapshot', (req, res) => {
-  if (req.query.date && req.query.date !== '2026-10-12') {
-    const dayData = analytics.getDayAnalytics(req.query.date);
+  const todayKey = analytics.getTodayKey();
+  const reqDate = req.query.date;
+
+  // Si se solicita una fecha histórica diferente a HOY
+  if (reqDate && reqDate !== todayKey && reqDate !== 'hoy' && reqDate !== 'today') {
+    const dayData = analytics.getDayAnalytics(reqDate);
     return res.json({
       metricas: {
         facturacionHoy: dayData.kpis.facturacionTotal,
@@ -119,7 +292,7 @@ app.get('/api/snapshot', (req, res) => {
         comandasActivas: 0,
         comandasDemoradas: 0,
         distribucionMediosPago: Object.fromEntries(
-          Object.entries(dayData.mediosPago).map(([k, v]) => [k, v.importe])
+          Object.entries(dayData.mediosPago || {}).map(([k, v]) => [k, v.importe || 0])
         ),
         ventasPorRubro: dayData.ventasPorRubro
       },
@@ -136,10 +309,10 @@ app.get('/api/snapshot', (req, res) => {
 
   if (currentMode === 'MAXIREST_LOCAL') {
     const snap = dbfClient.getSnapshot();
-    const sabadoAnalytics = analytics.getDayAnalytics('2026-10-10');
-    snap.productosTop = sabadoAnalytics.productosTop;
-    snap.distribucionHoraria = sabadoAnalytics.distribucionHoraria;
-    snap.mediosPagoDetalle = sabadoAnalytics.mediosPago;
+    const refAnalytics = analytics.getDayAnalytics(analytics.getYesterdayKey());
+    snap.productosTop = snap.productosTop && snap.productosTop.length > 0 ? snap.productosTop : refAnalytics.productosTop;
+    snap.distribucionHoraria = snap.distribucionHoraria && snap.distribucionHoraria.length > 0 ? snap.distribucionHoraria : refAnalytics.distribucionHoraria;
+    snap.mediosPagoDetalle = snap.mediosPagoDetalle || snap.medios || refAnalytics.mediosPago;
     return res.json(snap);
   }
   res.json(simulator.getSnapshot());
@@ -205,6 +378,39 @@ app.post('/api/config/firebird', (req, res) => {
   res.json({ success: true, config: firebird.config });
 });
 
+// Automatización de extracción y credenciales
+const MaxirestAutomation = require('./extractor/maxirest_automation');
+const automation = new MaxirestAutomation({
+  posExe: initialConfig.systemPaths?.posApp || 'C:\\MaxiREST_SQL\\MAXIREST.EXE',
+  sqlDir: 'C:\\MaxiREST_SQL',
+  dataDir: initialConfig.systemPaths?.dataDir || 'C:\\MaxiRest',
+  credentials: {
+    user: initialConfig.automation?.posUser || 'ADMTOM',
+    password: initialConfig.automation?.posPassword || 'ADMTOM1'
+  }
+});
+
+app.get('/api/automation/status', (req, res) => {
+  res.json({ success: true, ...automation.getStatus(), user: automation.credentials.user });
+});
+
+app.post('/api/automation/credentials', (req, res) => {
+  const { user, password, dbPassword } = req.body;
+  const result = automation.setCredentials({ user, password, dbPassword });
+
+  try {
+    const cfg = fs.existsSync(configPath) ? JSON.parse(fs.readFileSync(configPath, 'utf8')) : {};
+    cfg.automation = {
+      posUser: user || cfg.automation?.posUser || '',
+      posPassword: password || cfg.automation?.posPassword || '',
+      lastConfigured: new Date().toISOString()
+    };
+    fs.writeFileSync(configPath, JSON.stringify(cfg, null, 2), 'utf8');
+  } catch (e) {}
+
+  res.json({ success: true, message: 'Credenciales de automatización configuradas y guardadas', ...result });
+});
+
 // Socket.io - Comunicación en tiempo real
 io.on('connection', (socket) => {
   console.log(`[Socket.io] Nuevo cliente conectado al Dashboard: ${socket.id}`);
@@ -243,17 +449,10 @@ function startStreamingLoop() {
       }
 
       if (currentEngineData) {
-        const { eventos, snapshot } = currentEngineData;
+        const { snapshot } = currentEngineData;
 
         // Emitir snapshot consolidado
         io.emit('tick_update', snapshot);
-
-        // Emitir eventos individuales para notificaciones y alertas auditivas/visuales
-        if (eventos && eventos.length > 0) {
-          eventos.forEach(evt => {
-            io.emit('live_event', evt);
-          });
-        }
       }
     } catch (err) {
       console.error('[MaxiProtocol Engine Error]:', err.message);

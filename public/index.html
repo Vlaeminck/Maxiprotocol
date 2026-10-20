@@ -58,6 +58,10 @@
 
       <!-- Action Buttons -->
       <div class="header-actions">
+        <button id="btn-sync-all" class="btn-config btn-sync" title="Sincronizar datos y personal con Maxirest POS">
+          <i class="fa-solid fa-arrows-rotate"></i>
+          <span>Sincronizar</span>
+        </button>
         <button id="btn-audio-toggle" class="btn-icon" title="Sonido de Notificaciones">
           <i class="fa-solid fa-volume-high"></i>
         </button>
@@ -71,61 +75,92 @@
     <!-- MAIN DASHBOARD CONTENT -->
     <main class="dashboard-body">
 
-      <!-- TOOLBAR: CONTROL DE PERÍODO CONTABLE -->
+      <!-- TOOLBAR: CONTROL DE PERÍODO CONTABLE Y RANGOS -->
       <section class="date-selector-toolbar">
-        <div class="date-toolbar-left">
-          <div class="period-label-wrap">
-            <span class="period-label">Período Operativo:</span>
+        <div class="toolbar-mode-switch">
+          <button type="button" class="scope-mode-btn active" id="btn-mode-day">
+            <i class="fa-solid fa-calendar-day"></i>
+            <span>Día Individual</span>
+          </button>
+          <button type="button" class="scope-mode-btn" id="btn-mode-range">
+            <i class="fa-solid fa-calendar-week"></i>
+            <span>Rango de Fechas / Período</span>
+          </button>
+        </div>
+
+        <!-- CONTENEDOR 1: MODO DÍA INDIVIDUAL -->
+        <div class="date-toolbar-scope" id="scope-day-container">
+          <div class="date-toolbar-left">
+            <div class="period-label-wrap">
+              <span class="period-label">Día Operativo:</span>
+            </div>
+            <div class="day-pills-group" id="day-pills-container">
+              <!-- Píldoras de Período generadas dinámicamente según el calendario del POS -->
+              <button class="day-pill-btn" data-date="ayer">
+                <span class="pill-title">Cargando días...</span>
+                <span class="day-pill-badge">...</span>
+              </button>
+            </div>
           </div>
-          <div class="day-pills-group" id="day-pills-container">
-            <button class="day-pill-btn active" data-date="2026-10-10">
-              <span class="pill-title">Sábado 10/10</span>
-              <span class="day-pill-badge">$6.00M</span>
-            </button>
-            <button class="day-pill-btn" data-date="2026-10-11">
-              <span class="pill-title">Domingo 11/10</span>
-              <span class="day-pill-badge">$6.66M</span>
-            </button>
-            <button class="day-pill-btn" data-date="2026-10-09">
-              <span class="pill-title">Viernes 09/10</span>
-              <span class="day-pill-badge">$4.60M</span>
-            </button>
-            <button class="day-pill-btn" data-date="2026-10-08">
-              <span class="pill-title">Jueves 08/10</span>
-              <span class="day-pill-badge">$3.22M</span>
-            </button>
-            <button class="day-pill-btn" data-date="2026-10-07">
-              <span class="pill-title">Miércoles 07/10</span>
-              <span class="day-pill-badge">$2.67M</span>
-            </button>
-            <button class="day-pill-btn" data-date="2026-10-06">
-              <span class="pill-title">Martes 06/10</span>
-              <span class="day-pill-badge">$2.93M</span>
-            </button>
-            <button class="day-pill-btn" data-date="2026-10-01">
-              <span class="pill-title">Jueves 01/10</span>
-              <span class="day-pill-badge">$7.90M</span>
-            </button>
-            <button class="day-pill-btn" data-date="2026-09-01">
-              <span class="pill-title">Martes 01/09</span>
-              <span class="day-pill-badge">$4.64M</span>
-            </button>
-            <button class="day-pill-btn" data-date="2026-10-12">
-              <span class="pill-title">Hoy 12/10</span>
-              <span class="day-pill-badge">En curso</span>
+
+          <div class="date-toolbar-right">
+            <div class="date-picker-wrap" id="date-picker-wrap" title="Seleccionar fecha contable en calendario (Cualquier día histórico)">
+              <i class="fa-regular fa-calendar-days"></i>
+              <input type="date" id="input-custom-date" title="Seleccionar fecha en calendario">
+            </div>
+            <button class="btn-stakeholder-export" id="btn-export-report">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+              <span>Exportar Balance</span>
             </button>
           </div>
         </div>
 
-        <div class="date-toolbar-right">
-          <div class="date-picker-wrap" id="date-picker-wrap" title="Seleccionar fecha contable en calendario">
-            <i class="fa-regular fa-calendar-days"></i>
-            <input type="date" id="input-custom-date" value="2026-10-10">
+        <!-- CONTENEDOR 2: MODO RANGO & PERÍODO MULTIDIMENSIONAL -->
+        <div class="date-toolbar-scope" id="scope-range-container" style="display: none;">
+          <div class="range-presets-group" id="range-presets-container">
+            <button type="button" class="range-preset-btn active" data-preset="quarter" title="Julio a Septiembre 2026 (Auditoría oficial)">
+              <i class="fa-solid fa-layer-group"></i>
+              <span>Último Trimestre</span>
+              <span class="preset-badge">Jul - Sep</span>
+            </button>
+            <button type="button" class="range-preset-btn" data-preset="month" title="Septiembre 2026 completo">
+              <i class="fa-solid fa-calendar"></i>
+              <span>Último Mes</span>
+              <span class="preset-badge">Sep '26</span>
+            </button>
+            <button type="button" class="range-preset-btn" data-preset="october" title="Octubre 2026 en curso">
+              <i class="fa-solid fa-calendar-check"></i>
+              <span>Mes en Curso</span>
+              <span class="preset-badge">Oct '26</span>
+            </button>
+            <button type="button" class="range-preset-btn" data-preset="30days" title="Últimos 30 días">
+              <i class="fa-solid fa-clock-rotate-left"></i>
+              <span>Últimos 30 Días</span>
+            </button>
+            <button type="button" class="range-preset-btn" data-preset="7days" title="Semana pico 05 a 12 de Octubre">
+              <i class="fa-solid fa-bolt"></i>
+              <span>Semana Pico</span>
+            </button>
+            <button type="button" class="range-preset-btn" data-preset="year" title="Ciclo anual completo 2025-2026">
+              <i class="fa-solid fa-calendar-days"></i>
+              <span>Año Completo</span>
+            </button>
           </div>
-          <button class="btn-stakeholder-export" id="btn-export-report">
-            <i class="fa-solid fa-file-invoice-dollar"></i>
-            <span>Exportar Balance</span>
-          </button>
+
+          <div class="range-custom-inputs-group">
+            <div class="custom-range-picker-wrap">
+              <label for="range-input-from">Desde:</label>
+              <input type="date" id="range-input-from" value="2026-07-01">
+            </div>
+            <div class="custom-range-picker-wrap">
+              <label for="range-input-to">Hasta:</label>
+              <input type="date" id="range-input-to" value="2026-09-30">
+            </div>
+            <button type="button" class="btn-apply-range" id="btn-apply-custom-range">
+              <i class="fa-solid fa-magnifying-glass-chart"></i>
+              <span>Consultar Período</span>
+            </button>
+          </div>
         </div>
       </section>
 
@@ -134,6 +169,10 @@
         <button class="view-tab-btn active" data-view="view-overview">
           <i class="fa-solid fa-chart-pie"></i>
           <span>Finanzas y Medios de Cobro</span>
+        </button>
+        <button class="view-tab-btn" data-view="view-range" id="tab-nav-range">
+          <i class="fa-solid fa-calendar-week"></i>
+          <span>Análisis Multidimensional por Rango</span>
         </button>
         <button class="view-tab-btn" data-view="view-products">
           <i class="fa-solid fa-utensils"></i>
@@ -153,6 +192,9 @@
            MÓDULO 1: FINANZAS, KPIS Y MEDIOS DE COBRO
            =================================================================== -->
       <div class="dashboard-view-panel active" id="view-overview">
+        <!-- CONTENEDOR PARA ALERTA DE TURNO PENDIENTE DE CIERRE EN POS -->
+        <div id="pending-closure-banner-container"></div>
+
         <!-- KPI METRICS GRID -->
         <section class="kpi-grid">
           <!-- Card 1: Facturación Total -->
@@ -173,7 +215,25 @@
             </div>
           </div>
 
-          <!-- Card 2: Unit Economics -->
+          <!-- Card 2: Cubiertos del Día -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Cubiertos Atendidos (Cub)</span>
+              <span class="kpi-icon-pill"><i class="fa-solid fa-users"></i></span>
+            </div>
+            <div class="kpi-value-container">
+              <h2 id="kpi-total-cubiertos" class="kpi-value">205</h2>
+              <span class="kpi-unit">Cub</span>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-subtext" id="kpi-comensal-avg">$21.763 / cubierto</span>
+              <span class="metric-trend trend-neutral" id="kpi-mesas-ratio">
+                Salón: $4.479.360
+              </span>
+            </div>
+          </div>
+
+          <!-- Card 3: Ticket Promedio por Mesa -->
           <div class="kpi-card">
             <div class="kpi-header">
               <span class="kpi-label">Ticket Promedio por Mesa</span>
@@ -181,29 +241,11 @@
             </div>
             <div class="kpi-value-container">
               <span class="currency-symbol">$</span>
-              <h2 id="kpi-ticket-promedio" class="kpi-value">45.117</h2>
+              <h2 id="kpi-ticket-promedio" class="kpi-value">45.715</h2>
             </div>
             <div class="kpi-footer">
-              <span class="kpi-subtext" id="kpi-cubiertos-count">284 comensales atendidos</span>
-              <span class="metric-trend trend-neutral" id="kpi-comensal-avg">
-                $21.128 / cubierto
-              </span>
-            </div>
-          </div>
-
-          <!-- Card 3: Capacidad Operativa -->
-          <div class="kpi-card">
-            <div class="kpi-header">
-              <span class="kpi-label">Rotación &amp; Permanencia</span>
-              <span class="kpi-icon-pill"><i class="fa-solid fa-stopwatch"></i></span>
-            </div>
-            <div class="kpi-value-container">
-              <h2 id="kpi-ocupacion-pct" class="kpi-value">82</h2>
-              <span class="kpi-unit" id="kpi-mesas-ratio">mesas rotadas</span>
-            </div>
-            <div class="kpi-footer">
-              <span class="kpi-subtext" id="kpi-tiempo-mesa">54 min permanencia media</span>
-              <span class="metric-trend trend-neutral">Pico 14:00 - 15:30</span>
+              <span class="kpi-subtext" id="kpi-tiempo-mesa">48 min permanencia media</span>
+              <span class="metric-trend trend-neutral" id="kpi-hora-pico">13:00 - 15:00</span>
             </div>
           </div>
 
@@ -297,11 +339,14 @@
               </div>
               <select class="filter-category-select" id="select-category-filter">
                 <option value="ALL">Todos los Rubros</option>
-                <option value="Almuerzo Cena">Almuerzo Cena</option>
-                <option value="Bebidas">Bebidas &amp; Vinos</option>
-                <option value="Pastelería">Pastelería &amp; Cafetería</option>
-                <option value="Postres">Postres</option>
-                <option value="Adicionales">Adicionales / Cubiertos</option>
+                <option value="PASTELERIA">PASTELERIA</option>
+                <option value="ALMUERZO CENA">ALMUERZO CENA</option>
+                <option value="BEBIDAS">BEBIDAS</option>
+                <option value="MARKET">MARKET</option>
+                <option value="ADICIONALES">ADICIONALES</option>
+                <option value="CAFETERIA">CAFETERIA</option>
+                <option value="POSTRES">POSTRES</option>
+                <option value="BOX GDS">BOX GDS</option>
               </select>
             </div>
           </div>
@@ -349,15 +394,36 @@
             </div>
 
             <div class="toolbar-filter-controls">
+              <!-- Filtro de Rotación: Activos / Todos / Dados de Baja -->
+              <div class="mozo-status-filter-pills" id="mozo-status-filter-group">
+                <button type="button" class="mozo-pill-filter active" data-status="ACTIVO">
+                  <i class="fa-solid fa-user-check"></i> Solo Activos
+                </button>
+                <button type="button" class="mozo-pill-filter" data-status="ALL">
+                  <i class="fa-solid fa-users"></i> Todos
+                </button>
+                <button type="button" class="mozo-pill-filter" data-status="BAJA">
+                  <i class="fa-solid fa-user-slash"></i> Dados de Baja
+                </button>
+              </div>
+
               <div class="search-input-wrap">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="search-mozo-input" placeholder="Buscar mozo por nombre...">
+                <input type="text" id="search-mozo-input" placeholder="Buscar mozo por nombre o código...">
               </div>
+
               <select class="filter-category-select" id="select-mozo-sort">
                 <option value="ventas">Ordenar: Mayor Facturación</option>
                 <option value="tickets">Ordenar: Más Comprobantes</option>
                 <option value="promedio">Ordenar: Mayor Ticket Promedio</option>
+                <option value="postres">Ordenar: Más Postres Vendidos</option>
+                <option value="ingreso">Ordenar: Fecha de Ingreso</option>
               </select>
+
+              <button type="button" class="btn-mozo-sync" id="btn-sync-mozos" title="Sincronizar cambios de personal con Maxirest POS">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Sincronizar Personal</span>
+              </button>
             </div>
           </div>
 
@@ -432,15 +498,402 @@
         </section>
       </div>
 
-      <!-- FOOTER AUDIT STRIP -->
-      <footer class="live-ticker-bar">
-        <div class="ticker-label">
-          <i class="fa-solid fa-shield-halved"></i> AUDITORÍA OPERATIVA:
+      <!-- ===================================================================
+           MÓDULO 5: ANÁLISIS MULTIDIMENSIONAL POR RANGOS DE FECHAS
+           =================================================================== -->
+      <div class="dashboard-view-panel" id="view-range">
+        <!-- HEADER EJECUTIVO DEL RANGO -->
+        <section class="range-hero-header">
+          <div class="range-hero-info">
+            <div class="range-hero-title-wrap">
+              <span class="range-pill-tag" id="range-pill-tag">ÚLTIMO TRIMESTRE</span>
+              <h3 class="range-hero-title" id="range-hero-title">Análisis Multidimensional: Julio a Septiembre 2026</h3>
+            </div>
+            <p class="range-hero-subtitle" id="range-hero-subtitle">
+              Auditoría sobre 35.811 comprobantes emitidos en Maxirest POS: ventas por plato, distribución por categorías, demanda por horarios y liderazgo por mozo.
+            </p>
+          </div>
+          <div class="range-hero-stats-badge" id="range-hero-stats-badge">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span id="range-dias-count">89 Días Auditados</span>
+          </div>
+        </section>
+
+        <!-- KPIS PRINCIPALES DEL PERÍODO -->
+        <section class="kpi-grid range-kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Facturación Total del Período</span>
+              <span class="kpi-icon-pill"><i class="fa-solid fa-cash-register"></i></span>
+            </div>
+            <div class="kpi-value-container">
+              <span class="currency-symbol">$</span>
+              <h2 id="range-kpi-facturacion" class="kpi-value">410.763.775</h2>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-subtext" id="range-kpi-comprobantes">7.428 comprobantes</span>
+              <span class="metric-trend trend-positive" id="range-kpi-promedio">$55.299 / ticket</span>
+            </div>
+          </div>
+
+          <!-- Card 2: Cubiertos Atendidos (CUB) -->
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Cubiertos Atendidos (CUB)</span>
+              <span class="kpi-icon-pill" style="color: var(--accent-cyan);"><i class="fa-solid fa-users"></i></span>
+            </div>
+            <div class="kpi-value-container">
+              <h2 id="range-kpi-cubiertos" class="kpi-value">11.488</h2>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-subtext" id="range-kpi-promedio-cub">$36.440 / cubierto</span>
+              <span class="badge-top-mozo" id="range-kpi-cub-mozo" style="border-color: rgba(56, 189, 248, 0.3); color: var(--accent-cyan);">👥 Auditoría POS</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Plato Más Facturado ($)</span>
+              <span class="kpi-icon-pill" style="color: var(--accent-amber);"><i class="fa-solid fa-trophy"></i></span>
+            </div>
+            <div class="kpi-value-container">
+              <h2 id="range-kpi-plato-fact-nombre" class="kpi-value kpi-value-text">MENU EJECUTIVO</h2>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-subtext" id="range-kpi-plato-fact-monto">$43.428.391 (1.952 u.)</span>
+              <span class="badge-top-mozo" id="range-kpi-plato-fact-mozo">👑 Top: BELEN (561 u.)</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Plato Más Vendido (Unidades)</span>
+              <span class="kpi-icon-pill" style="color: var(--accent-emerald);"><i class="fa-solid fa-fire"></i></span>
+            </div>
+            <div class="kpi-value-container">
+              <h2 id="range-kpi-plato-unid-nombre" class="kpi-value kpi-value-text">CAFE - LATTE</h2>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-subtext" id="range-kpi-plato-unid-cant">3.457 unidades vendidas</span>
+              <span class="badge-top-mozo" id="range-kpi-plato-unid-mozo">👑 Top: MARINA (725 u.)</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Categoría / Rubro Dominante</span>
+              <span class="kpi-icon-pill" style="color: var(--accent-purple);"><i class="fa-solid fa-chart-pie"></i></span>
+            </div>
+            <div class="kpi-value-container">
+              <h2 id="range-kpi-rubro-nombre" class="kpi-value kpi-value-text">Almuerzo &amp; Cena</h2>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-subtext" id="range-kpi-rubro-monto">$166.214.243 facturados</span>
+              <span class="metric-trend trend-positive" id="range-kpi-rubro-pct">40.5% del negocio</span>
+            </div>
+          </div>
+
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <span class="kpi-label">Mozo con Mayor Salida</span>
+              <span class="kpi-icon-pill" style="color: var(--accent-primary);"><i class="fa-solid fa-user-astronaut"></i></span>
+            </div>
+            <div class="kpi-value-container">
+              <h2 id="range-kpi-mozo-nombre" class="kpi-value kpi-value-text">CAMILA</h2>
+            </div>
+            <div class="kpi-footer">
+              <span class="kpi-subtext" id="range-kpi-mozo-cant">8.965 platos servidos</span>
+              <span class="metric-trend trend-positive" id="range-kpi-mozo-monto">$50.589.166</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- SUB-NAV DE DIMENSIONES ANALÍTICAS -->
+        <div class="range-subnav-bar">
+          <div class="range-subnav-buttons">
+            <button type="button" class="range-subtab-btn active" data-subtab="range-subtab-platos">
+              <i class="fa-solid fa-utensils"></i> Ranking de Platos
+            </button>
+            <button type="button" class="range-subtab-btn" data-subtab="range-subtab-rubros">
+              <i class="fa-solid fa-chart-pie"></i> Por Categoría / Rubro
+            </button>
+            <button type="button" class="range-subtab-btn" data-subtab="range-subtab-horarios">
+              <i class="fa-solid fa-clock"></i> Por Franja Horaria
+            </button>
+            <button type="button" class="range-subtab-btn" data-subtab="range-subtab-dias">
+              <i class="fa-solid fa-chart-line"></i> Por Día (Evolución Diaria)
+            </button>
+            <button type="button" class="range-subtab-btn" data-subtab="range-subtab-mozos">
+              <i class="fa-solid fa-user-tie"></i> Quién lo Suele Vender Más
+            </button>
+          </div>
         </div>
-        <div class="ticker-scroll" id="events-ticker">
-          <span class="ticker-entry">Sincronizado con base histórica e informes contables de Maxirest POS (Cliente #10783).</span>
+
+        <!-- SUBTAB 1: RANKING DE PLATOS -->
+        <div class="range-subtab-panel active" id="range-subtab-platos">
+          <section class="executive-section">
+            <div class="products-toolbar">
+              <div>
+                <h3 class="section-title">
+                  <i class="fa-solid fa-list-ol"></i>
+                  Ranking Multidimensional de Platos y Artículos
+                </h3>
+                <p class="section-subtitle">
+                  Análisis consolidado por unidades, facturación, precio unitario promedio, franja horaria pico y mozo que más vende cada producto
+                </p>
+              </div>
+
+              <div class="toolbar-filter-controls">
+                <div class="sort-toggle-group">
+                  <button type="button" class="sort-btn active" id="range-sort-units" data-sort="unidades">
+                    <i class="fa-solid fa-arrow-down-9-1"></i> Por Unidades
+                  </button>
+                  <button type="button" class="sort-btn" id="range-sort-revenue" data-sort="facturado">
+                    <i class="fa-solid fa-dollar-sign"></i> Por Facturación
+                  </button>
+                </div>
+
+                <div class="search-input-wrap">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="range-dish-search" placeholder="Buscar plato o artículo...">
+                </div>
+
+                <select class="filter-category-select" id="range-dish-rubro-filter">
+                  <option value="ALL">Todos los Rubros</option>
+                  <option value="PASTELERIA">PASTELERIA</option>
+                  <option value="ALMUERZO CENA">ALMUERZO CENA</option>
+                  <option value="BEBIDAS">BEBIDAS</option>
+                  <option value="MARKET">MARKET</option>
+                  <option value="ADICIONALES">ADICIONALES</option>
+                  <option value="CAFETERIA">CAFETERIA</option>
+                  <option value="POSTRES">POSTRES</option>
+                  <option value="BOX GDS">BOX GDS</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="products-table-container">
+              <table class="products-table range-products-table">
+                <thead>
+                  <tr>
+                    <th style="width: 45px;">#</th>
+                    <th style="width: 70px;">Cód.</th>
+                    <th>Plato / Artículo</th>
+                    <th>Categoría</th>
+                    <th style="text-align: right;">Unidades</th>
+                    <th style="text-align: right;">Precio Prom.</th>
+                    <th style="text-align: right;">Facturación Total</th>
+                    <th style="width: 140px;">% del Menú</th>
+                    <th style="width: 190px;">Quién lo Vende Más</th>
+                    <th style="width: 90px; text-align: center;">Hora Pico</th>
+                  </tr>
+                </thead>
+                <tbody id="range-products-tbody">
+                  <!-- Dynamically populated via app.js -->
+                </tbody>
+              </table>
+            </div>
+          </section>
         </div>
-      </footer>
+
+        <!-- SUBTAB 2: POR CATEGORÍA / RUBRO -->
+        <div class="range-subtab-panel" id="range-subtab-rubros" style="display: none;">
+          <section class="executive-section">
+            <div class="section-header-wrap">
+              <h3 class="section-title"><i class="fa-solid fa-pie-chart"></i> Rendimiento por Categoría y Rubro Gastronómico</h3>
+              <p class="section-subtitle">Distribución porcentual de facturación, volumen de artículos y plato insignia de cada rubro en el período</p>
+            </div>
+            
+            <div class="range-rubros-layout">
+              <div class="chart-card range-chart-card">
+                <div class="chart-canvas-wrap" style="height: 340px;">
+                  <canvas id="chartRangeRubros"></canvas>
+                </div>
+              </div>
+              <div class="range-rubros-grid" id="range-rubros-cards-container">
+                <!-- Dynamically populated via app.js -->
+              </div>
+            </div>
+
+            <!-- SECCIÓN ESTRATÉGICA: INGENIERÍA DE MENÚ & LIMPIEZA DE CARTA POR CATEGORÍA -->
+            <div class="menu-engineering-container">
+              <div class="menu-engineering-header">
+                <div>
+                  <h3 class="section-title">
+                    <i class="fa-solid fa-broom-ball"></i> Diagnóstico de Carta &amp; Limpieza de Menú por Categoría
+                  </h3>
+                  <p class="section-subtitle">
+                    Identifica platos para <strong>sacar de carta</strong> (baja salida y bajo precio) y platos caros para <strong>impulsar</strong> mediante venta sugerida por mozos
+                  </p>
+                </div>
+                <div class="menu-engineering-quick-actions">
+                  <button type="button" class="btn-secondary" id="btn-export-limpieza" title="Exportar informe de limpieza de carta">
+                    <i class="fa-solid fa-file-arrow-down"></i> Exportar Informe de Carta
+                  </button>
+                </div>
+              </div>
+
+              <!-- RESUMEN ESTRATÉGICO DE CUADRANTES DE CARTA -->
+              <div class="menu-engineering-kpi-strip">
+                <div class="eng-kpi-card eng-kpi-eliminar" data-strategy="ELIMINAR" role="button" tabindex="0" title="Filtrar platos candidatos a eliminar de la carta">
+                  <div class="eng-kpi-top">
+                    <span class="eng-kpi-tag"><i class="fa-solid fa-trash-can"></i> Sacar de Carta</span>
+                    <span class="eng-kpi-count" id="eng-count-eliminar">0</span>
+                  </div>
+                  <div class="eng-kpi-title">Candidatos a Eliminar</div>
+                  <div class="eng-kpi-desc">Baja salida y bajo precio. Desocupan la mise en place y reducen mermas de insumos.</div>
+                </div>
+
+                <div class="eng-kpi-card eng-kpi-impulsar" data-strategy="IMPULSAR" role="button" tabindex="0" title="Filtrar platos caros que no salen para impulsar">
+                  <div class="eng-kpi-top">
+                    <span class="eng-kpi-tag"><i class="fa-solid fa-gem"></i> Impulsar Caros</span>
+                    <span class="eng-kpi-count" id="eng-count-impulsar">0</span>
+                  </div>
+                  <div class="eng-kpi-title">Platos Caros sin Salida</div>
+                  <div class="eng-kpi-desc">Alto ticket unitario desaprovechado. Objetivos prioritarios de venta sugerida para mozos.</div>
+                </div>
+
+                <div class="eng-kpi-card eng-kpi-estrella" data-strategy="ESTRELLA" role="button" tabindex="0" title="Filtrar platos estrella">
+                  <div class="eng-kpi-top">
+                    <span class="eng-kpi-tag"><i class="fa-solid fa-crown"></i> Platos Estrella</span>
+                    <span class="eng-kpi-count" id="eng-count-estrella">0</span>
+                  </div>
+                  <div class="eng-kpi-title">Favoritos Rentables</div>
+                  <div class="eng-kpi-desc">Líderes en facturación y unidades. Cuidar receta original y garantizar stock continuo.</div>
+                </div>
+
+                <div class="eng-kpi-card eng-kpi-caballo" data-strategy="CABALLO" role="button" tabindex="0" title="Filtrar platos de alto volumen">
+                  <div class="eng-kpi-top">
+                    <span class="eng-kpi-tag"><i class="fa-solid fa-horse"></i> Alto Volumen</span>
+                    <span class="eng-kpi-count" id="eng-count-caballo">0</span>
+                  </div>
+                  <div class="eng-kpi-title">Caballos de Batalla</div>
+                  <div class="eng-kpi-desc">Alta demanda y precio popular. Evaluar leves aumentos de precio o maridar con bebidas.</div>
+                </div>
+              </div>
+
+              <!-- CONTROLES Y FILTROS POR CATEGORÍA -->
+              <div class="eng-toolbar">
+                <div class="eng-category-pills-wrap">
+                  <span class="eng-filter-label"><i class="fa-solid fa-filter"></i> Categoría:</span>
+                  <div class="eng-category-pills" id="eng-category-pills">
+                    <!-- Populated via JS: [Todas], [Almuerzo & Cena], etc. -->
+                  </div>
+                </div>
+
+                <div class="eng-strategy-pills-wrap">
+                  <span class="eng-filter-label"><i class="fa-solid fa-crosshairs"></i> Enfoque:</span>
+                  <div class="eng-strategy-pills" id="eng-strategy-pills">
+                    <button type="button" class="eng-strat-btn active" data-strategy="ALL">Ver Todo</button>
+                    <button type="button" class="eng-strat-btn strat-eliminar" data-strategy="ELIMINAR"><i class="fa-solid fa-trash-can"></i> Sacar de Carta</button>
+                    <button type="button" class="eng-strat-btn strat-impulsar" data-strategy="IMPULSAR"><i class="fa-solid fa-gem"></i> Impulsar Caros</button>
+                    <button type="button" class="eng-strat-btn strat-estrella" data-strategy="ESTRELLA"><i class="fa-solid fa-crown"></i> Estrellas</button>
+                    <button type="button" class="eng-strat-btn strat-caballo" data-strategy="CABALLO"><i class="fa-solid fa-horse"></i> Alto Volumen</button>
+                  </div>
+                </div>
+
+                <div class="eng-search-box">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="eng-search-input" placeholder="Buscar plato por nombre o código..." class="form-control-input">
+                </div>
+              </div>
+
+              <!-- VISTA COMPARATIVA: LO MÁS VENDIDO VS LO MENOS VENDIDO & DIAGNÓSTICO -->
+              <div class="eng-dual-columns-grid" id="eng-dual-container">
+                <!-- Columna Izquierda: Lo Más Vendido -->
+                <div class="eng-column">
+                  <div class="eng-column-header">
+                    <div class="eng-column-title-wrap">
+                      <span class="eng-column-icon trophy"><i class="fa-solid fa-trophy"></i></span>
+                      <div>
+                        <h4 class="eng-column-title">Lo Más Vendido en <span id="eng-col-category-top-label">Todas las Categorías</span></h4>
+                        <span class="eng-column-sub" id="eng-col-top-sub">Platos con mayor volumen de unidades y facturación</span>
+                      </div>
+                    </div>
+                    <span class="eng-column-badge" id="eng-col-top-count">Top 10</span>
+                  </div>
+                  <div class="eng-dishes-list" id="eng-top-dishes-list">
+                    <!-- Populated via JS -->
+                  </div>
+                </div>
+
+                <!-- Columna Derecha: Lo Menos Vendido & Decisiones de Carta -->
+                <div class="eng-column">
+                  <div class="eng-column-header">
+                    <div class="eng-column-title-wrap">
+                      <span class="eng-column-icon alert"><i class="fa-solid fa-arrow-down-wide-short"></i></span>
+                      <div>
+                        <h4 class="eng-column-title">Lo Menos Vendido &amp; Diagnóstico en <span id="eng-col-category-bottom-label">Todas las Categorías</span></h4>
+                        <span class="eng-column-sub" id="eng-col-bottom-sub">Platos de baja rotación: candidatos a sacar vs caros a impulsar</span>
+                      </div>
+                    </div>
+                    <span class="eng-column-badge warning" id="eng-col-bottom-count">Baja Rotación</span>
+                  </div>
+                  <div class="eng-dishes-list" id="eng-bottom-dishes-list">
+                    <!-- Populated via JS -->
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+        </div>
+
+        <!-- SUBTAB 3: POR FRANJA HORARIA -->
+        <div class="range-subtab-panel" id="range-subtab-horarios" style="display: none;">
+          <section class="executive-section">
+            <div class="section-header-wrap">
+              <h3 class="section-title"><i class="fa-solid fa-clock"></i> Comportamiento de Demanda por Horario (24 Horas)</h3>
+              <p class="section-subtitle">Volumen de platos marchados por hora y distribución entre turnos (Desayuno, Almuerzo, Merienda y Cena)</p>
+            </div>
+
+            <div class="range-dayparts-grid" id="range-dayparts-container">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div class="chart-card range-chart-card" style="margin-top: 18px;">
+              <div class="chart-canvas-wrap" style="height: 360px;">
+                <canvas id="chartRangeHorarios"></canvas>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- SUBTAB 4: POR DÍA (EVOLUCIÓN DIARIA) -->
+        <div class="range-subtab-panel" id="range-subtab-dias" style="display: none;">
+          <section class="executive-section">
+            <div class="section-header-wrap">
+              <h3 class="section-title"><i class="fa-solid fa-chart-line"></i> Evolución Cronológica Diaria en el Período</h3>
+              <p class="section-subtitle">Facturación y volumen día a día: identifica fines de semana pico, feriados y comportamiento diario</p>
+            </div>
+
+            <div class="chart-card range-chart-card">
+              <div class="chart-canvas-wrap" style="height: 380px;">
+                <canvas id="chartRangeDias"></canvas>
+              </div>
+            </div>
+
+            <div class="range-peak-days-grid" id="range-peak-days-container" style="margin-top: 20px;">
+              <!-- Dynamically populated -->
+            </div>
+          </section>
+        </div>
+
+        <!-- SUBTAB 5: QUIÉN LO SUELE VENDER MÁS -->
+        <div class="range-subtab-panel" id="range-subtab-mozos" style="display: none;">
+          <section class="executive-section">
+            <div class="section-header-wrap">
+              <h3 class="section-title"><i class="fa-solid fa-user-tie"></i> Rendimiento por Colaborador &amp; Platos Estrella</h3>
+              <p class="section-subtitle">Ranking de mozos en el período seleccionado, volumen de platos despachados y cuál es el plato fuerte de cada mozo</p>
+            </div>
+
+            <div class="range-mozos-grid" id="range-mozos-cards-container">
+              <!-- Dynamically populated via app.js -->
+            </div>
+          </section>
+        </div>
+
+      </div>
 
     </main>
 
@@ -595,6 +1048,42 @@
             <input type="text" id="cfg-db" value="C:\MaxiRest" placeholder="C:\MaxiRest">
           </div>
 
+          <!-- SECCIÓN: CREDENCIALES & AUTOMATIZACIÓN DESATENDIDA -->
+          <div style="margin-top: 18px; margin-bottom: 12px; padding: 12px; background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 8px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+              <span style="font-size: 13px; font-weight: 700; color: #fff;">
+                <i class="fa-solid fa-robot" style="color: var(--accent-cyan); margin-right: 6px;"></i>
+                Automatización de Extracción Diaria (Cubiertos &amp; Cierres)
+              </span>
+              <span id="badge-automation-status" class="badge-status badge-active" style="font-size: 11px;">Disponible</span>
+            </div>
+            <p style="font-size: 11px; color: var(--text-muted); margin: 0 0 10px 0; line-height: 1.4;">
+              Permite a MaxiProtocol generar y capturar automáticamente los reportes de Conceptos (Cubiertos) y Arqueo de caja sin intervención manual cada mañana.
+            </p>
+
+            <div class="form-row">
+              <div class="form-group flex-1">
+                <label><i class="fa-solid fa-id-badge" style="color: var(--accent-cyan);"></i> Código de Operador POS:</label>
+                <input type="text" id="cfg-pos-user" placeholder="Ej. 100 o CAJA">
+              </div>
+              <div class="form-group flex-1">
+                <label><i class="fa-solid fa-key" style="color: var(--accent-cyan);"></i> Contraseña / PIN POS:</label>
+                <input type="password" id="cfg-pos-pass" placeholder="PIN o Clave de acceso">
+              </div>
+            </div>
+
+            <div class="form-row" style="margin-bottom: 0;">
+              <div class="form-group flex-1">
+                <label><i class="fa-solid fa-database" style="color: var(--accent-emerald);"></i> Usuario MariaDB SQL:</label>
+                <input type="text" id="cfg-sql-user" value="user_10783" placeholder="user_10783">
+              </div>
+              <div class="form-group flex-1">
+                <label><i class="fa-solid fa-lock" style="color: var(--accent-emerald);"></i> Contraseña MariaDB (Opcional):</label>
+                <input type="password" id="cfg-sql-pass" placeholder="Clave servidor 192.168.1.4">
+              </div>
+            </div>
+          </div>
+
           <div class="modal-actions">
             <button type="button" class="btn-secondary" id="btn-test-firebird">
               <i class="fa-solid fa-stethoscope"></i> Diagnosticar Conexión
@@ -604,6 +1093,165 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: GESTIÓN DE PERSONAL & ASIGNACIÓN DE FECHA DE INGRESO -->
+  <div class="modal-overlay" id="modal-staff-edit" style="display: none;">
+    <div class="modal-card modal-card-md">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <h3 id="modal-staff-title"><i class="fa-solid fa-user-gear"></i> Gestión de Personal &amp; Rotación</h3>
+          <span id="modal-staff-badge" class="badge-status">Activo</span>
+        </div>
+        <button class="modal-close-btn" id="btn-close-staff-modal"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="form-staff-edit">
+          <input type="hidden" id="staff-edit-id">
+
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Nombre del Mozo / Colaborador:</label>
+              <input type="text" id="staff-edit-nombre" class="form-control-input" placeholder="Nombre del mozo" required>
+            </div>
+            <div class="form-group flex-1">
+              <label>Código Maxirest:</label>
+              <input type="text" id="staff-edit-codigo" readonly class="input-readonly" title="Código de mozo registrado en Maxirest POS">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Estado en Plantilla:</label>
+              <select id="staff-edit-estado" class="form-control-select">
+                <option value="ACTIVO">● Activo en Servicio</option>
+                <option value="BAJA">⊘ Dado de Baja / Inactivo</option>
+              </select>
+            </div>
+            <div class="form-group flex-1">
+              <label>Fecha de Ingreso:</label>
+              <input type="date" id="staff-edit-ingreso" class="form-control-input">
+              <span class="field-hint">Si no tiene fecha de ingreso asignada, déjalo vacío o usa "Asignar".</span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Fecha de Egreso / Baja:</label>
+              <div style="display: flex; gap: 8px;">
+                <input type="date" id="staff-edit-egreso" class="form-control-input" style="flex: 1;">
+                <button type="button" class="btn-secondary" id="btn-staff-baja-hoy" style="padding: 4px 12px; font-size: 11px; font-weight: 700; white-space: nowrap;" title="Asignar fecha de baja de hoy">Hoy</button>
+              </div>
+              <span class="field-hint">Si se fija fecha de baja, no figurará activo en fechas posteriores a esta.</span>
+            </div>
+            <div class="form-group flex-2">
+              <label>Período de Actividad / Rótulo:</label>
+              <input type="text" id="staff-edit-periodo" placeholder="Ej: Plantilla Activa 2026 o Temporada 2023 - 2026" class="form-control-input">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Plato Insignia Más Vendido:</label>
+              <input type="text" id="staff-edit-plato" placeholder="Ej: GDS Comparte con Vos" class="form-control-input">
+            </div>
+            <div class="form-group flex-1">
+              <label>Postre Insignia Sugerido:</label>
+              <input type="text" id="staff-edit-postre" placeholder="Ej: Torta Cheese Pistacho" class="form-control-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Observaciones / Turnos:</label>
+            <input type="text" id="staff-edit-observaciones" placeholder="Ej: Turno Tarde / Salón Principal / Rotación Fin de Semana" class="form-control-input">
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="btn-cancel-staff-edit">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-primary">
+              <i class="fa-solid fa-floppy-disk"></i> Guardar Cambios
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE DESGLOSE AUDITADO DE VENTAS POR MOZO (CATEGORÍAS Y PLATOS) -->
+  <div class="modal-overlay" id="modal-mozo-breakdown" style="display: none;">
+    <div class="modal-card modal-breakdown-card">
+      <div class="modal-header">
+        <div class="modal-title-wrap" style="display: flex; align-items: center; gap: 14px;">
+          <div class="mozo-monogram modal-breakdown-avatar" id="modal-breakdown-avatar">RO</div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h3 id="modal-breakdown-name" style="margin: 0; font-size: 20px; font-weight: 800; color: #fff;">ROCIO</h3>
+              <span id="modal-breakdown-badge" class="badge-status">En Turno</span>
+            </div>
+            <div class="modal-breakdown-subtitle" id="modal-breakdown-period">
+              <i class="fa-regular fa-calendar-check" style="color: var(--accent-cyan); margin-right: 4px;"></i>
+              <span id="modal-breakdown-period-text">Lunes 12 de Octubre de 2026</span>
+            </div>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-breakdown-modal" title="Cerrar modal (ESC)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body modal-breakdown-body">
+        <!-- KPIs BAR -->
+        <div class="modal-breakdown-kpis-grid">
+          <div class="breakdown-kpi-card">
+            <span class="breakdown-kpi-label"><i class="fa-solid fa-cash-register" style="color: var(--accent-emerald);"></i> Facturación Total</span>
+            <span class="breakdown-kpi-val" id="breakdown-kpi-facturacion" style="color: var(--accent-emerald);">$0</span>
+            <span class="breakdown-kpi-sub" id="breakdown-kpi-ticket-prom">Ticket Prom: $0</span>
+          </div>
+          <div class="breakdown-kpi-card">
+            <span class="breakdown-kpi-label"><i class="fa-solid fa-utensils" style="color: var(--accent-cyan);"></i> Unidades Vendidas</span>
+            <span class="breakdown-kpi-val" id="breakdown-kpi-unidades" style="color: var(--accent-cyan);">0 u.</span>
+            <span class="breakdown-kpi-sub" id="breakdown-kpi-plato-top">Plato Top: -</span>
+          </div>
+          <div class="breakdown-kpi-card">
+            <span class="breakdown-kpi-label"><i class="fa-solid fa-receipt" style="color: #c084fc;"></i> Comprobantes</span>
+            <span class="breakdown-kpi-val" id="breakdown-kpi-tickets" style="color: #c084fc;">0 tickets</span>
+            <span class="breakdown-kpi-sub" id="breakdown-kpi-prom-comp">Turno Auditado</span>
+          </div>
+          <div class="breakdown-kpi-card">
+            <span class="breakdown-kpi-label"><i class="fa-solid fa-users" style="color: var(--accent-amber);"></i> Cubiertos (CUB)</span>
+            <span class="breakdown-kpi-val" id="breakdown-kpi-cubiertos" style="color: var(--accent-amber);">0 CUB</span>
+            <span class="breakdown-kpi-sub" id="breakdown-kpi-prom-cub">Gasto/Cub: $0</span>
+          </div>
+        </div>
+
+        <!-- SEARCH AND ACCORDION CONTROLS BAR -->
+        <div class="modal-breakdown-controls">
+          <div class="breakdown-search-wrap">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="breakdown-dish-search" placeholder="Filtrar plato, vino, café, postre..." class="breakdown-search-input">
+          </div>
+          <div class="breakdown-btn-group">
+            <button type="button" class="btn-breakdown-action" id="btn-breakdown-expand-all" title="Abrir todas las categorías">
+              <i class="fa-solid fa-angles-down"></i> Expandir Todas
+            </button>
+            <button type="button" class="btn-breakdown-action" id="btn-breakdown-collapse-all" title="Cerrar todas las categorías">
+              <i class="fa-solid fa-angles-up"></i> Colapsar Todas
+            </button>
+          </div>
+        </div>
+
+        <!-- BANNER DE ALERTA O DATOS FALTANTES -->
+        <div id="modal-breakdown-alert" class="modal-breakdown-alert" style="display: none;"></div>
+
+        <!-- ACCORDION CONTAINER -->
+        <div class="modal-breakdown-accordion" id="modal-breakdown-accordion">
+          <!-- Categorías y platos inyectados dinámicamente -->
+        </div>
       </div>
     </div>
   </div>

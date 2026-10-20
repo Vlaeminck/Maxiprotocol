@@ -1,0 +1,1019 @@
+{
+  "timestamp": "2026-10-16T19:31:24.556Z",
+  "filesAudited": [],
+  "conceptDbfs": [
+    {
+      "path": "C:\\MaxiRest\\34539117.dbf",
+      "records": 1,
+      "fields": [
+        "FECHA",
+        "SALON",
+        "MOSTRADOR",
+        "DOMICILIO",
+        "OTROS",
+        "TOTAL",
+        "CUB",
+        "PROMEDIO",
+        "VENTAS",
+        "PROM_VTAS",
+        "ACUMULADO"
+      ]
+    },
+    {
+      "path": "C:\\MaxiRest\\37580333.dbf",
+      "records": 8,
+      "fields": [
+        "FECHA",
+        "SALON",
+        "MOSTRADOR",
+        "DOMICILIO",
+        "OTROS",
+        "TOTAL",
+        "CUB",
+        "PROMEDIO",
+        "VENTAS",
+        "PROM_VTAS",
+        "ACUMULADO"
+      ]
+    },
+    {
+      "path": "C:\\MaxiRest\\37595092.dbf",
+      "records": 8,
+      "fields": [
+        "FECHA",
+        "SALON",
+        "MOSTRADOR",
+        "DOMICILIO",
+        "OTROS",
+        "TOTAL",
+        "CUB",
+        "PROMEDIO",
+        "VENTAS",
+        "PROM_VTAS",
+        "ACUMULADO"
+      ]
+    },
+    {
+      "path": "C:\\MaxiRest\\37686378.dbf",
+      "records": 8,
+      "fields": [
+        "FECHA",
+        "SALON",
+        "MOSTRADOR",
+        "DOMICILIO",
+        "OTROS",
+        "TOTAL",
+        "CUB",
+        "PROMEDIO",
+        "VENTAS",
+        "PROM_VTAS",
+        "ACUMULADO"
+      ]
+    },
+    {
+      "path": "C:\\MaxiRest\\40385578.dbf",
+      "records": 1,
+      "fields": [
+        "FECHA",
+        "SALON",
+        "MOSTRADOR",
+        "DOMICILIO",
+        "OTROS",
+        "TOTAL",
+        "CUB",
+        "PROMEDIO",
+        "VENTAS",
+        "PROM_VTAS",
+        "ACUMULADO"
+      ]
+    },
+    {
+      "path": "C:\\MaxiRest\\43645383.dbf",
+      "records": 13,
+      "fields": [
+        "FECHA",
+        "SALON",
+        "MOSTRADOR",
+        "DOMICILIO",
+        "OTROS",
+        "TOTAL",
+        "CUB",
+        "PROMEDIO",
+        "VENTAS",
+        "PROM_VTAS",
+        "ACUMULADO"
+      ]
+    },
+    {
+      "path": "C:\\MaxiRest\\58318956.dbf",
+      "records": 1,
+      "fields": [
+        "FECHA",
+        "SALON",
+        "MOSTRADOR",
+        "DOMICILIO",
+        "OTROS",
+        "TOTAL",
+        "CUB",
+        "PROMEDIO",
+        "VENTAS",
+        "PROM_VTAS",
+        "ACUMULADO"
+      ]
+    }
+  ],
+  "detailedDbfs": [
+    {
+      "path": "C:\\MaxiRest\\39076206.dbf",
+      "records": 302
+    },
+    {
+      "path": "C:\\MaxiRest\\39122690.dbf",
+      "records": 676
+    },
+    {
+      "path": "C:\\MaxiRest\\39136030.dbf",
+      "records": 676
+    },
+    {
+      "path": "C:\\MaxiRest\\42412338.dbf",
+      "records": 415
+    },
+    {
+      "path": "C:\\MaxiRest\\42667972.dbf",
+      "records": 481
+    },
+    {
+      "path": "C:\\MaxiRest\\45294870.dbf",
+      "records": 210800
+    },
+    {
+      "path": "C:\\MaxiRest\\47778738.dbf",
+      "records": 4586
+    },
+    {
+      "path": "C:\\MaxiRest\\53706635.dbf",
+      "records": 9283
+    },
+    {
+      "path": "C:\\MaxiRest\\55802943.dbf",
+      "records": 4242
+    },
+    {
+      "path": "C:\\MaxiRest\\Informe.DBF",
+      "records": 4242
+    },
+    {
+      "path": "C:\\MaxiREST_SQL\\bakinforme.dbf",
+      "records": 4242
+    }
+  ],
+  "daysAudited": {
+    "2026-10-15": {
+      "date": "2026-10-15",
+      "hasRawConcept": false,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "conceptReport",
+          "status": "NO_RAW_CONCEPT_REPORT",
+          "message": "No hay reporte de conceptos emitido en POS para esta fecha"
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "PASTELERIA": 1589705,
+            "ADICIONALES": 271260,
+            "BEBIDAS": 495970,
+            "ALMUERZO CENA": 1286000,
+            "CAFETERIA": 29640,
+            "MARKET": 129350,
+            "POSTRES": 115500,
+            "BOX GDS": 68000,
+            "RUBRO. INEXISTENTE": 51000
+          },
+          "apiRubros": {
+            "PASTELERIA": 1589705,
+            "ADICIONALES": 271260,
+            "BEBIDAS": 495970,
+            "ALMUERZO CENA": 1286000,
+            "CAFETERIA": 29640,
+            "MARKET": 129350,
+            "POSTRES": 115500,
+            "BOX GDS": 68000,
+            "RUBRO. INEXISTENTE": 51000
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 4036425,
+          "raw": 4036425
+        }
+      ]
+    },
+    "2026-10-14": {
+      "date": "2026-10-14",
+      "hasRawConcept": false,
+      "hasRawDetail": false,
+      "checks": [
+        {
+          "field": "conceptReport",
+          "status": "NO_RAW_CONCEPT_REPORT",
+          "message": "No hay reporte de conceptos emitido en POS para esta fecha"
+        },
+        {
+          "field": "rubros_unemitted",
+          "status": "CLEAN_EMPTY_STATE"
+        }
+      ]
+    },
+    "2026-10-13": {
+      "date": "2026-10-13",
+      "hasRawConcept": false,
+      "hasRawDetail": false,
+      "checks": [
+        {
+          "field": "conceptReport",
+          "status": "NO_RAW_CONCEPT_REPORT",
+          "message": "No hay reporte de conceptos emitido en POS para esta fecha"
+        },
+        {
+          "field": "rubros_unemitted",
+          "status": "CLEAN_EMPTY_STATE"
+        }
+      ]
+    },
+    "2026-10-12": {
+      "date": "2026-10-12",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 7222960,
+          "raw": 7222960
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 158,
+          "raw": 158
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 205,
+          "raw": 205
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 4479360,
+            "mostrador": 2285200,
+            "domicilio": 458400,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 4479360,
+            "mostrador": 2285200,
+            "domicilio": 458400
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "ADICIONALES": 48700,
+            "PASTELERIA": 4188850,
+            "BEBIDAS": 1028530,
+            "ALMUERZO CENA": 1232200,
+            "POSTRES": 241500,
+            "DESCUENTOS - PROMOS": 0,
+            "RUBRO. INEXISTENTE": 126000,
+            "MARKET": 329340,
+            "AGUA": 0,
+            "CAFETERIA": 27840
+          },
+          "apiRubros": {
+            "ADICIONALES": 48700,
+            "PASTELERIA": 4188850,
+            "BEBIDAS": 1028530,
+            "ALMUERZO CENA": 1232200,
+            "POSTRES": 241500,
+            "RUBRO. INEXISTENTE": 126000,
+            "MARKET": 329340,
+            "CAFETERIA": 27840
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 7222960,
+          "raw": 7222960
+        }
+      ]
+    },
+    "2026-10-11": {
+      "date": "2026-10-11",
+      "hasRawConcept": true,
+      "hasRawDetail": false,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 6665760,
+          "raw": 6665760
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 147,
+          "raw": 147
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 232,
+          "raw": 232
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 4633010,
+            "mostrador": 1576450,
+            "domicilio": 456300,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 4633010,
+            "mostrador": 1576450,
+            "domicilio": 456300
+          }
+        },
+        {
+          "field": "rubros_unemitted",
+          "status": "CLEAN_EMPTY_STATE"
+        }
+      ]
+    },
+    "2026-10-10": {
+      "date": "2026-10-10",
+      "hasRawConcept": true,
+      "hasRawDetail": false,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 6000560,
+          "raw": 6000560
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 134,
+          "raw": 134
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 192,
+          "raw": 192
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 4309060,
+            "mostrador": 1371700,
+            "domicilio": 319800,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 4309060,
+            "mostrador": 1371700,
+            "domicilio": 319800
+          }
+        },
+        {
+          "field": "rubros_unemitted",
+          "status": "CLEAN_EMPTY_STATE"
+        }
+      ]
+    },
+    "2026-10-09": {
+      "date": "2026-10-09",
+      "hasRawConcept": true,
+      "hasRawDetail": false,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 4598075,
+          "raw": 4598075
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 120,
+          "raw": 120
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 168,
+          "raw": 168
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 3315675,
+            "mostrador": 1042800,
+            "domicilio": 239600,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 3315675,
+            "mostrador": 1042800,
+            "domicilio": 239600
+          }
+        },
+        {
+          "field": "rubros_unemitted",
+          "status": "CLEAN_EMPTY_STATE"
+        }
+      ]
+    },
+    "2026-10-08": {
+      "date": "2026-10-08",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 3224480,
+          "raw": 3224480
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 90,
+          "raw": 90
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 112,
+          "raw": 112
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 2348180,
+            "mostrador": 771500,
+            "domicilio": 104800,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 2348180,
+            "mostrador": 771500,
+            "domicilio": 104800
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "POSTRES": 57000,
+            "ALMUERZO CENA": 938800,
+            "ADICIONALES": 24610,
+            "BEBIDAS": 447890,
+            "RUBRO. INEXISTENTE": 39000,
+            "PASTELERIA": 1512340,
+            "CAFETERIA": 37240,
+            "MARKET": 167600,
+            "AGUA": 0
+          },
+          "apiRubros": {
+            "POSTRES": 57000,
+            "ALMUERZO CENA": 938800,
+            "ADICIONALES": 24610,
+            "BEBIDAS": 447890,
+            "RUBRO. INEXISTENTE": 39000,
+            "PASTELERIA": 1512340,
+            "CAFETERIA": 37240,
+            "MARKET": 167600
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 3224480,
+          "raw": 3224480
+        }
+      ]
+    },
+    "2026-10-07": {
+      "date": "2026-10-07",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 2671240,
+          "raw": 2671240
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 71,
+          "raw": 71
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 83,
+          "raw": 83
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 1547790,
+            "mostrador": 893950,
+            "domicilio": 229500,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 1547790,
+            "mostrador": 893950,
+            "domicilio": 229500
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "MARKET": 82800,
+            "RUBRO. INEXISTENTE": -124000,
+            "BEBIDAS": 340700,
+            "ADICIONALES": 9800,
+            "ALMUERZO CENA": 1225860,
+            "POSTRES": 145000,
+            "PASTELERIA": 991080,
+            "CAFETERIA": 0
+          },
+          "apiRubros": {
+            "RUBRO. INEXISTENTE": -124000,
+            "MARKET": 82800,
+            "BEBIDAS": 340700,
+            "ADICIONALES": 9800,
+            "ALMUERZO CENA": 1225860,
+            "POSTRES": 145000,
+            "PASTELERIA": 991080
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 2671240,
+          "raw": 2671240
+        }
+      ]
+    },
+    "2026-10-06": {
+      "date": "2026-10-06",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 2928500,
+          "raw": 2928500
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 93,
+          "raw": 93
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 122,
+          "raw": 122
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 2294880,
+            "mostrador": 581820,
+            "domicilio": 51800,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 2294880,
+            "mostrador": 581820,
+            "domicilio": 51800
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "BEBIDAS": 463030,
+            "ADICIONALES": 75710,
+            "PASTELERIA": 1228540,
+            "POSTRES": 12000,
+            "ALMUERZO CENA": 1050380,
+            "RUBRO. INEXISTENTE": 14000,
+            "CAFETERIA": 29640,
+            "MARKET": 55200
+          },
+          "apiRubros": {
+            "BEBIDAS": 463030,
+            "ADICIONALES": 75710,
+            "PASTELERIA": 1228540,
+            "POSTRES": 12000,
+            "ALMUERZO CENA": 1050380,
+            "RUBRO. INEXISTENTE": 14000,
+            "CAFETERIA": 29640,
+            "MARKET": 55200
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 2928500,
+          "raw": 2928500
+        }
+      ]
+    },
+    "2026-10-05": {
+      "date": "2026-10-05",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 3124800,
+          "raw": 3124800
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 71,
+          "raw": 71
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 114,
+          "raw": 114
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 2249280,
+            "mostrador": 816520,
+            "domicilio": 59000,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 2249280,
+            "mostrador": 816520,
+            "domicilio": 59000
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "BEBIDAS": 409420,
+            "PASTELERIA": 1328830,
+            "ADICIONALES": 25200,
+            "ALMUERZO CENA": 1273450,
+            "MARKET": 29300,
+            "POSTRES": 51000,
+            "RUBRO. INEXISTENTE": 0,
+            "CAFETERIA": 7600
+          },
+          "apiRubros": {
+            "BEBIDAS": 409420,
+            "PASTELERIA": 1328830,
+            "ADICIONALES": 25200,
+            "ALMUERZO CENA": 1273450,
+            "MARKET": 29300,
+            "POSTRES": 51000,
+            "CAFETERIA": 7600
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 3124800,
+          "raw": 3124800
+        }
+      ]
+    },
+    "2026-10-04": {
+      "date": "2026-10-04",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 7492530,
+          "raw": 7492530
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 172,
+          "raw": 172
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 312,
+          "raw": 312
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 5847780,
+            "mostrador": 1109150,
+            "domicilio": 535600,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 5847780,
+            "mostrador": 1109150,
+            "domicilio": 535600
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "BEBIDAS": 1480540,
+            "PASTELERIA": 3723560,
+            "ADICIONALES": 59150,
+            "MARKET": 258600,
+            "POSTRES": 204900,
+            "CAFETERIA": 68400,
+            "ALMUERZO CENA": 1506580,
+            "RUBRO. INEXISTENTE": 190800
+          },
+          "apiRubros": {
+            "BEBIDAS": 1480540,
+            "PASTELERIA": 3723560,
+            "ADICIONALES": 59150,
+            "MARKET": 258600,
+            "POSTRES": 204900,
+            "CAFETERIA": 68400,
+            "ALMUERZO CENA": 1506580,
+            "RUBRO. INEXISTENTE": 190800
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 7492530,
+          "raw": 7492530
+        }
+      ]
+    },
+    "2026-10-03": {
+      "date": "2026-10-03",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 6571290,
+          "raw": 6571290
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 129,
+          "raw": 129
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 240,
+          "raw": 240
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 4976100,
+            "mostrador": 1331090,
+            "domicilio": 264100,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 4976100,
+            "mostrador": 1331090,
+            "domicilio": 264100
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "BEBIDAS": 912122.78,
+            "PASTELERIA": 3091580,
+            "ADICIONALES": 89900,
+            "ALMUERZO CENA": 1809757.58,
+            "AGUA": 0,
+            "POSTRES": 153000,
+            "MARKET": 351129.6,
+            "CAFETERIA": 22800,
+            "RUBRO. INEXISTENTE": 76000,
+            "BOX GDS": 65000
+          },
+          "apiRubros": {
+            "BEBIDAS": 912123,
+            "PASTELERIA": 3091580,
+            "ADICIONALES": 89900,
+            "ALMUERZO CENA": 1809758,
+            "POSTRES": 153000,
+            "MARKET": 351130,
+            "CAFETERIA": 22800,
+            "RUBRO. INEXISTENTE": 76000,
+            "BOX GDS": 65000
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 6571290,
+          "raw": 6571289.96
+        }
+      ]
+    },
+    "2026-10-02": {
+      "date": "2026-10-02",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 3852350,
+          "raw": 3852350
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 106,
+          "raw": 106
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 160,
+          "raw": 160
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 3108950,
+            "mostrador": 471200,
+            "domicilio": 272200,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 3108950,
+            "mostrador": 471200,
+            "domicilio": 272200
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "BEBIDAS": 741320,
+            "ALMUERZO CENA": 1122000,
+            "ADICIONALES": 27450,
+            "PASTELERIA": 1641320,
+            "CAFETERIA": 50920,
+            "POSTRES": 81500,
+            "MARKET": 50840,
+            "RUBRO. INEXISTENTE": 137000
+          },
+          "apiRubros": {
+            "BEBIDAS": 741320,
+            "ALMUERZO CENA": 1122000,
+            "ADICIONALES": 27450,
+            "PASTELERIA": 1641320,
+            "CAFETERIA": 50920,
+            "POSTRES": 81500,
+            "MARKET": 50840,
+            "RUBRO. INEXISTENTE": 137000
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 3852350,
+          "raw": 3852350
+        }
+      ]
+    },
+    "2026-10-01": {
+      "date": "2026-10-01",
+      "hasRawConcept": true,
+      "hasRawDetail": true,
+      "checks": [
+        {
+          "field": "facturacion",
+          "status": "MATCH_EXACT",
+          "value": 7899510,
+          "raw": 7899510
+        },
+        {
+          "field": "tickets",
+          "status": "MATCH_EXACT",
+          "value": 114,
+          "raw": 114
+        },
+        {
+          "field": "cubiertos",
+          "status": "MATCH_EXACT",
+          "value": 189,
+          "raw": 189
+        },
+        {
+          "field": "canales",
+          "status": "MATCH_EXACT",
+          "api": {
+            "salon": 6975610,
+            "mostrador": 701500,
+            "domicilio": 222400,
+            "otros": 0
+          },
+          "raw": {
+            "salon": 6975610,
+            "mostrador": 701500,
+            "domicilio": 222400
+          }
+        },
+        {
+          "field": "rubros",
+          "status": "MATCH_EXACT",
+          "rawRubros": {
+            "BEBIDAS": 1224870,
+            "PASTELERIA": 2675020,
+            "ADICIONALES": 60960,
+            "MARKET": 114000,
+            "ALMUERZO CENA": 3088200,
+            "POSTRES": 413500,
+            "DESCUENTOS - PROMOS": 0,
+            "RUBRO. INEXISTENTE": 172000,
+            "CAFETERIA": 34960,
+            "BOX GDS": 116000
+          },
+          "apiRubros": {
+            "BEBIDAS": 1224870,
+            "PASTELERIA": 2675020,
+            "ADICIONALES": 60960,
+            "MARKET": 114000,
+            "ALMUERZO CENA": 3088200,
+            "POSTRES": 413500,
+            "RUBRO. INEXISTENTE": 172000,
+            "CAFETERIA": 34960,
+            "BOX GDS": 116000
+          }
+        },
+        {
+          "field": "mozos_total",
+          "status": "MATCH_EXACT",
+          "api": 7899510,
+          "raw": 7899510
+        }
+      ]
+    }
+  },
+  "discrepancies": []
+}
