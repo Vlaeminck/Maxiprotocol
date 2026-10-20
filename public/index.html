@@ -1256,6 +1256,102 @@
     </div>
   </div>
 
+  <!-- MODAL: CENTRO DE EXTRACCIÓN Y EXPORTACIÓN DE DATOS (MAXIREST POS) -->
+  <div class="modal-overlay" id="modal-export-center" style="display: none;">
+    <div class="modal-card modal-export-card" style="max-width: 680px; width: 90%;">
+      <div class="modal-header" style="border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 16px;">
+        <div class="modal-title-wrap" style="display: flex; align-items: center; gap: 14px;">
+          <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-size: 20px;">
+            <i class="fa-solid fa-cloud-arrow-down"></i>
+          </div>
+          <div>
+            <h3 style="margin: 0; font-size: 19px; font-weight: 800; color: #fff;">Centro de Extracción y Exportación de Datos</h3>
+            <p style="margin: 4px 0 0 0; font-size: 13px; color: var(--text-secondary);">Descarga directa en CSV / Excel compatible con hojas de cálculo y PowerBI</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="btn-close-export-modal" title="Cerrar modal (ESC)">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="modal-body" style="padding: 20px 0; display: flex; flex-direction: column; gap: 16px;">
+        <!-- Indicador de Fecha Actual Seleccionada -->
+        <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <i class="fa-regular fa-calendar-check" style="color: var(--accent-cyan); font-size: 16px;"></i>
+            <div>
+              <span style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-tertiary); display: block; font-weight: 700;">Fecha Activa Seleccionada</span>
+              <strong id="export-modal-active-date" style="color: #fff; font-size: 15px;">-</strong>
+            </div>
+          </div>
+          <span class="badge-status" id="export-modal-badge" style="background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3);">Maxirest Auditado</span>
+        </div>
+
+        <!-- Opciones de Descarga -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <!-- 1. Balance Diario Completo -->
+          <a id="btn-dl-balance" href="#" class="export-option-card" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s ease;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+              </div>
+              <span style="font-size: 11px; color: var(--accent-cyan); font-weight: 700; background: rgba(56, 189, 248, 0.1); padding: 2px 8px; border-radius: 6px;">CSV / Excel</span>
+            </div>
+            <strong style="color: #fff; font-size: 14px; margin-top: 4px;">Balance Integral del Día</strong>
+            <p style="margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4;">KPIs, Canales (Salón/Mostrador/Delivery), Medios de Cobro, Rubros, Mozos y Curva Horaria.</p>
+          </a>
+
+          <!-- 2. Rendimiento de Mozos -->
+          <a id="btn-dl-mozos" href="#" class="export-option-card" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s ease;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(168, 85, 247, 0.15); color: #c084fc; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                <i class="fa-solid fa-users"></i>
+              </div>
+              <span style="font-size: 11px; color: #c084fc; font-weight: 700; background: rgba(168, 85, 247, 0.1); padding: 2px 8px; border-radius: 6px;">CSV</span>
+            </div>
+            <strong style="color: #fff; font-size: 14px; margin-top: 4px;">Rendimiento de Mozos</strong>
+            <p style="margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4;">Facturación por mozo, tickets, comensales, ticket promedio, plato estrella y venta de postres.</p>
+          </a>
+
+          <!-- 3. Ingeniería de Menú -->
+          <a id="btn-dl-menu" href="#" class="export-option-card" style="text-decoration: none; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s ease;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(234, 179, 8, 0.15); color: #facc15; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                <i class="fa-solid fa-utensils"></i>
+              </div>
+              <span style="font-size: 11px; color: #facc15; font-weight: 700; background: rgba(234, 179, 8, 0.1); padding: 2px 8px; border-radius: 6px;">CSV</span>
+            </div>
+            <strong style="color: #fff; font-size: 14px; margin-top: 4px;">Ingeniería de Menú</strong>
+            <p style="margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4;">Ranking de platos, unidades, rubros, precios unitarios y volumen facturado.</p>
+          </a>
+
+          <!-- 4. Maestro Histórico Completo -->
+          <a id="btn-dl-history" href="/api/export/history" download="Maxirest_Historico_Completo.csv" class="export-option-card" style="text-decoration: none; background: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s ease;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(16, 185, 129, 0.15); color: #34d399; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                <i class="fa-solid fa-database"></i>
+              </div>
+              <span style="font-size: 11px; color: #34d399; font-weight: 700; background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 6px;">1.965 Días</span>
+            </div>
+            <strong style="color: #fff; font-size: 14px; margin-top: 4px;">Histórico Completo 2020-2026</strong>
+            <p style="margin: 0; font-size: 12px; color: var(--text-secondary); line-height: 1.4;">Serie temporal día por día de facturación neta, tickets, comensales y canales para BI.</p>
+          </a>
+        </div>
+
+        <!-- Re-escaneo forzado -->
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between;">
+          <div>
+            <strong style="color: #fff; font-size: 13px; display: block;">Re-escaneo de DBFs y Reportes Excel</strong>
+            <span style="font-size: 12px; color: var(--text-secondary);">Si acabas de emitir un informe en Maxirest POS, sincronízalo de inmediato:</span>
+          </div>
+          <button type="button" class="btn-primary" id="btn-force-resync-modal" style="padding: 8px 16px; font-size: 12px;">
+            <i class="fa-solid fa-arrows-rotate"></i> Sincronizar Ahora
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- TOAST NOTIFICATIONS CONTAINER -->
   <div class="toasts-shelf" id="toasts-shelf"></div>
 

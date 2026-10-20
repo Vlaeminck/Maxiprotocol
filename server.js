@@ -232,22 +232,218 @@ app.post('/api/mozos/sync-maxirest', (req, res) => {
   }
 });
 
-// Auto-sincronización con Maxirest POS (Monitoreo de bakinforme.dbf)
+// ============================================================================
+// CENTRO DE EXPORTACIÓN Y EXTRACCIÓN DE DATOS DE MAXIREST POS (CSV / EXCEL)
+// ============================================================================
+
+function escapeCsv(val) {
+  if (val === null || val === undefined) return '""';
+  const str = String(val).replace(/"/g, '""');
+  return `"${str}"`;
+}
+
+// 1. Exportar Balance Integral del Día Seleccionado
+app.get('/api/export/day', (req, res) => {
+  try {
+    const dateKey = req.query.date || analytics.getYesterdayKey();
+    const day = analytics.getDayAnalytics(dateKey);
+    const kpis = day.kpis || {};
+
+    let csv = '\uFEFF'; // UTF-8 BOM para compatibilidad nativa con Excel en Windows
+    csv += 'REPORTE Y BALANCE DE OPERACIONES - MAXIREST POS CLIENTE #10783\n';
+    csv += `Empresa;Gastro Market SRL / Gardenias Restó\n`;
+    csv += `Fecha Operativa;${day.fecha}\n`;
+    csv += `Día;${day.nombreDia}\n`;
+    csv += `Archivo DBF / Origen;${day.archivoOrigen}\n`;
+    csv += `Generado;${new Date().toLocaleString('es-AR')}\n\n`;
+
+    csv += '=== KPIS PRINCIPALES ===\n';
+    csv += 'Métrica;Valor;Unidad / Detalle\n';
+    csv += `Facturación Neta Total;${kpis.facturacionTotal || 0};ARS\n`;
+    csv += `Total Comprobantes (Tickets);${kpis.totalTickets || 0};Tickets\n`;
+    csv += `Total Comensales (Cubiertos CUB);${kpis.totalComensales || 0};Comensales\n`;
+    csv += `Ticket Promedio;${kpis.ticketPromedio || 0};ARS / Ticket\n`;
+    csv += `Gasto Promedio por Comensal;${kpis.gastoPromedioComensal || 0};ARS / Cub\n\n`;
+
+    csv += '=== CANALES DE VENTA ===\n';
+    csv += 'Canal;Facturado ARS;% del Total\n';
+    const c = kpis.canales || {};
+    const totF = kpis.facturacionTotal || 1;
+    csv += `Salón;${c.salon || 0};${(((c.salon || 0) / totF) * 100).toFixed(1)}%\n`;
+    csv += `Mostrador / Take Away;${c.mostrador || 0};${(((c.mostrador || 0) / totF) * 100).toFixed(1)}%\n`;
+    csv += `Delivery / Envíos;${c.domicilio || 0};${(((c.domicilio || 0) / totF) * 100).toFixed(1)}%\n\n`;
+
+    csv += '=== MEDIOS DE COBRO Y PAGO ===\n';
+    csv += 'Medio de Cobro;Importe ARS;% del Total;Tickets\n';
+    if (day.mediosPago && Object.keys(day.mediosPago).length > 0) {
+      for (const [mName, mData] of Object.entries(day.mediosPago)) {
+        csv += `${escapeCsv(mName)};${mData.importe};${mData.porcentaje}%;${mData.tickets || 0}\n`;
+      }
+    }
+    csv += '\n';
+
+    csv += '=== RENDIMIENTO DEL EQUIPO (MOZOS Y ESTACIONES) ===\n';
+    csv += 'Código POS;Nombre Mozo;Estado;Ventas ARS;% del Total;Tickets;Cubiertos;Ticket Promedio;Promedio Cubierto;Plato Más Vendido;Postre Insignia\n';
+    if (day.mozos && day.mozos.length > 0) {
+      day.mozos.forEach(m => {
+        const postreNom = (m.postres && m.postres.postreTop) ? m.postres.postreTop : '-';
+        csv += `${m.codigo};${escapeCsv(m.nombre)};${m.estado};${m.ventas};${m.porcentajeTotal}%;${m.tickets};${m.cubiertos || m.comensales || 0};${m.ticketPromedio};${m.promedioCubierto};${escapeCsv(m.platoMasVendido || '-')};${escapeCsv(postreNom)}\n`;
+      });
+    }
+    csv += '\n';
+
+    csv += '=== DISTRIBUCIÓN POR CATEGORÍAS / RUBROS ===\n';
+    csv += 'Rubro / Categoría;Facturado ARS;% del Total\n';
+    if (day.ventasPorRubro && Object.keys(day.ventasPorRubro).length > 0) {
+      for (const [rName, rVal] of Object.entries(day.ventasPorRubro)) {
+        const pct = totF > 0 ? ((rVal / totF) * 100).toFixed(1) : '0';
+        csv += `${escapeCsv(rName)};${rVal};${pct}%\n`;
+      }
+    }
+    csv += '\n';
+
+    csv += '=== INGENIERÍA DE MENÚ (TOP PRODUCTOS / PLATOS) ===\n';
+    csv += 'Código;Artículo / Plato;Rubro;Unidades;Precio Unitario ARS;Facturación ARS;% del Total\n';
+    if (day.productosTop && day.productosTop.length > 0) {
+      day.productosTop.forEach(p => {
+        csv += `${escapeCsv(p.codigo || 'ART')};${escapeCsv(p.nombre)};${escapeCsv(p.rubro || 'General')};${p.unidades};${p.unitario};${p.facturado};${p.porcentaje}%\n`;
+      });
+    }
+    csv += '\n';
+
+    csv += '=== CURVA HORARIA OPERATIVA ===\n';
+    csv += 'Franja Horaria;Facturado ARS;Tickets\n';
+    if (day.distribucionHoraria && day.distribucionHoraria.length > 0) {
+      day.distribucionHoraria.forEach(h => {
+        csv += `${h.hora};${h.importe};${h.tickets}\n`;
+      });
+    }
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="Maxirest_Balance_${day.fecha}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    console.error('Error en /api/export/day:', err);
+    res.status(500).send('Error exportando reporte diario');
+  }
+});
+
+// 2. Exportar Desempeño de Mozos (CSV)
+app.get('/api/export/mozos', (req, res) => {
+  try {
+    const dateKey = req.query.date || analytics.getYesterdayKey();
+    const day = analytics.getDayAnalytics(dateKey);
+
+    let csv = '\uFEFF';
+    csv += 'Código;Mozo;Estado;Ventas_ARS;Porcentaje_Total;Tickets;Cubiertos_CUB;Ticket_Promedio;Promedio_Cubierto;Plato_Mas_Vendido;Postre_Insignia;Unidades_Postres;Fecha_Ingreso\n';
+    if (day.mozos && day.mozos.length > 0) {
+      day.mozos.forEach(m => {
+        const postreNom = (m.postres && m.postres.postreTop) ? m.postres.postreTop : '-';
+        const postreUnits = (m.postres && m.postres.unidades) ? m.postres.unidades : 0;
+        csv += `${m.codigo};${escapeCsv(m.nombre)};${m.estado};${m.ventas};${m.porcentajeTotal};${m.tickets};${m.cubiertos || m.comensales || 0};${m.ticketPromedio};${m.promedioCubierto};${escapeCsv(m.platoMasVendido || '-')};${escapeCsv(postreNom)};${postreUnits};${m.fechaIngreso || '-'}\n`;
+      });
+    }
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="Maxirest_Mozos_${day.fecha}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    console.error('Error en /api/export/mozos:', err);
+    res.status(500).send('Error exportando mozos');
+  }
+});
+
+// 3. Exportar Menú / Artículos (CSV)
+app.get('/api/export/products', (req, res) => {
+  try {
+    const dateKey = req.query.date || analytics.getYesterdayKey();
+    const day = analytics.getDayAnalytics(dateKey);
+
+    let csv = '\uFEFF';
+    csv += 'Código;Artículo;Rubro;Unidades;Precio_Unitario_ARS;Facturado_ARS;Porcentaje_Total\n';
+    if (day.productosTop && day.productosTop.length > 0) {
+      day.productosTop.forEach(p => {
+        csv += `${escapeCsv(p.codigo || 'ART')};${escapeCsv(p.nombre)};${escapeCsv(p.rubro || 'General')};${p.unidades};${p.unitario};${p.facturado};${p.porcentaje}\n`;
+      });
+    }
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="Maxirest_Menu_${day.fecha}.csv"`);
+    res.send(csv);
+  } catch (err) {
+    console.error('Error en /api/export/products:', err);
+    res.status(500).send('Error exportando platos');
+  }
+});
+
+// 4. Exportar Histórico Multi-Anual Completo (1.965 Días 2020-2026)
+app.get('/api/export/history', (req, res) => {
+  try {
+    const masterIdx = analytics.getMasterFiscalIndex();
+    const dateKeys = Object.keys(masterIdx).sort();
+
+    let csv = '\uFEFF';
+    csv += 'Fecha;Año;Mes;Día;Facturación_Total_ARS;Tickets_Ventas;Cubiertos_CUB;Ticket_Promedio;Promedio_Cubierto;Salon_ARS;Mostrador_ARS;Delivery_ARS\n';
+
+    dateKeys.forEach(dk => {
+      const row = masterIdx[dk];
+      const p = dk.split('-');
+      csv += `${dk};${p[0]};${p[1]};${p[2]};${row.total};${row.ventas};${row.cub || 0};${row.promVtas || 0};${row.promedioCub || 0};${row.salon || 0};${row.mostrador || 0};${row.domicilio || 0}\n`;
+    });
+
+    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+    res.setHeader('Content-Disposition', `attachment; filename="Maxirest_Historico_Completo_${dateKeys.length}_Dias.csv"`);
+    res.send(csv);
+  } catch (err) {
+    console.error('Error en /api/export/history:', err);
+    res.status(500).send('Error exportando histórico');
+  }
+});
+
+// Auto-sincronización y Monitoreo Inteligente con Maxirest POS
 let lastBakinformeMtime = 0;
+let lastDesktopXlsMtime = 0;
+
 setInterval(() => {
   try {
+    let needsSync = false;
+
+    // 1. Monitoreo de bakinforme.dbf (cierre contable diario)
     const bakPath = 'C:/MaxiREST_SQL/bakinforme.dbf';
     if (fs.existsSync(bakPath)) {
       const mtime = fs.statSync(bakPath).mtimeMs;
       if (lastBakinformeMtime && mtime > lastBakinformeMtime) {
-        console.log('[AutoSync] Cambio detectado en bakinforme.dbf de Maxirest. Sincronizando...');
-        analytics.syncAll();
-        io.emit('data_synced', { timestamp: Date.now() });
+        console.log('[AutoSync] Cambio detectado en bakinforme.dbf de Maxirest POS. Sincronizando...');
+        needsSync = true;
       }
       lastBakinformeMtime = mtime;
     }
+
+    // 2. Monitoreo de reportes .xls emitidos al Escritorio por Maxirest
+    const desktopDir = 'C:/Users/Gardenias/Desktop';
+    if (fs.existsSync(desktopDir)) {
+      try {
+        const xlsFiles = fs.readdirSync(desktopDir).filter(f => f.toLowerCase().endsWith('.xls') && !f.startsWith('~$'));
+        let maxMtime = 0;
+        for (const xf of xlsFiles) {
+          const mt = fs.statSync(path.join(desktopDir, xf)).mtimeMs;
+          if (mt > maxMtime) maxMtime = mt;
+        }
+        if (lastDesktopXlsMtime && maxMtime > lastDesktopXlsMtime) {
+          console.log('[AutoSync] Nuevo/modificado reporte Excel de Maxirest detectado en Escritorio. Sincronizando...');
+          needsSync = true;
+        }
+        lastDesktopXlsMtime = maxMtime;
+      } catch (e) {}
+    }
+
+    if (needsSync) {
+      analytics.syncAll();
+      io.emit('data_synced', { timestamp: Date.now() });
+      io.emit('staff_updated', { allStaff: analytics.getStaffRegistry() });
+    }
   } catch (e) {}
-}, 5000);
+}, 4000);
 
 app.get('/api/system-paths', (req, res) => {
   res.json({

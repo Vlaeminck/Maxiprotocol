@@ -3113,6 +3113,101 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+// ==========================================================================
+// 12. CENTRO DE EXPORTACIÓN Y EXTRACCIÓN DE DATOS MAXIREST POS
+// ==========================================================================
+
+function openExportModal() {
+  const modal = document.getElementById('modal-export-center');
+  if (!modal) return;
+
+  const activeDate = AppState.selectedDate || 'ayer';
+  const labelEl = document.getElementById('export-modal-active-date');
+  if (labelEl) {
+    labelEl.textContent = `${activeDate} (${AppState.currentDayData ? AppState.currentDayData.nombreDia : 'Día Seleccionado'})`;
+  }
+
+  const btnDlBalance = document.getElementById('btn-dl-balance');
+  if (btnDlBalance) {
+    btnDlBalance.href = `/api/export/day?date=${encodeURIComponent(activeDate)}`;
+    btnDlBalance.download = `Maxirest_Balance_${activeDate}.csv`;
+  }
+
+  const btnDlMozos = document.getElementById('btn-dl-mozos');
+  if (btnDlMozos) {
+    btnDlMozos.href = `/api/export/mozos?date=${encodeURIComponent(activeDate)}`;
+    btnDlMozos.download = `Maxirest_Mozos_${activeDate}.csv`;
+  }
+
+  const btnDlMenu = document.getElementById('btn-dl-menu');
+  if (btnDlMenu) {
+    btnDlMenu.href = `/api/export/products?date=${encodeURIComponent(activeDate)}`;
+    btnDlMenu.download = `Maxirest_Menu_${activeDate}.csv`;
+  }
+
+  modal.style.display = 'flex';
+}
+
+function closeExportModal() {
+  const modal = document.getElementById('modal-export-center');
+  if (modal) modal.style.display = 'none';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btnExport = document.getElementById('btn-export-report');
+  const btnCloseExport = document.getElementById('btn-close-export-modal');
+  const modalExport = document.getElementById('modal-export-center');
+  const btnResyncModal = document.getElementById('btn-force-resync-modal');
+
+  if (btnExport) {
+    btnExport.addEventListener('click', (e) => {
+      e.preventDefault();
+      openExportModal();
+    });
+  }
+
+  if (btnCloseExport) {
+    btnCloseExport.addEventListener('click', closeExportModal);
+  }
+
+  if (modalExport) {
+    modalExport.addEventListener('click', (e) => {
+      if (e.target === modalExport) closeExportModal();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modalExport && modalExport.style.display !== 'none') {
+      closeExportModal();
+    }
+  });
+
+  if (btnResyncModal) {
+    btnResyncModal.addEventListener('click', async () => {
+      btnResyncModal.disabled = true;
+      btnResyncModal.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sincronizando...';
+      try {
+        const res = await fetch('/api/sync', { method: 'POST' });
+        const data = await res.json();
+        if (data.success) {
+          showToast(`Sincronización completada: ${data.daysCount} días y ${data.staffCount} mozos auditados`, 'success');
+          if (typeof loadDayAnalytics === 'function') {
+            loadDayAnalytics(AppState.selectedDate || 'ayer');
+          }
+          if (typeof loadAvailableDays === 'function') {
+            loadAvailableDays();
+          }
+        } else {
+          showToast('Error sincronizando con Maxirest POS', 'error');
+        }
+      } catch (err) {
+        showToast('Error de conexión al sincronizar', 'error');
+      } finally {
+        btnResyncModal.disabled = false;
+        btnResyncModal.innerHTML = '<i class="fa-solid fa-arrows-rotate"></i> Sincronizar Ahora';
+      }
+    });
+  }
 });
 
 

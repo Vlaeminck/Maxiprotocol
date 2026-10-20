@@ -1,10 +1,13 @@
+import glob
+import os
 import pdfplumber
 
-pdf_path = r'C:\Users\Gardenias\Downloads\Detalle operaciones 14_10_2026 al 14_10_2026.pdf'
-print(f"Reading {pdf_path}...")
+for p in sorted(glob.glob(r'C:\Users\Gardenias\Downloads\Detalle operaciones*.pdf')):
+    fname = os.path.basename(p)
+    with pdfplumber.open(p) as pdf:
+        text0 = pdf.pages[0].extract_text()
+        lines = [line.strip() for line in text0.split('\n') if line.strip()]
+        print(f"=== {fname} ===")
+        for i, l in enumerate(lines[:12]):
+            print(f"  {l}")
 
-with pdfplumber.open(pdf_path) as pdf:
-    for page_idx, page in enumerate(pdf.pages):
-        text = page.extract_text()
-        print(f"\n--- PAGE {page_idx + 1} ---")
-        print(text[:1500])
