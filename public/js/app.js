@@ -3113,6 +3113,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   }
+});
+
 // ==========================================================================
 // 12. CENTRO DE EXPORTACIÓN Y EXTRACCIÓN DE DATOS MAXIREST POS
 // ==========================================================================
