@@ -113,6 +113,15 @@ def import_desktop_xls():
                 nom_art = str(sheet.cell_value(r, art_idx)).strip() if art_idx >= 0 else ''
                 is_cubierto = 'CUBIERTO' in nom_art.upper()
 
+                # Hora
+                hora_str = ''
+                if hora_idx >= 0:
+                    raw_h = str(sheet.cell_value(r, hora_idx)).strip()
+                    if ':' in raw_h:
+                        clean_h = raw_h[:5]
+                        if len(clean_h) == 5 and clean_h[2] == ':':
+                            hora_str = clean_h
+
                 if cod_mozo > 0:
                     if cod_mozo not in d['mozos']:
                         d['mozos'][cod_mozo] = {
@@ -122,7 +131,9 @@ def import_desktop_xls():
                             'comprobantes': set(),
                             'cubiertos': 0,
                             'platos': {},
-                            'postres': {'count': 0, 'fact': 0, 'items': {}}
+                            'postres': {'count': 0, 'fact': 0, 'items': {}},
+                            'primera_venta': None,
+                            'ultima_venta': None
                         }
                     m = d['mozos'][cod_mozo]
                     m['total'] += tot_val
@@ -132,6 +143,12 @@ def import_desktop_xls():
                         m['cubiertos'] += int(round(cant_val))
                     elif nom_art and 'INEXISTENTE' not in nom_art.upper():
                         m['platos'][nom_art] = m['platos'].get(nom_art, 0) + cant_val
+
+                    if hora_str:
+                        if not m['primera_venta'] or hora_str < m['primera_venta']:
+                            m['primera_venta'] = hora_str
+                        if not m['ultima_venta'] or hora_str > m['ultima_venta']:
+                            m['ultima_venta'] = hora_str
 
                 # Products
                 if nom_art and not is_cubierto and 'INEXISTENTE' not in nom_art.upper():
@@ -187,7 +204,9 @@ def import_desktop_xls():
                                 'postreTop': matched.get('postreMasVendido') or 'Torta Cheese Pistacho',
                                 'porcentajeMesas': 18
                             },
-                            'porcentajeTotal': round((m['total'] / d['grand_total']) * 100, 2) if d['grand_total'] > 0 else 0
+                            'porcentajeTotal': round((m['total'] / d['grand_total']) * 100, 2) if d['grand_total'] > 0 else 0,
+                            'primeraVenta': m.get('primera_venta'),
+                            'ultimaVenta': m.get('ultima_venta')
                         })
                     mozos_list.sort(key=lambda x: x['ventas'], reverse=True)
                     

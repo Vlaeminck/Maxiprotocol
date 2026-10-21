@@ -29,6 +29,7 @@ for (let i = 0; i < numRecords; i++) {
   if (dStr.length !== 8) continue;
   const iso = dStr.slice(0, 4) + '-' + dStr.slice(4, 6) + '-' + dStr.slice(6, 8);
   
+  const hora = recBuf.slice(9, 14).toString('ascii').trim();
   const comp = recBuf.slice(29, 49).toString('ascii').trim();
   const codMozo = parseInt(recBuf.slice(53, 58).toString('ascii').trim(), 10) || 0;
   const nomMozo = recBuf.slice(58, 88).toString('latin1').trim();
@@ -45,12 +46,23 @@ for (let i = 0; i < numRecords; i++) {
       tickets: new Set(),
       cubiertos: 0,
       platos: {},
-      postres: { count: 0, fact: 0, items: {} }
+      postres: { count: 0, fact: 0, items: {} },
+      primeraVenta: null,
+      ultimaVenta: null
     };
   }
   
   mozosByDate[iso][codMozo].total += tot;
   mozosByDate[iso][codMozo].tickets.add(comp);
+  
+  if (hora && /^\d{2}:\d{2}$/.test(hora)) {
+    if (!mozosByDate[iso][codMozo].primeraVenta || hora < mozosByDate[iso][codMozo].primeraVenta) {
+      mozosByDate[iso][codMozo].primeraVenta = hora;
+    }
+    if (!mozosByDate[iso][codMozo].ultimaVenta || hora > mozosByDate[iso][codMozo].ultimaVenta) {
+      mozosByDate[iso][codMozo].ultimaVenta = hora;
+    }
+  }
   
   if (nomArt.toUpperCase().includes('CUBIERTO')) {
     mozosByDate[iso][codMozo].cubiertos += Math.round(cant);
@@ -114,7 +126,9 @@ for (const [iso, mozosMap] of Object.entries(mozosByDate)) {
         postreTop: topPostre[0] !== '-' ? topPostre[0] : (matched.postreMasVendido || 'Torta Cheese Pistacho'),
         porcentajeMesas: tksCount > 0 ? Math.round((m.postres.count / tksCount) * 100) : 0
       },
-      porcentajeTotal: pct
+      porcentajeTotal: pct,
+      primeraVenta: m.primeraVenta || null,
+      ultimaVenta: m.ultimaVenta || null
     };
   });
   

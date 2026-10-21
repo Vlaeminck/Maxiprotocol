@@ -1041,6 +1041,19 @@ window.quickToggleStaffStatus = async function(staffId) {
   }
 };
 
+function formatShiftDuration(start, end) {
+  if (!start || !end || start === end) return '';
+  const [h1, m1] = start.split(':').map(Number);
+  const [h2, m2] = end.split(':').map(Number);
+  let diffMin = (h2 * 60 + m2) - (h1 * 60 + m1);
+  if (diffMin < 0) diffMin += 24 * 60;
+  const hrs = Math.floor(diffMin / 60);
+  const mins = diffMin % 60;
+  if (hrs > 0 && mins > 0) return `${hrs}h ${mins}m`;
+  if (hrs > 0) return `${hrs}h`;
+  return `${mins}m`;
+}
+
 function renderMozosExecutive(mozos) {
   const container = document.getElementById('mozos-cards-container');
   if (!container) return;
@@ -1158,7 +1171,7 @@ function renderMozosExecutive(mozos) {
         `}
       </div>
       ${m.fechaEgreso ? `
-        <div class="mozo-hire-row" style="margin-top: 4px;">
+        <div class="mozo-hire-row" style="margin-top: -6px; margin-bottom: 10px;">
           <span class="hire-label" style="color: var(--accent-rose);"><i class="fa-solid fa-calendar-xmark"></i> Baja:</span>
           <span class="hire-date-val" onclick="event.stopPropagation(); window.openStaffModal(${m.id})" style="color: var(--accent-rose);" title="Fecha de baja / cese de actividad en Gardenias">
             ${formatHireDate(m.fechaEgreso)}
@@ -1166,6 +1179,28 @@ function renderMozosExecutive(mozos) {
           </span>
         </div>
       ` : ''}
+
+      <div class="mozo-shift-hours-row ${hasSales && m.primeraVenta ? 'has-hours' : 'no-hours'}">
+        <span class="shift-hours-label"><i class="fa-regular fa-clock"></i> Horario Ventas:</span>
+        ${hasSales && m.primeraVenta ? `
+          <div class="shift-hours-times">
+            <span class="shift-time-chip first-sale" title="Hora del primer comprobante registrado por este mozo">
+              <i class="fa-solid fa-play fa-2xs"></i> 1ra: <strong>${m.primeraVenta}</strong>
+            </span>
+            <span class="shift-time-arrow"><i class="fa-solid fa-arrow-right-long"></i></span>
+            <span class="shift-time-chip last-sale" title="Hora del último comprobante registrado por este mozo">
+              <i class="fa-solid fa-flag-checkered fa-2xs"></i> Última: <strong>${m.ultimaVenta || m.primeraVenta}</strong>
+            </span>
+            ${(m.ultimaVenta && m.ultimaVenta !== m.primeraVenta) ? `
+              <span class="shift-duration-tag" title="Duración de la ventana de ventas">
+                ${formatShiftDuration(m.primeraVenta, m.ultimaVenta)}
+              </span>
+            ` : ''}
+          </div>
+        ` : `
+          <span class="shift-no-sales"><i class="fa-solid fa-ban fa-2xs"></i> Sin ventas en turno</span>
+        `}
+      </div>
 
       <div class="mozo-card-stats">
         <div class="mozo-stat-item">
@@ -1255,7 +1290,7 @@ function renderMozosMiniList(mozos) {
         <div style="width: 28px; height: 28px; border-radius: 6px; background: rgba(56, 189, 248, 0.12); color: var(--accent-primary); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700;">${monogram}</div>
         <div>
           <div style="font-weight: 700; font-size: 13px; color: var(--text-primary);">${m.nombre}</div>
-          <div style="font-size: 11px; color: var(--text-muted);">${m.tickets} tickets • ${m.comensales || 0} cubiertos</div>
+          <div style="font-size: 11px; color: var(--text-muted);">${m.tickets} tickets • ${m.comensales || 0} cub${(m.primeraVenta && (m.ventas || 0) > 0) ? ` • ${m.primeraVenta} a ${m.ultimaVenta || m.primeraVenta}` : ''}</div>
         </div>
       </div>
       <div style="text-align: right;">
