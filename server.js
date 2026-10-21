@@ -403,23 +403,49 @@ app.get('/api/export/history', (req, res) => {
 // Auto-sincronización y Monitoreo Inteligente con Maxirest POS
 let lastBakinformeMtime = 0;
 let lastDesktopXlsMtime = 0;
+let lastMaxirestDbfCount = 0;
+let lastMaxirestMaxMtime = 0;
 
 setInterval(() => {
   try {
     let needsSync = false;
+    let reason = '';
 
-    // 1. Monitoreo de bakinforme.dbf (cierre contable diario)
+    // 1. Monitoreo de bakinforme.dbf (cierre contable diario / arqueo)
     const bakPath = 'C:/MaxiREST_SQL/bakinforme.dbf';
     if (fs.existsSync(bakPath)) {
       const mtime = fs.statSync(bakPath).mtimeMs;
       if (lastBakinformeMtime && mtime > lastBakinformeMtime) {
-        console.log('[AutoSync] Cambio detectado en bakinforme.dbf de Maxirest POS. Sincronizando...');
+        reason = 'bakinforme.dbf modificado';
         needsSync = true;
       }
       lastBakinformeMtime = mtime;
     }
 
-    // 2. Monitoreo de reportes .xls emitidos al Escritorio por Maxirest
+    // 2. Monitoreo de C:/MaxiRest (tablas DBF generadas por informes de Maxirest)
+    const maxirestDir = 'C:/MaxiRest';
+    if (fs.existsSync(maxirestDir)) {
+      try {
+        const files = fs.readdirSync(maxirestDir).filter(f => f.endsWith('.dbf') && /^\d+\.dbf$/i.test(f));
+        const count = files.length;
+        let maxMtime = 0;
+        for (let i = 0; i < Math.min(count, 20); i++) {
+          try {
+            const mt = fs.statSync(path.join(maxirestDir, files[i])).mtimeMs;
+            if (mt > maxMtime) maxMtime = mt;
+          } catch (_) {}
+        }
+        if ((lastMaxirestDbfCount && count !== lastMaxirestDbfCount) ||
+            (lastMaxirestMaxMtime && maxMtime > lastMaxirestMaxMtime)) {
+          reason = `nuevo informe DBF en C:\\MaxiRest (${count} tablas)`;
+          needsSync = true;
+        }
+        lastMaxirestDbfCount = count;
+        lastMaxirestMaxMtime = maxMtime;
+      } catch (_) {}
+    }
+
+    // 3. Monitoreo de reportes .xls emitidos al Escritorio por Maxirest
     const desktopDir = 'C:/Users/Gardenias/Desktop';
     if (fs.existsSync(desktopDir)) {
       try {
@@ -430,20 +456,30 @@ setInterval(() => {
           if (mt > maxMtime) maxMtime = mt;
         }
         if (lastDesktopXlsMtime && maxMtime > lastDesktopXlsMtime) {
-          console.log('[AutoSync] Nuevo/modificado reporte Excel de Maxirest detectado en Escritorio. Sincronizando...');
+          reason = 'nuevo reporte Excel en Escritorio';
           needsSync = true;
         }
         lastDesktopXlsMtime = maxMtime;
-      } catch (e) {}
+      } catch (_) {}
     }
 
     if (needsSync) {
-      analytics.syncAll();
-      io.emit('data_synced', { timestamp: Date.now() });
+      console.log(`[AutoSync] 🔄 Cambio detectado en Maxirest POS: ${reason}. Sincronizando...`);
+      const syncRes = analytics.syncAll();
+      const yFact = (syncRes && syncRes.yesterdayData && syncRes.yesterdayData.kpis) ? syncRes.yesterdayData.kpis.facturacionTotal : 0;
+      console.log(`[AutoSync] ✅ Sincronización automática exitosa: Ayer ${syncRes.yesterday} ($${yFact.toLocaleString('es-AR')})`);
+      io.emit('data_synced', {
+        timestamp: Date.now(),
+        reason,
+        yesterday: syncRes.yesterday,
+        yesterdayData: syncRes.yesterdayData
+      });
       io.emit('staff_updated', { allStaff: analytics.getStaffRegistry() });
     }
-  } catch (e) {}
-}, 4000);
+  } catch (err) {
+    console.error('[AutoSync] Error en ciclo de auto-sincronización:', err.message);
+  }
+}, 3000);
 
 app.get('/api/system-paths', (req, res) => {
   res.json({

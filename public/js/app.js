@@ -131,9 +131,13 @@ function initSocket() {
     loadDayData(AppState.selectedDate);
   });
 
-  socket.on('data_synced', async () => {
-    console.log('[MaxiProtocol] Datos contables sincronizados vía Socket.IO. Actualizando dashboard...');
-    await initDaySelector();
+  socket.on('data_synced', async (payload) => {
+    console.log('[MaxiProtocol] Datos contables sincronizados vía Socket.IO:', payload);
+    if (payload && payload.yesterdayData && payload.yesterdayData.kpis && payload.yesterdayData.kpis.facturacionTotal > 0) {
+      const factStr = `$${(payload.yesterdayData.kpis.facturacionTotal / 1000000).toFixed(2)}M`;
+      showToast(`🔄 Maxirest POS: Cierre detectado para Ayer ${payload.yesterday} (${factStr})`, 'info');
+    }
+    await initDaySelector(AppState.selectedDate);
     loadDayData(AppState.selectedDate);
   });
 }
@@ -152,9 +156,14 @@ function initSyncButtons() {
         const res = await fetch('/api/sync', { method: 'POST' });
         const data = await res.json();
         if (data.success) {
-          showToast('Sincronización completada: datos contables y personal actualizados.', 'success');
-          await initDaySelector();
-          loadDayData(AppState.selectedDate);
+          const yFact = data.yesterdayFacturacion || 0;
+          const factStr = yFact > 0 ? `$${(yFact / 1000000).toFixed(2)}M` : '$0';
+          showToast(`✅ Sincronizado con éxito: Ayer ${data.yesterday} (${factStr}, ${data.yesterdayTickets || 0} tickets)`, 'success');
+          
+          // Si el día de ayer tiene facturación consolidada, activar ayer para que el usuario vea el balance de inmediato
+          const dateToLoad = (yFact > 0 && data.yesterday) ? data.yesterday : (AppState.selectedDate || data.yesterday);
+          await initDaySelector(dateToLoad);
+          selectAndActivateDate(dateToLoad);
         } else {
           showToast('Error sincronizando: ' + (data.error || 'Desconocido'), 'error');
         }
@@ -213,10 +222,10 @@ function updateConnectionStatus(connected, latency) {
 // 3. SELECTOR MULTI-DÍA Y CARGA DE DATOS DINÁMICA
 // ==========================================================================
 
-async function initDaySelector() {
+async function initDaySelector(targetDateOverride) {
   const customDateInput = document.getElementById('input-custom-date');
   const urlParams = new URLSearchParams(window.location.search);
-  const paramDate = urlParams.get('date');
+  const paramDate = targetDateOverride || urlParams.get('date');
 
   try {
     const res = await fetch('/api/analytics/days');
