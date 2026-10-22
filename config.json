@@ -5,17 +5,17 @@
     "posApp": "C:\\MaxiREST_SQL\\MAXIREST.EXE",
     "dataDir": "C:\\MaxiRest",
     "localMariaDbDir": "C:\\Servidor_MariaDB",
-    "lanServerHost": "192.168.1.4",
+    "lanServerHost": "192.168.1.6",
     "lanServerPort": 3399,
     "lanServerName": "CAJA",
     "clienteId": "10783"
   },
   "mariadb": {
-    "host": "DESKTOP-33JNCVB",
+    "host": "192.168.1.6",
     "port": 3399,
     "database": "mx_10783",
-    "user": "user_10783",
-    "password": ""
+    "user": "maxiprotocol",
+    "password": "Maxi2026!*"
   },
   "firebird": {
     "host": "127.0.0.1",

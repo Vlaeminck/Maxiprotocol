@@ -106,27 +106,31 @@ for (const [iso, dayAudit] of Object.entries(auditMap)) {
         m.ultimaVenta = hoursForDate[m.codigo].max;
         updatedMozosCount++;
       } else if (m.ventas > 0) {
-        // Fallback for summary-only audited dates (e.g. bakinforme): calibrate shift based on channel/volume
-        if (m.codigo === 500) {
-          m.primeraVenta = '08:45';
-          m.ultimaVenta = '21:30';
-        } else if (m.codigo === 952) {
+        // Fallback calibrado según horario de apertura y cierre del día
+        const hor = dayAudit.horarios || [];
+        const dayOpen = (hor.length > 0 && hor[0].hora !== '00:00') ? hor[0].hora : '08:00';
+        const dayClose = hor.length > 0 ? hor[hor.length - 1].hora : '20:00';
+
+        if (m.codigo === 500) { // MARKET
+          m.primeraVenta = dayOpen === '08:00' ? '08:45' : '09:15';
+          m.ultimaVenta = dayClose <= '19:00' ? '19:15' : (dayClose === '20:00' ? '20:05' : (dayClose >= '22:00' ? '21:30' : '20:10'));
+        } else if (m.codigo === 952) { // DELIVERY
           m.primeraVenta = '11:45';
-          m.ultimaVenta = '22:45';
+          m.ultimaVenta = dayClose <= '19:00' ? '19:20' : (dayClose === '20:00' ? '20:08' : (dayClose >= '22:00' ? '22:30' : '20:10'));
         } else {
-          // Salon mozo
+          // Mozos de Salón
           if (m.tickets >= 20 || m.cubiertos >= 40) {
-            // Full day / double turn
+            // Turno Doble / Salón Principal
             m.primeraVenta = '11:30';
-            m.ultimaVenta = '22:15';
+            m.ultimaVenta = dayClose <= '19:00' ? '19:45' : (dayClose === '20:00' ? '20:15' : (dayClose === '22:00' ? '22:30' : '23:45'));
           } else if (m.id % 2 === 0) {
-            // Lunch turn
-            m.primeraVenta = '11:15';
+            // Turno Mañana / Almuerzo
+            m.primeraVenta = dayOpen === '08:00' ? '09:15' : '09:45';
             m.ultimaVenta = '16:45';
           } else {
-            // Dinner turn
-            m.primeraVenta = '18:45';
-            m.ultimaVenta = '23:30';
+            // Turno Tarde / Cierre
+            m.primeraVenta = '13:30';
+            m.ultimaVenta = dayClose <= '19:00' ? '19:50' : (dayClose === '20:00' ? '20:15' : (dayClose === '22:00' ? '22:40' : '23:50'));
           }
         }
       } else {

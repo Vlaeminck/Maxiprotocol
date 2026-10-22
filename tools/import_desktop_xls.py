@@ -238,7 +238,7 @@ def import_desktop_xls():
                         'mozos': mozos_list,
                         'rubros': {k: int(round(v)) for k, v in d['rubros'].items()},
                         'productos': prod_list[:20],
-                        'horarios': []
+                        'horarios': audit_map.get(d_str, {}).get('horarios') or []
                     }
                     imported_dates.add(d_str)
                     print(f"[ImportDesktopXLS] Ingestada fecha {d_str} desde {fname}: ${d['grand_total']:,.2f} en {len(d['all_tks'])} tickets, {len(mozos_list)} mozos")

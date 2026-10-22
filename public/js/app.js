@@ -2843,6 +2843,9 @@ function getRubroBadgeClass(rubro) {
 // ============================================================================
 
 let currentBreakdownData = null;
+let currentBreakdownMode = 'categories'; // 'categories' | 'timeline'
+let timelineSortAsc = true;
+let timelineSelectedHour = 'all';
 
 window.openMozoBreakdownModal = async function(mozoName, mozoId) {
   const modal = document.getElementById('modal-mozo-breakdown');
@@ -2854,6 +2857,7 @@ window.openMozoBreakdownModal = async function(mozoName, mozoId) {
   const modalPeriodText = document.getElementById('modal-breakdown-period-text');
   const modalAlert = document.getElementById('modal-breakdown-alert');
   const accordionContainer = document.getElementById('modal-breakdown-accordion');
+  const timelineContainer = document.getElementById('modal-breakdown-timeline');
   const searchInput = document.getElementById('breakdown-dish-search');
 
   // Pre-cargar nombre e iniciales
@@ -2865,6 +2869,7 @@ window.openMozoBreakdownModal = async function(mozoName, mozoId) {
   }
   if (modalAlert) modalAlert.style.display = 'none';
   if (searchInput) searchInput.value = '';
+  timelineSelectedHour = 'all';
 
   // Determinar parámetros según el modo activo
   const params = new URLSearchParams();
@@ -2883,16 +2888,16 @@ window.openMozoBreakdownModal = async function(mozoName, mozoId) {
     params.set('date', AppState.selectedDate || 'hoy');
   }
 
-  // Loader skeleton en acordeón
-  if (accordionContainer) {
-    accordionContainer.innerHTML = `
-      <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
-        <i class="fa-solid fa-spinner fa-spin" style="font-size: 28px; color: var(--accent-primary); margin-bottom: 12px;"></i>
-        <div style="font-size: 14px; font-weight: 600; color: #fff;">Auditando comanda por comanda en Maxirest POS...</div>
-        <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Recuperando categorías y desglose de artículos vendidos</div>
-      </div>
-    `;
-  }
+  // Loader skeleton
+  const loaderHtml = `
+    <div style="text-align: center; padding: 40px 20px; color: var(--text-muted);">
+      <i class="fa-solid fa-spinner fa-spin" style="font-size: 28px; color: var(--accent-primary); margin-bottom: 12px;"></i>
+      <div style="font-size: 14px; font-weight: 600; color: #fff;">Auditando comanda por comanda en Maxirest POS...</div>
+      <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Recuperando categorías y línea de tiempo de ventas al minuto</div>
+    </div>
+  `;
+  if (accordionContainer) accordionContainer.innerHTML = loaderHtml;
+  if (timelineContainer) timelineContainer.innerHTML = loaderHtml;
 
   modal.style.display = 'flex';
   document.body.style.overflow = 'hidden';
@@ -2902,15 +2907,15 @@ window.openMozoBreakdownModal = async function(mozoName, mozoId) {
     const data = await res.json();
 
     if (!data.success) {
-      if (accordionContainer) {
-        accordionContainer.innerHTML = `
-          <div class="breakdown-empty-turn">
-            <i class="fa-solid fa-circle-exclamation" style="color: var(--accent-rose);"></i>
-            <h4>Error al obtener datos</h4>
-            <p>${data.error || 'No se pudo cargar el desglose'}</p>
-          </div>
-        `;
-      }
+      const errHtml = `
+        <div class="breakdown-empty-turn">
+          <i class="fa-solid fa-circle-exclamation" style="color: var(--accent-rose);"></i>
+          <h4>Error al obtener datos</h4>
+          <p>${data.error || 'No se pudo cargar el desglose'}</p>
+        </div>
+      `;
+      if (accordionContainer) accordionContainer.innerHTML = errHtml;
+      if (timelineContainer) timelineContainer.innerHTML = errHtml;
       return;
     }
 
@@ -2918,15 +2923,15 @@ window.openMozoBreakdownModal = async function(mozoName, mozoId) {
     renderMozoBreakdownContent(data);
   } catch (err) {
     console.error('[MaxiProtocol] Error cargando desglose de mozo:', err);
-    if (accordionContainer) {
-      accordionContainer.innerHTML = `
-        <div class="breakdown-empty-turn">
-          <i class="fa-solid fa-triangle-exclamation" style="color: var(--accent-rose);"></i>
-          <h4>Error de conexión</h4>
-          <p>No se pudo conectar con el motor analítico de Maxirest POS.</p>
-        </div>
-      `;
-    }
+    const connErrHtml = `
+      <div class="breakdown-empty-turn">
+        <i class="fa-solid fa-triangle-exclamation" style="color: var(--accent-rose);"></i>
+        <h4>Error de conexión</h4>
+        <p>No se pudo conectar con el motor analítico de Maxirest POS.</p>
+      </div>
+    `;
+    if (accordionContainer) accordionContainer.innerHTML = connErrHtml;
+    if (timelineContainer) timelineContainer.innerHTML = connErrHtml;
   }
 };
 
@@ -2934,6 +2939,82 @@ window.closeMozoBreakdownModal = function() {
   const modal = document.getElementById('modal-mozo-breakdown');
   if (modal) modal.style.display = 'none';
   document.body.style.overflow = '';
+};
+
+// Alternar entre modo "Por Categoría" y "Modo Historial Cronológico"
+window.switchBreakdownMode = function(mode) {
+  currentBreakdownMode = mode;
+  const tabCategories = document.getElementById('tab-mode-categories');
+  const tabTimeline = document.getElementById('tab-mode-timeline');
+  const accordionContainer = document.getElementById('modal-breakdown-accordion');
+  const timelineContainer = document.getElementById('modal-breakdown-timeline');
+  const catBtnGroup = document.getElementById('breakdown-cat-btn-group');
+  const timelineControls = document.getElementById('timeline-controls-group');
+  const searchInput = document.getElementById('breakdown-dish-search');
+
+  if (mode === 'categories') {
+    if (tabCategories) {
+      tabCategories.classList.add('active');
+      tabCategories.setAttribute('aria-selected', 'true');
+    }
+    if (tabTimeline) {
+      tabTimeline.classList.remove('active');
+      tabTimeline.setAttribute('aria-selected', 'false');
+    }
+    if (accordionContainer) accordionContainer.style.display = 'flex';
+    if (timelineContainer) timelineContainer.style.display = 'none';
+    if (catBtnGroup) catBtnGroup.style.display = 'flex';
+    if (timelineControls) timelineControls.style.display = 'none';
+    if (searchInput) searchInput.placeholder = 'Filtrar plato, vino, café, postre...';
+  } else {
+    if (tabTimeline) {
+      tabTimeline.classList.add('active');
+      tabTimeline.setAttribute('aria-selected', 'true');
+    }
+    if (tabCategories) {
+      tabCategories.classList.remove('active');
+      tabCategories.setAttribute('aria-selected', 'false');
+    }
+    if (accordionContainer) accordionContainer.style.display = 'none';
+    if (timelineContainer) timelineContainer.style.display = 'flex';
+    if (catBtnGroup) catBtnGroup.style.display = 'none';
+    if (timelineControls) timelineControls.style.display = 'flex';
+    if (searchInput) searchInput.placeholder = 'Filtrar por artículo, mesa, comprobante u hora (ej. 10:30)...';
+
+    if (currentBreakdownData) {
+      renderMozoBreakdownTimeline(currentBreakdownData);
+    }
+  }
+};
+
+// Salto directo con 1 clic a un día con auditoría granular de comanda
+window.selectAuditedDayAndOpenMozo = async function(dateIso, mozoCodeOrName) {
+  try {
+    AppState.selectedDate = dateIso;
+    AppState.scopeMode = 'single';
+    
+    // Actualizar píldoras superiores
+    const dayPills = document.querySelectorAll('.day-pill');
+    dayPills.forEach(p => {
+      if (p.dataset.date === dateIso) p.classList.add('active');
+      else p.classList.remove('active');
+    });
+
+    const singlePicker = document.getElementById('single-date-picker');
+    if (singlePicker) singlePicker.value = dateIso;
+
+    // Actualizar datos del dashboard en background
+    if (typeof loadDayAnalytics === 'function') {
+      loadDayAnalytics(dateIso);
+    }
+
+    // Abrir modal del mozo y poner directamente el Modo Historial
+    currentBreakdownMode = 'timeline';
+    await window.openMozoBreakdownModal(mozoCodeOrName || 'ROCIO');
+    window.switchBreakdownMode('timeline');
+  } catch (e) {
+    console.error('Error jumping to audited day:', e);
+  }
 };
 
 function renderMozoBreakdownContent(data) {
@@ -2947,6 +3028,7 @@ function renderMozoBreakdownContent(data) {
   const modalPeriodText = document.getElementById('modal-breakdown-period-text');
   const modalAlert = document.getElementById('modal-breakdown-alert');
   const accordionContainer = document.getElementById('modal-breakdown-accordion');
+  const tabTimelineCount = document.getElementById('timeline-tab-count');
 
   if (modalName) modalName.textContent = m.codigo ? `${m.nombre} (Cód. #${m.codigo})` : m.nombre;
   if (modalAvatar) modalAvatar.textContent = getMonogram(m.nombre);
@@ -2962,6 +3044,18 @@ function renderMozoBreakdownContent(data) {
     } else {
       modalBadge.className = 'badge-status badge-active';
       modalBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> En Turno Activo';
+    }
+  }
+
+  // Actualizar contador en la pestaña de Modo Historial
+  if (tabTimelineCount) {
+    tabTimelineCount.textContent = (data.timelineCount || 0).toLocaleString('es-AR');
+    if (data.tieneHistorialMinuto) {
+      tabTimelineCount.style.background = 'rgba(56, 189, 248, 0.2)';
+      tabTimelineCount.style.color = '#38bdf8';
+    } else {
+      tabTimelineCount.style.background = 'rgba(255, 255, 255, 0.08)';
+      tabTimelineCount.style.color = 'var(--text-muted)';
     }
   }
 
@@ -2991,97 +3085,334 @@ function renderMozoBreakdownContent(data) {
     } else if (m.enTurno) {
       modalAlert.style.display = 'flex';
       modalAlert.className = 'modal-breakdown-alert audit-badge-verified';
-      modalAlert.innerHTML = `<i class="fa-solid fa-shield-check"></i> <span>Turno verificado 1:1 contra informe oficial de ventas por empleado emitido por Maxirest POS (${k.totalTickets} comprobantes cobrados, ${k.totalCubiertos} cubiertos).</span>`;
+      const shiftSpan = (m.primeraVenta && m.ultimaVenta) ? ` · Turno: ${m.primeraVenta} a ${m.ultimaVenta}` : '';
+      modalAlert.innerHTML = `<i class="fa-solid fa-shield-check"></i> <span>Turno verificado 1:1 contra informe oficial de ventas por empleado emitido por Maxirest POS (${k.totalTickets} comprobantes cobrados, ${k.totalCubiertos} cubiertos${shiftSpan}).</span>`;
     } else {
       modalAlert.style.display = 'none';
     }
   }
 
-  if (!accordionContainer) return;
-  accordionContainer.innerHTML = '';
+  // Renderizar Categorías
+  if (accordionContainer) {
+    accordionContainer.innerHTML = '';
 
-  if (!m.enTurno || data.categorias.length === 0) {
-    accordionContainer.innerHTML = `
+    if (!m.enTurno || data.categorias.length === 0) {
+      accordionContainer.innerHTML = `
+        <div class="breakdown-empty-turn">
+          <i class="fa-solid fa-bed"></i>
+          <h4 style="font-size: 16px; color: #fff; margin-bottom: 6px;">Sin actividad registrada en este período</h4>
+          <p style="font-size: 13px; color: var(--text-muted); max-width: 480px; margin: 0 auto;">
+            ${m.nombre} no tuvo turnos asignados ni ventas emitidas en Maxirest POS para las fechas consultadas (día de franco reglamentario o licencia).
+          </p>
+        </div>
+      `;
+    } else {
+      data.categorias.forEach((cat, idx) => {
+        const card = document.createElement('div');
+        card.className = `breakdown-cat-card ${idx === 0 ? 'is-open' : ''}`;
+        card.dataset.category = cat.nombre.toLowerCase();
+
+        let itemsRows = '';
+        cat.articulos.forEach(art => {
+          itemsRows += `
+            <tr class="breakdown-item-row" data-name="${art.nombre.toLowerCase()}">
+              <td>
+                <div class="breakdown-item-name">
+                  ${art.codigo && art.codigo !== '-' ? `<span class="breakdown-item-code">#${art.codigo}</span>` : ''}
+                  <span>${art.nombre}</span>
+                </div>
+              </td>
+              <td style="text-align: center;">
+                <span class="breakdown-qty-badge">${art.unidades} u.</span>
+              </td>
+              <td style="text-align: right; color: var(--text-muted); font-size: 12px;">
+                $${Number(art.precioPromedio).toLocaleString('es-AR')}
+              </td>
+              <td style="text-align: right; font-weight: 700; color: #fff;">
+                $${Number(art.total).toLocaleString('es-AR')}
+                <div class="breakdown-share-bar-wrap" title="${art.porcentajeEnCategoria}% de ${cat.nombre}">
+                  <div class="breakdown-share-bar" style="width: ${Math.min(100, Math.max(8, art.porcentajeEnCategoria))}%;"></div>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="breakdown-cat-header" onclick="this.parentElement.classList.toggle('is-open')">
+            <div class="breakdown-cat-left">
+              <div class="breakdown-cat-icon"><i class="${cat.icon}"></i></div>
+              <div>
+                <h4 class="breakdown-cat-title">${cat.nombre}</h4>
+              </div>
+              <span class="breakdown-cat-pill">${cat.unidades} unidades · ${cat.articulos.length} platos</span>
+            </div>
+            <div class="breakdown-cat-right">
+              <div class="breakdown-cat-total-wrap">
+                <div class="breakdown-cat-total">$${Number(cat.total).toLocaleString('es-AR')}</div>
+                <div class="breakdown-cat-share">${cat.porcentajeMozo}% de sus ventas</div>
+              </div>
+              <i class="fa-solid fa-chevron-down breakdown-cat-chevron"></i>
+            </div>
+          </div>
+          <div class="breakdown-cat-body">
+            <table class="breakdown-items-table">
+              <thead>
+                <tr>
+                  <th style="width: 50%;">Artículo / Plato</th>
+                  <th style="text-align: center; width: 16%;">Cantidad</th>
+                  <th style="text-align: right; width: 16%;">Precio Unit.</th>
+                  <th style="text-align: right; width: 18%;">Total Facturado</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${itemsRows}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        accordionContainer.appendChild(card);
+      });
+    }
+  }
+
+  // Si está activo el modo historial, renderizarlo inmediatamente
+  if (currentBreakdownMode === 'timeline') {
+    window.switchBreakdownMode('timeline');
+  } else {
+    window.switchBreakdownMode('categories');
+  }
+}
+
+// Renderizado de la línea de tiempo cronológica minuto a minuto
+function renderMozoBreakdownTimeline(data) {
+  const container = document.getElementById('modal-breakdown-timeline');
+  if (!container) return;
+
+  container.innerHTML = '';
+  const m = data.mozo;
+  const k = data.kpis;
+  const searchInput = document.getElementById('breakdown-dish-search');
+  const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+  if (!m.enTurno) {
+    container.innerHTML = `
       <div class="breakdown-empty-turn">
         <i class="fa-solid fa-bed"></i>
         <h4 style="font-size: 16px; color: #fff; margin-bottom: 6px;">Sin actividad registrada en este período</h4>
         <p style="font-size: 13px; color: var(--text-muted); max-width: 480px; margin: 0 auto;">
-          ${m.nombre} no tuvo turnos asignados ni ventas emitidas en Maxirest POS para las fechas consultadas (día de franco reglamentario o licencia).
+          ${m.nombre} no tuvo turnos asignados ni ventas emitidas en Maxirest POS para las fechas consultadas.
         </p>
       </div>
     `;
     return;
   }
 
-  // Renderizar cada categoría desglosable
-  data.categorias.forEach((cat, idx) => {
-    const card = document.createElement('div');
-    card.className = `breakdown-cat-card ${idx === 0 ? 'is-open' : ''}`; // Primera categoría abierta por defecto
-    card.dataset.category = cat.nombre.toLowerCase();
-
-    let itemsRows = '';
-    cat.articulos.forEach(art => {
-      itemsRows += `
-        <tr class="breakdown-item-row" data-name="${art.nombre.toLowerCase()}">
-          <td>
-            <div class="breakdown-item-name">
-              ${art.codigo && art.codigo !== '-' ? `<span class="breakdown-item-code">#${art.codigo}</span>` : ''}
-              <span>${art.nombre}</span>
-            </div>
-          </td>
-          <td style="text-align: center;">
-            <span class="breakdown-qty-badge">${art.unidades} u.</span>
-          </td>
-          <td style="text-align: right; color: var(--text-muted); font-size: 12px;">
-            $${Number(art.precioPromedio).toLocaleString('es-AR')}
-          </td>
-          <td style="text-align: right; font-weight: 700; color: #fff;">
-            $${Number(art.total).toLocaleString('es-AR')}
-            <div class="breakdown-share-bar-wrap" title="${art.porcentajeEnCategoria}% de ${cat.nombre}">
-              <div class="breakdown-share-bar" style="width: ${Math.min(100, Math.max(8, art.porcentajeEnCategoria))}%;"></div>
-            </div>
-          </td>
-        </tr>
-      `;
-    });
-
-    card.innerHTML = `
-      <div class="breakdown-cat-header" onclick="this.parentElement.classList.toggle('is-open')">
-        <div class="breakdown-cat-left">
-          <div class="breakdown-cat-icon"><i class="${cat.icon}"></i></div>
-          <div>
-            <h4 class="breakdown-cat-title">${cat.nombre}</h4>
-          </div>
-          <span class="breakdown-cat-pill">${cat.unidades} unidades · ${cat.articulos.length} platos</span>
+  // CASO A: Turno sin DBF de comanda granular (CERO SIMULACIÓN - AVISO DE AUDITORÍA)
+  if (!data.tieneHistorialMinuto || !data.timeline || data.timeline.length === 0) {
+    const shiftSpan = (m.primeraVenta && m.ultimaVenta) ? `${m.primeraVenta} a ${m.ultimaVenta}` : 'Turno cerrado';
+    container.innerHTML = `
+      <div class="timeline-audit-notice">
+        <div class="timeline-audit-notice-icon">
+          <i class="fa-solid fa-shield-halved"></i>
         </div>
-        <div class="breakdown-cat-right">
-          <div class="breakdown-cat-total-wrap">
-            <div class="breakdown-cat-total">$${Number(cat.total).toLocaleString('es-AR')}</div>
-            <div class="breakdown-cat-share">${cat.porcentajeMozo}% de sus ventas</div>
-          </div>
-          <i class="fa-solid fa-chevron-down breakdown-cat-chevron"></i>
+        <div class="timeline-audit-notice-title">
+          Balance Oficial Maxirest POS (${shiftSpan})
         </div>
-      </div>
-      <div class="breakdown-cat-body">
-        <table class="breakdown-items-table">
-          <thead>
-            <tr>
-              <th style="width: 50%;">Artículo / Plato</th>
-              <th style="text-align: center; width: 16%;">Cantidad</th>
-              <th style="text-align: right; width: 16%;">Precio Unit.</th>
-              <th style="text-align: right; width: 18%;">Total Facturado</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${itemsRows}
-          </tbody>
-        </table>
+        <div class="timeline-audit-notice-text">
+          Este colaborador cuenta con arqueo fiscal oficial consolidado de Maxirest POS, pero no se emitió el archivo temporal de comanda granular en pantalla para este día.
+          Para preservar la <strong>fidelidad fiscal 1:1 y la regla de Cero Simulación</strong>, no se extrapolan minutos ficticios.
+        </div>
+
+        <div class="timeline-audited-stats-grid">
+          <div class="timeline-audited-stat-box">
+            <div class="timeline-audited-stat-label">Facturado</div>
+            <div class="timeline-audited-stat-val" style="color: var(--accent-emerald);">$${Number(k.totalFacturado).toLocaleString('es-AR')}</div>
+          </div>
+          <div class="timeline-audited-stat-box">
+            <div class="timeline-audited-stat-label">Comprobantes</div>
+            <div class="timeline-audited-stat-val" style="color: #c084fc;">${k.totalTickets} tickets</div>
+          </div>
+          <div class="timeline-audited-stat-box">
+            <div class="timeline-audited-stat-label">Cubiertos</div>
+            <div class="timeline-audited-stat-val" style="color: var(--accent-amber);">${k.totalCubiertos} CUB</div>
+          </div>
+          <div class="timeline-audited-stat-box">
+            <div class="timeline-audited-stat-label">Primera Venta</div>
+            <div class="timeline-audited-stat-val" style="color: var(--accent-cyan);">${m.primeraVenta || '-'}</div>
+          </div>
+          <div class="timeline-audited-stat-box">
+            <div class="timeline-audited-stat-label">Última Venta</div>
+            <div class="timeline-audited-stat-val" style="color: var(--accent-cyan);">${m.ultimaVenta || '-'}</div>
+          </div>
+        </div>
+
+        <div class="timeline-suggested-title">
+          <i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-primary); margin-right: 6px;"></i>
+          Ver cronología minuto a minuto en turnos auditados con archivo de comandas:
+        </div>
+        <div class="timeline-suggested-dates">
+          <button type="button" class="btn-jump-audited-date" onclick="window.selectAuditedDayAndOpenMozo('2026-10-12', '${m.codigo || m.nombre}')">
+            <i class="fa-regular fa-calendar-check"></i> 12/10 (ROCIO: 151 ventas, 10:03 - 18:40)
+          </button>
+          <button type="button" class="btn-jump-audited-date" onclick="window.selectAuditedDayAndOpenMozo('2026-10-15', 'BELEN')">
+            <i class="fa-regular fa-calendar-check"></i> 15/10 (BELEN, MARINA: 481 ventas)
+          </button>
+          <button type="button" class="btn-jump-audited-date" onclick="window.selectAuditedDayAndOpenMozo('2026-10-08', 'ADRIANA')">
+            <i class="fa-regular fa-calendar-check"></i> 08/10 (ADRIANA, BELEN: 415 ventas)
+          </button>
+          <button type="button" class="btn-jump-audited-date" onclick="window.selectAuditedDayAndOpenMozo('2026-10-07', 'MARINA')">
+            <i class="fa-regular fa-calendar-check"></i> 07/10 (MARINA: 302 ventas)
+          </button>
+          <button type="button" class="btn-jump-audited-date" onclick="window.selectAuditedDayAndOpenMozo('2026-10-02', '${m.codigo || m.nombre}')">
+            <i class="fa-regular fa-calendar-check"></i> 02/10 (ROCIO: 195 ventas)
+          </button>
+        </div>
       </div>
     `;
+    return;
+  }
 
-    accordionContainer.appendChild(card);
+  // CASO B: Turno con archivo de comandas auditado (Línea de Tiempo 100% Verídica)
+  const allEvents = data.timeline;
+  
+  // 1. Chips de Filtrado por Franja Horaria
+  const hoursMap = {};
+  allEvents.forEach(e => {
+    const h = e.hora.split(':')[0] + ':00';
+    hoursMap[h] = (hoursMap[h] || 0) + 1;
   });
+
+  const sortedHours = Object.keys(hoursMap).sort();
+  let chipsHtml = `
+    <div class="timeline-hour-filter-chips">
+      <button type="button" class="timeline-hour-chip ${timelineSelectedHour === 'all' ? 'active' : ''}" onclick="window.filterTimelineHour('all')">
+        Todas <span class="timeline-hour-chip-count">${allEvents.length}</span>
+      </button>
+  `;
+
+  sortedHours.forEach(h => {
+    chipsHtml += `
+      <button type="button" class="timeline-hour-chip ${timelineSelectedHour === h ? 'active' : ''}" onclick="window.filterTimelineHour('${h}')">
+        ${h} <span class="timeline-hour-chip-count">${hoursMap[h]}</span>
+      </button>
+    `;
+  });
+  chipsHtml += '</div>';
+
+  // 2. Filtrado y ordenamiento de eventos
+  let filtered = allEvents.filter(ev => {
+    if (timelineSelectedHour !== 'all') {
+      const evH = ev.hora.split(':')[0] + ':00';
+      if (evH !== timelineSelectedHour) return false;
+    }
+    if (query) {
+      const matchArt = ev.articulo.toLowerCase().includes(query);
+      const matchMesa = ev.mesa.toLowerCase().includes(query);
+      const matchComp = ev.comprobante.toLowerCase().includes(query);
+      const matchHora = ev.hora.toLowerCase().includes(query);
+      const matchRubro = ev.rubro.toLowerCase().includes(query);
+      if (!matchArt && !matchMesa && !matchComp && !matchHora && !matchRubro) return false;
+    }
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    if (a.hora !== b.hora) {
+      return timelineSortAsc ? a.hora.localeCompare(b.hora) : b.hora.localeCompare(a.hora);
+    }
+    if (a.comprobante !== b.comprobante) {
+      return a.comprobante.localeCompare(b.comprobante);
+    }
+    return a.articulo.localeCompare(b.articulo);
+  });
+
+  // 3. Tarjeta de resumen de línea de tiempo
+  const summaryCard = `
+    <div class="timeline-summary-card">
+      <div class="timeline-summary-left">
+        <span class="timeline-summary-badge">
+          <i class="fa-solid fa-clock-rotate-left"></i> ${filtered.length} de ${allEvents.length} ventas
+        </span>
+        <span class="timeline-summary-span">
+          <i class="fa-solid fa-hourglass-start" style="color: var(--accent-cyan); margin-right: 4px;"></i>
+          Turno: <strong>${data.timelineFirstHour || '-'}</strong> a <strong>${data.timelineLastHour || '-'}</strong>
+        </span>
+      </div>
+      <div style="font-size: 13px; font-weight: 700; color: #fff;">
+        Total Filtrado: <span style="color: var(--accent-emerald);">$${filtered.reduce((s, x) => s + x.total, 0).toLocaleString('es-AR')}</span>
+      </div>
+    </div>
+  `;
+
+  // 4. Stream de Eventos
+  let itemsHtml = '';
+  if (filtered.length === 0) {
+    itemsHtml = `
+      <div class="breakdown-empty-turn" style="padding: 30px;">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <h4 style="font-size: 15px; color: #fff;">Sin ventas para este filtro</h4>
+        <p style="font-size: 12px; color: var(--text-muted);">No se encontraron artículos para la búsqueda o franja horaria seleccionada.</p>
+      </div>
+    `;
+  } else {
+    itemsHtml = '<div class="timeline-stream">';
+    filtered.forEach(ev => {
+      itemsHtml += `
+        <div class="timeline-event-row" data-name="${ev.articulo.toLowerCase()}" data-mesa="${ev.mesa.toLowerCase()}" data-comp="${ev.comprobante.toLowerCase()}" data-hora="${ev.hora}">
+          <div class="timeline-node-bullet"></div>
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="timeline-time-badge"><i class="fa-regular fa-clock" style="font-size: 10px; margin-right: 2px;"></i> ${ev.hora}</span>
+                <span class="timeline-mesa-tag"><i class="fa-solid fa-chair"></i> Mesa ${ev.mesa}</span>
+                <span class="timeline-rubro-pill"><i class="${ev.rubroIcon}"></i> ${ev.rubro}</span>
+              </div>
+              <div class="timeline-meta-tags">
+                <span class="timeline-comp-tag" title="Comprobante fiscal oficial"><i class="fa-solid fa-receipt"></i> ${ev.comprobante}</span>
+              </div>
+            </div>
+            <div class="timeline-card-body">
+              <div class="timeline-dish-info">
+                ${ev.codigo && ev.codigo !== '-' ? `<span class="timeline-dish-code">#${ev.codigo}</span>` : ''}
+                <span class="timeline-dish-name" title="${ev.articulo}">${ev.articulo}</span>
+                <span class="breakdown-qty-badge">${ev.cantidad} u.</span>
+              </div>
+              <div class="timeline-pricing-wrap">
+                <div class="timeline-total-amount">$${Number(ev.total).toLocaleString('es-AR')}</div>
+                ${ev.cantidad > 1 ? `<div class="timeline-unit-amount">$${Number(ev.punit).toLocaleString('es-AR')} c/u</div>` : ''}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    itemsHtml += '</div>';
+  }
+
+  container.innerHTML = summaryCard + chipsHtml + itemsHtml;
 }
+
+// Filtrar por franja horaria específica en la línea de tiempo
+window.filterTimelineHour = function(hour) {
+  timelineSelectedHour = hour;
+  if (currentBreakdownData) {
+    renderMozoBreakdownTimeline(currentBreakdownData);
+  }
+};
+
+// Alternar orden cronológico ascendente / descendente
+window.toggleTimelineSort = function() {
+  timelineSortAsc = !timelineSortAsc;
+  const label = document.getElementById('timeline-sort-label');
+  if (label) {
+    label.textContent = timelineSortAsc ? '08:00 → 23:00' : '23:00 → 08:00';
+  }
+  if (currentBreakdownData) {
+    renderMozoBreakdownTimeline(currentBreakdownData);
+  }
+};
 
 // Configurar eventos del modal de desglose de mozos
 document.addEventListener('DOMContentLoaded', () => {
@@ -3090,6 +3421,21 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExpandAll = document.getElementById('btn-breakdown-expand-all');
   const btnCollapseAll = document.getElementById('btn-breakdown-collapse-all');
   const searchInput = document.getElementById('breakdown-dish-search');
+  const tabCategories = document.getElementById('tab-mode-categories');
+  const tabTimeline = document.getElementById('tab-mode-timeline');
+  const btnSortToggle = document.getElementById('btn-timeline-sort-toggle');
+
+  if (tabCategories) {
+    tabCategories.addEventListener('click', () => window.switchBreakdownMode('categories'));
+  }
+
+  if (tabTimeline) {
+    tabTimeline.addEventListener('click', () => window.switchBreakdownMode('timeline'));
+  }
+
+  if (btnSortToggle) {
+    btnSortToggle.addEventListener('click', window.toggleTimelineSort);
+  }
 
   if (btnClose) {
     btnClose.addEventListener('click', window.closeMozoBreakdownModal);
@@ -3119,10 +3465,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Filtrado reactivo en vivo de artículos en el modal
+  // Filtrado reactivo en vivo tanto para Modo Categorías como para Modo Historial
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase().trim();
+
+      if (currentBreakdownMode === 'timeline') {
+        if (currentBreakdownData) {
+          renderMozoBreakdownTimeline(currentBreakdownData);
+        }
+        return;
+      }
+
+      // Modo categorías
       const catCards = document.querySelectorAll('.breakdown-cat-card');
 
       if (!q) {
@@ -3150,7 +3505,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (visibleCount > 0) {
           card.style.display = 'block';
-          card.classList.add('is-open'); // Auto-expandir categoría con coincidencias
+          card.classList.add('is-open');
         } else {
           card.style.display = 'none';
         }

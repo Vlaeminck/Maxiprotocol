@@ -1229,13 +1229,32 @@
           </div>
         </div>
 
+        <!-- SELECTOR DE MODO DE VISTA: POR CATEGORÍA vs HISTORIAL CRONOLÓGICO -->
+        <div class="breakdown-view-mode-bar">
+          <div class="breakdown-mode-tabs" role="tablist">
+            <button type="button" class="breakdown-mode-tab active" id="tab-mode-categories" data-mode="categories" role="tab" aria-selected="true">
+              <i class="fa-solid fa-layer-group"></i> Por Rubro / Categoría
+            </button>
+            <button type="button" class="breakdown-mode-tab" id="tab-mode-timeline" data-mode="timeline" role="tab" aria-selected="false">
+              <i class="fa-solid fa-clock-rotate-left"></i> Modo Historial (Cronológico)
+              <span class="breakdown-tab-pill" id="timeline-tab-count">0</span>
+            </button>
+          </div>
+
+          <div class="timeline-controls-group" id="timeline-controls-group" style="display: none;">
+            <button type="button" class="btn-breakdown-action" id="btn-timeline-sort-toggle" title="Alternar orden cronológico">
+              <i class="fa-solid fa-arrow-down-short-wide"></i> <span id="timeline-sort-label">08:00 → 23:00</span>
+            </button>
+          </div>
+        </div>
+
         <!-- SEARCH AND ACCORDION CONTROLS BAR -->
         <div class="modal-breakdown-controls">
           <div class="breakdown-search-wrap">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
-            <input type="text" id="breakdown-dish-search" placeholder="Filtrar plato, vino, café, postre..." class="breakdown-search-input">
+            <input type="text" id="breakdown-dish-search" placeholder="Filtrar por plato, mesa, comprobante u hora..." class="breakdown-search-input">
           </div>
-          <div class="breakdown-btn-group">
+          <div class="breakdown-btn-group" id="breakdown-cat-btn-group">
             <button type="button" class="btn-breakdown-action" id="btn-breakdown-expand-all" title="Abrir todas las categorías">
               <i class="fa-solid fa-angles-down"></i> Expandir Todas
             </button>
@@ -1248,9 +1267,14 @@
         <!-- BANNER DE ALERTA O DATOS FALTANTES -->
         <div id="modal-breakdown-alert" class="modal-breakdown-alert" style="display: none;"></div>
 
-        <!-- ACCORDION CONTAINER -->
+        <!-- ACCORDION CONTAINER (VISTA POR CATEGORÍA) -->
         <div class="modal-breakdown-accordion" id="modal-breakdown-accordion">
           <!-- Categorías y platos inyectados dinámicamente -->
+        </div>
+
+        <!-- TIMELINE CONTAINER (MODO HISTORIAL CRONOLÓGICO) -->
+        <div class="modal-breakdown-timeline" id="modal-breakdown-timeline" style="display: none;">
+          <!-- Items cronológicos minuto a minuto inyectados dinámicamente -->
         </div>
       </div>
     </div>

@@ -1599,8 +1599,7 @@ class MaxirestAnalytics {
         if (auditMap[dateKey] && auditMap[dateKey].horarios && auditMap[dateKey].horarios.length > 0) {
           d.distribucionHoraria = auditMap[dateKey].horarios;
         } else if (!d.distribucionHoraria || d.distribucionHoraria.length === 0) {
-          const isWeekend = dateKey.endsWith('03') || dateKey.endsWith('04') || dateKey.endsWith('10') || dateKey.endsWith('11') || dateKey.endsWith('17') || dateKey.endsWith('18');
-          d.distribucionHoraria = this.generateHorarios(d.kpis.facturacionTotal, d.kpis.totalTickets, isWeekend);
+          d.distribucionHoraria = this.generateHorarios(d.kpis.facturacionTotal, d.kpis.totalTickets, dateKey);
         }
       }
     }
@@ -1912,6 +1911,35 @@ class MaxirestAnalytics {
 
     const mozosActive = [];
 
+    // Determinar límites horarios reales según el día de la semana y/o distribución horaria
+    let dayOpenH = '08:00';
+    let dayCloseH = '20:00';
+    let dow = 2; // Default Tuesday
+
+    if (dateKey && /^\d{4}-\d{2}-\d{2}$/.test(dateKey)) {
+      const parts = dateKey.split('-');
+      dow = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2])).getDay();
+    }
+
+    const dayDataRef = this.daysData && this.daysData[dateKey];
+    const horSlots = dayDataRef && Array.isArray(dayDataRef.distribucionHoraria) && dayDataRef.distribucionHoraria.length > 0
+      ? dayDataRef.distribucionHoraria
+      : null;
+
+    if (horSlots && horSlots.length > 0) {
+      const validSlots = horSlots.filter(s => s.hora !== '00:00' && s.importe > 0);
+      if (validSlots.length > 0) {
+        dayOpenH = validSlots[0].hora;
+        dayCloseH = validSlots[validSlots.length - 1].hora;
+      }
+    } else {
+      if (dow === 1) { dayOpenH = '09:00'; dayCloseH = '19:00'; }
+      else if (dow === 0) { dayOpenH = '09:00'; dayCloseH = '20:00'; }
+      else if (dow === 5) { dayOpenH = '08:00'; dayCloseH = '22:00'; }
+      else if (dow === 6) { dayOpenH = '09:00'; dayCloseH = '24:00'; }
+      else { dayOpenH = '08:00'; dayCloseH = '20:00'; }
+    }
+
     for (let i = 0; i < activeSalonStaff.length; i++) {
       const m = activeSalonStaff[i];
       const ratio = (m.weight || 0.05) / totalWeight;
@@ -1924,6 +1952,22 @@ class MaxirestAnalytics {
       allocatedSalon += v;
       allocatedTks += tk;
       allocatedCub += cub;
+
+      let m1ra = '11:30';
+      let mUltima = '20:15';
+      if (tk >= 20 || cub >= 40) {
+        // Turno Doble / Salón Principal
+        m1ra = '11:30';
+        mUltima = dayCloseH <= '19:00' ? '19:45' : (dayCloseH === '20:00' ? '20:15' : (dayCloseH === '22:00' ? '22:30' : '23:45'));
+      } else if (m.id % 2 === 0) {
+        // Turno Mañana / Almuerzo
+        m1ra = dayOpenH === '08:00' ? '09:15' : '09:45';
+        mUltima = '16:45';
+      } else {
+        // Turno Tarde / Cierre
+        m1ra = '13:30';
+        mUltima = dayCloseH <= '19:00' ? '19:50' : (dayCloseH === '20:00' ? '20:15' : (dayCloseH === '22:00' ? '22:40' : '23:50'));
+      }
 
       mozosActive.push({
         id: m.id,
@@ -1949,8 +1993,8 @@ class MaxirestAnalytics {
           postreTop: m.postreMasVendido || 'Torta Cheese Pistacho',
           porcentajeMesas: tk > 0 ? Math.round((Math.max(1, Math.round(tk * 0.2)) / tk) * 100) : 0
         },
-        primeraVenta: (tk >= 20 || cub >= 40) ? '11:30' : (m.id % 2 === 0 ? '11:15' : '18:45'),
-        ultimaVenta: (tk >= 20 || cub >= 40) ? '22:15' : (m.id % 2 === 0 ? '16:45' : '23:30')
+        primeraVenta: m1ra,
+        ultimaVenta: mUltima
       });
     }
 
@@ -1980,8 +2024,8 @@ class MaxirestAnalytics {
         postreTop: 'Masas Secas',
         porcentajeMesas: 35
       },
-      primeraVenta: '08:45',
-      ultimaVenta: '21:30'
+      primeraVenta: dayOpenH === '08:00' ? '08:45' : '09:15',
+      ultimaVenta: dayCloseH <= '19:00' ? '19:15' : (dayCloseH === '20:00' ? '20:05' : (dayCloseH >= '22:00' ? '21:30' : '20:10'))
     });
 
     // Estación Delivery (DELIVERY #952)
@@ -2011,7 +2055,7 @@ class MaxirestAnalytics {
         porcentajeMesas: 15
       },
       primeraVenta: '11:45',
-      ultimaVenta: '22:45'
+      ultimaVenta: dayCloseH <= '19:00' ? '19:20' : (dayCloseH === '20:00' ? '20:08' : (dayCloseH >= '22:00' ? '22:30' : '20:10'))
     });
 
     mozosActive.forEach(m => {
@@ -2170,24 +2214,60 @@ class MaxirestAnalytics {
   }
 
   // Distribución horaria real desde los timestamps del DBF o calibración operativa de turno
-  generateHorarios(totalFacturado, totalTickets, isWeekend) {
+  generateHorarios(totalFacturado, totalTickets, isWeekendOrDateKey, dateKeyOpt) {
     if (!totalFacturado || totalFacturado <= 0) return [];
     const tks = totalTickets > 0 ? totalTickets : 50;
 
-    const hourWeights = isWeekend ? [
-      { h: '08:00', w: 0.015 }, { h: '09:00', w: 0.025 }, { h: '10:00', w: 0.035 },
-      { h: '11:00', w: 0.045 }, { h: '12:00', w: 0.090 }, { h: '13:00', w: 0.145 },
-      { h: '14:00', w: 0.135 }, { h: '15:00', w: 0.085 }, { h: '16:00', w: 0.065 },
-      { h: '17:00', w: 0.055 }, { h: '18:00', w: 0.045 }, { h: '19:00', w: 0.040 },
-      { h: '20:00', w: 0.060 }, { h: '21:00', w: 0.090 }, { h: '22:00', w: 0.050 },
-      { h: '23:00', w: 0.020 }
-    ] : [
-      { h: '08:00', w: 0.035 }, { h: '09:00', w: 0.055 }, { h: '10:00', w: 0.065 },
-      { h: '11:00', w: 0.075 }, { h: '12:00', w: 0.135 }, { h: '13:00', w: 0.165 },
-      { h: '14:00', w: 0.115 }, { h: '15:00', w: 0.060 }, { h: '16:00', w: 0.065 },
-      { h: '17:00', w: 0.055 }, { h: '18:00', w: 0.045 }, { h: '19:00', w: 0.035 },
-      { h: '20:00', w: 0.040 }
-    ];
+    let dateKey = typeof isWeekendOrDateKey === 'string' ? isWeekendOrDateKey : dateKeyOpt;
+    let dow = 2; // Default Martes
+    if (dateKey && /^\d{4}-\d{2}-\d{2}$/.test(dateKey)) {
+      const parts = dateKey.split('-');
+      dow = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)).getDay();
+    } else if (typeof isWeekendOrDateKey === 'boolean') {
+      dow = isWeekendOrDateKey ? 6 : 2;
+    }
+
+    let hourWeights = [];
+    if (dow === 1) { // Lunes: 09:00 a 19:00 (Sin turno noche)
+      hourWeights = [
+        { h: '09:00', w: 0.045 }, { h: '10:00', w: 0.065 }, { h: '11:00', w: 0.085 },
+        { h: '12:00', w: 0.165 }, { h: '13:00', w: 0.190 }, { h: '14:00', w: 0.135 },
+        { h: '15:00', w: 0.075 }, { h: '16:00', w: 0.070 }, { h: '17:00', w: 0.060 },
+        { h: '18:00', w: 0.055 }, { h: '19:00', w: 0.055 }
+      ];
+    } else if (dow === 5) { // Viernes: 08:00 a 22:00 (Turno Noche cena)
+      hourWeights = [
+        { h: '08:00', w: 0.020 }, { h: '09:00', w: 0.035 }, { h: '10:00', w: 0.050 },
+        { h: '11:00', w: 0.070 }, { h: '12:00', w: 0.120 }, { h: '13:00', w: 0.140 },
+        { h: '14:00', w: 0.110 }, { h: '15:00', w: 0.065 }, { h: '16:00', w: 0.060 },
+        { h: '17:00', w: 0.055 }, { h: '18:00', w: 0.045 }, { h: '19:00', w: 0.045 },
+        { h: '20:00', w: 0.055 }, { h: '21:00', w: 0.080 }, { h: '22:00', w: 0.050 }
+      ];
+    } else if (dow === 6) { // Sábado: 09:00 a 24:00 (Turno Noche / Cierre medianoche)
+      hourWeights = [
+        { h: '09:00', w: 0.025 }, { h: '10:00', w: 0.040 }, { h: '11:00', w: 0.065 },
+        { h: '12:00', w: 0.110 }, { h: '13:00', w: 0.140 }, { h: '14:00', w: 0.120 },
+        { h: '15:00', w: 0.075 }, { h: '16:00', w: 0.065 }, { h: '17:00', w: 0.060 },
+        { h: '18:00', w: 0.050 }, { h: '19:00', w: 0.050 }, { h: '20:00', w: 0.060 },
+        { h: '21:00', w: 0.055 }, { h: '22:00', w: 0.045 }, { h: '23:00', w: 0.030 },
+        { h: '24:00', w: 0.010 }
+      ];
+    } else if (dow === 0) { // Domingo: 09:00 a 20:00 (Brunch / Merienda / Cierre 20:xx)
+      hourWeights = [
+        { h: '09:00', w: 0.030 }, { h: '10:00', w: 0.055 }, { h: '11:00', w: 0.085 },
+        { h: '12:00', w: 0.145 }, { h: '13:00', w: 0.180 }, { h: '14:00', w: 0.140 },
+        { h: '15:00', w: 0.085 }, { h: '16:00', w: 0.075 }, { h: '17:00', w: 0.070 },
+        { h: '18:00', w: 0.055 }, { h: '19:00', w: 0.045 }, { h: '20:00', w: 0.035 }
+      ];
+    } else { // Martes, Miércoles, Jueves: 08:00 a 20:00 (Cierre 20:xx)
+      hourWeights = [
+        { h: '08:00', w: 0.025 }, { h: '09:00', w: 0.045 }, { h: '10:00', w: 0.065 },
+        { h: '11:00', w: 0.085 }, { h: '12:00', w: 0.145 }, { h: '13:00', w: 0.175 },
+        { h: '14:00', w: 0.125 }, { h: '15:00', w: 0.070 }, { h: '16:00', w: 0.065 },
+        { h: '17:00', w: 0.060 }, { h: '18:00', w: 0.050 }, { h: '19:00', w: 0.050 },
+        { h: '20:00', w: 0.040 }
+      ];
+    }
 
     const sumW = hourWeights.reduce((s, x) => s + x.w, 0);
     let allocImp = 0;
@@ -2954,7 +3034,7 @@ class MaxirestAnalytics {
 
     const horariosFinal = (overrides.distribucionHoraria && overrides.distribucionHoraria.length > 0)
       ? overrides.distribucionHoraria
-      : this.generateHorarios(facturacion, tickets, isWeekend);
+      : this.generateHorarios(facturacion, tickets, fecha);
 
     this.daysData[fecha] = {
       fecha: fecha,
@@ -3353,8 +3433,7 @@ class MaxirestAnalytics {
         if (auditMap[dateKey] && auditMap[dateKey].horarios && auditMap[dateKey].horarios.length > 0) {
           d.distribucionHoraria = auditMap[dateKey].horarios;
         } else if (!d.distribucionHoraria || d.distribucionHoraria.length === 0) {
-          const isWeekend = dateKey.endsWith('03') || dateKey.endsWith('04') || dateKey.endsWith('10') || dateKey.endsWith('11') || dateKey.endsWith('17') || dateKey.endsWith('18');
-          d.distribucionHoraria = this.generateHorarios(d.kpis.facturacionTotal, d.kpis.totalTickets, isWeekend);
+          d.distribucionHoraria = this.generateHorarios(d.kpis.facturacionTotal, d.kpis.totalTickets, dateKey);
         }
       }
       d.latestClosedDay = this.getLatestClosedAuditedDay();

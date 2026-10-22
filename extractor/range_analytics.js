@@ -936,8 +936,56 @@ class RangeAnalyticsEngine {
   }
 
   /**
+   * Descubre dinámicamente todas las tablas DBF de comandas y ventas detalladas
+   * que contienen campos FECHA, HORA, MOZO, NOMBREART y longitud de registro de 305 bytes.
+   */
+  getDetailedDbfList() {
+    if (this._detailedDbfCache && (Date.now() - this._detailedDbfCacheTime < 60000)) {
+      return this._detailedDbfCache;
+    }
+    const dir = this.maxirestPath;
+    const list = [];
+    if (!fs.existsSync(dir)) return list;
+    try {
+      const files = fs.readdirSync(dir).filter(f => f.toLowerCase().endsWith('.dbf'));
+      for (const fn of files) {
+        const p = path.join(dir, fn);
+        try {
+          const fd = fs.openSync(p, 'r');
+          const h = Buffer.alloc(32);
+          fs.readSync(fd, h, 0, 32, 0);
+          const numRecs = h.readUInt32LE(4);
+          if (numRecs === 0) { fs.closeSync(fd); continue; }
+          const hLen = h.readUInt16LE(8);
+          const recLen = h.readUInt16LE(10);
+          if (hLen > 10000 || recLen !== 305) { fs.closeSync(fd); continue; }
+          
+          const fBuf = Buffer.alloc(hLen - 32);
+          fs.readSync(fd, fBuf, 0, hLen - 32, 32);
+          const fStr = fBuf.toString('ascii').toUpperCase();
+          if (fStr.includes('FECHA') && fStr.includes('HORA') && (fStr.includes('MOZO') || fStr.includes('COD_EMP')) && fStr.includes('NOMBREART')) {
+            const r1 = Buffer.alloc(recLen);
+            fs.readSync(fd, r1, 0, recLen, hLen);
+            const d1 = r1.slice(1, 9).toString('ascii').trim();
+            const r2 = Buffer.alloc(recLen);
+            fs.readSync(fd, r2, 0, recLen, hLen + (numRecs - 1) * recLen);
+            const d2 = r2.slice(1, 9).toString('ascii').trim();
+            const minD = d1 < d2 ? d1 : d2;
+            const maxD = d1 > d2 ? d1 : d2;
+            list.push({ fn, path: p, numRecs, d1: minD, d2: maxD });
+          }
+          fs.closeSync(fd);
+        } catch (e) {}
+      }
+    } catch (e) {}
+    this._detailedDbfCache = list;
+    this._detailedDbfCacheTime = Date.now();
+    return list;
+  }
+
+  /**
    * Obtiene el desglose auditado comanda por comanda de ventas de un mozo:
-   * Categorías desglosables (acordeón) y artículos individuales con unidades e importes.
+   * Categorías desglosables (acordeón), artículos individuales y línea de tiempo (historial cronológico minuto a minuto).
    * Soporta tanto fechas puntuales como rangos de fechas (trimestre, mes, custom).
    */
   getMozoSalesBreakdown(options = {}) {
@@ -986,24 +1034,38 @@ class RangeAnalyticsEngine {
       periodSub = `Rango del ${range.fromIso} al ${range.toIso}`;
     }
 
-    const knownDetailedFiles = [
-      { date: '20261015', path: path.join(this.maxirestPath, '42667972.dbf') },
-      { date: '20261012', path: path.join(this.maxirestPath, '39122690.dbf') },
-      { date: '20261008', path: path.join(this.maxirestPath, '42412338.dbf') },
-      { date: '20261007', path: path.join(this.maxirestPath, '39076206.dbf') },
-      { date: '20260930', path: path.join(this.maxirestPath, 'Informe.DBF') }
-    ];
+    const detailedDbfs = this.getDetailedDbfList();
+    const seenSignatures = new Set();
+    const uniqueDetailed = [];
+    detailedDbfs.forEach(f => {
+      const sig = `${f.d1}_${f.d2}_${f.numRecs}`;
+      if (!seenSignatures.has(sig)) {
+        seenSignatures.add(sig);
+        uniqueDetailed.push(f);
+      }
+    });
 
     const filesToScan = [];
+    const scannedPaths = new Set();
+
     if (isSingleDay) {
-      const matched = knownDetailedFiles.find(f => f.date === singleDate);
-      if (matched && fs.existsSync(matched.path)) {
-        filesToScan.push({ path: matched.path, from: singleDate, to: singleDate });
-      }
+      uniqueDetailed.forEach(f => {
+        if (path.resolve(f.path) === path.resolve(this.transactionDbfPath)) return;
+        if (singleDate >= f.d1 && singleDate <= f.d2) {
+          if (!scannedPaths.has(f.path)) {
+            filesToScan.push({ path: f.path, from: singleDate, to: singleDate });
+            scannedPaths.add(f.path);
+          }
+        }
+      });
     } else {
-      knownDetailedFiles.forEach(f => {
-        if (f.date >= fromD && f.date <= toD && fs.existsSync(f.path)) {
-          filesToScan.push({ path: f.path, from: f.date, to: f.date });
+      uniqueDetailed.forEach(f => {
+        if (path.resolve(f.path) === path.resolve(this.transactionDbfPath)) return;
+        if (f.d2 >= fromD && f.d1 <= toD) {
+          if (!scannedPaths.has(f.path)) {
+            filesToScan.push({ path: f.path, from: fromD, to: toD });
+            scannedPaths.add(f.path);
+          }
         }
       });
     }
@@ -1020,6 +1082,7 @@ class RangeAnalyticsEngine {
     }
 
     const categoriesMap = {};
+    const timeline = [];
     let totalFacturado = 0;
     let totalUnidades = 0;
     let totalCubiertos = 0;
@@ -1040,7 +1103,7 @@ class RangeAnalyticsEngine {
       return 'fa-solid fa-bowl-food';
     };
 
-    const accumulateRecord = (codMozo, nomMozoRaw, comp, codRua, nomRuaRaw, codArt, nomArtRaw, cant, punit, tot) => {
+    const accumulateRecord = (codMozo, nomMozoRaw, comp, codRua, nomRuaRaw, codArt, nomArtRaw, cant, punit, tot, hora, mesa, fechaStr) => {
       const nomMozoClean = this.cleanMozoName(nomMozoRaw);
       const isMatch = (canonicalCode && codMozo === canonicalCode) ||
                       nomMozoClean.includes(canonicalName) ||
@@ -1098,6 +1161,29 @@ class RangeAnalyticsEngine {
           categoriesMap[rubro].articulos[nomArt].total / categoriesMap[rubro].articulos[nomArt].unidades
         );
       }
+
+      // Registro en la línea de tiempo cronológica (minuto a minuto)
+      if (hora && hora.length >= 4) {
+        const cleanH = hora.slice(0, 5);
+        const isoDate = (fechaStr && fechaStr.length === 8)
+          ? `${fechaStr.slice(0,4)}-${fechaStr.slice(4,6)}-${fechaStr.slice(6,8)}`
+          : (singleDate ? `${singleDate.slice(0,4)}-${singleDate.slice(4,6)}-${singleDate.slice(6,8)}` : '');
+
+        timeline.push({
+          hora: cleanH,
+          fecha: isoDate,
+          comprobante: comp || '-',
+          mesa: mesa || '-',
+          codigo: codArt || '-',
+          articulo: nomArt,
+          cantidad: Math.round(cant * 100) / 100,
+          punit: Math.round(punit || (cant > 0 ? tot / cant : 0)),
+          total: Math.round(tot),
+          rubro: rubro,
+          rubroIcon: getRubroIcon(rubro),
+          isCubierto: isCubierto
+        });
+      }
     };
 
     filesToScan.forEach(fConf => {
@@ -1131,6 +1217,8 @@ class RangeAnalyticsEngine {
           const fecha = recBuf.slice(1, 9).toString('ascii').trim();
           if (fecha < fConf.from || fecha > fConf.to) continue;
 
+          const hora = recBuf.slice(9, 14).toString('ascii').trim();
+          const mesa = recBuf.slice(49, 53).toString('ascii').trim();
           const comp = recBuf.slice(29, 49).toString('ascii').trim();
           const codMozo = parseInt(recBuf.slice(53, 58).toString('ascii').trim(), 10) || 0;
           const nomMozoRaw = recBuf.slice(58, 88).toString('latin1').trim();
@@ -1142,7 +1230,7 @@ class RangeAnalyticsEngine {
           const punit = parseFloat(recBuf.slice(220, 230).toString('ascii').trim()) || 0;
           const tot = parseFloat(recBuf.slice(230, 240).toString('ascii').trim()) || 0;
 
-          accumulateRecord(codMozo, nomMozoRaw, comp, codRua, nomRuaRaw, codArt, nomArtRaw, cant, punit, tot);
+          accumulateRecord(codMozo, nomMozoRaw, comp, codRua, nomRuaRaw, codArt, nomArtRaw, cant, punit, tot, hora, mesa, fecha);
         }
         fs.closeSync(fd);
       } catch (e) {
@@ -1331,6 +1419,37 @@ class RangeAnalyticsEngine {
       };
     }).sort((a, b) => b.total - a.total);
 
+    // Ordenar cronológicamente la línea de tiempo de ventas
+    timeline.sort((a, b) => {
+      if (a.hora !== b.hora) return a.hora.localeCompare(b.hora);
+      if (a.comprobante !== b.comprobante) return a.comprobante.localeCompare(b.comprobante);
+      return a.articulo.localeCompare(b.articulo);
+    });
+
+    const hourlyBuckets = {};
+    timeline.forEach(item => {
+      const h = item.hora.split(':')[0] + ':00';
+      if (!hourlyBuckets[h]) {
+        hourlyBuckets[h] = { hora: h, total: 0, unidades: 0, items: 0 };
+      }
+      hourlyBuckets[h].total += item.total;
+      hourlyBuckets[h].unidades += item.cantidad;
+      hourlyBuckets[h].items++;
+    });
+
+    let foundMozoAudit = null;
+    if (isSingleDay && this.getAnalytics()) {
+      const dayIso = `${singleDate.slice(0,4)}-${singleDate.slice(4,6)}-${singleDate.slice(6,8)}`;
+      const dayData = this.getAnalytics().getDayAnalytics(dayIso);
+      if (dayData && dayData.mozos) {
+        foundMozoAudit = dayData.mozos.find(m =>
+          m.codigo === canonicalCode ||
+          m.nombre.toUpperCase() === canonicalName ||
+          m.nombre.toUpperCase().includes(canonicalName)
+        );
+      }
+    }
+
     const enTurno = totalFacturado > 0 || totalTickets > 0 || totalCubiertos > 0;
     const ticketPromedio = totalTickets > 0 ? Math.round(totalFacturado / totalTickets) : 0;
     const promedioCubierto = totalCubiertos > 0 ? Math.round(totalFacturado / totalCubiertos) : 0;
@@ -1346,6 +1465,13 @@ class RangeAnalyticsEngine {
       });
     });
 
+    const primeraVenta = timeline.length > 0
+      ? timeline[0].hora
+      : (foundMozoAudit ? foundMozoAudit.primeraVenta : null);
+    const ultimaVenta = timeline.length > 0
+      ? timeline[timeline.length - 1].hora
+      : (foundMozoAudit ? foundMozoAudit.ultimaVenta : null);
+
     return {
       success: true,
       mozo: {
@@ -1355,7 +1481,9 @@ class RangeAnalyticsEngine {
         avatar: staffInfo ? staffInfo.avatar : '👤',
         estado: staffInfo ? staffInfo.estado : 'ACTIVO',
         periodoActividad: staffInfo ? staffInfo.periodoActividad : 'Plantilla Activa',
-        enTurno
+        enTurno,
+        primeraVenta,
+        ultimaVenta
       },
       period: {
         isSingleDay,
@@ -1374,9 +1502,18 @@ class RangeAnalyticsEngine {
         platoLider: platoLider || { nombre: '-', unidades: 0, rubro: '-' }
       },
       detallado: hasDetailedRecords,
+      tieneHistorialMinuto: timeline.length > 0,
       mensaje: !enTurno
         ? 'El colaborador no tuvo ventas ni turnos registrados en este período (Franco o Ausente).'
         : null,
+      mensajeHistorial: timeline.length === 0 && enTurno
+        ? `Maxirest POS registró para este turno el balance fiscal oficial (${totalTickets} tickets, ${totalCubiertos} cubiertos, $${Number(totalFacturado).toLocaleString('es-AR')}${primeraVenta ? `, primera venta ${primeraVenta} y última venta ${ultimaVenta}` : ''}) sin emisión del archivo de comandas intermedias en pantalla. Para consultar ventas minuto a minuto (ej. 10:30 café, 10:39 medialuna...), seleccione fechas con auditoría de comandas activa (ej. 15/10, 12/10, 08/10, 07/10, 01/10-05/10, o el archivo multianual DBF).`
+        : null,
+      timelineCount: timeline.length,
+      timelineFirstHour: timeline.length > 0 ? timeline[0].hora : null,
+      timelineLastHour: timeline.length > 0 ? timeline[timeline.length - 1].hora : null,
+      timelineHourly: Object.values(hourlyBuckets).sort((a, b) => a.hora.localeCompare(b.hora)),
+      timeline,
       categoriasCount: categoriasList.length,
       articulosCount: categoriasList.reduce((sum, c) => sum + c.articulos.length, 0),
       categorias: categoriasList
