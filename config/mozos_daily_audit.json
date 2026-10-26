@@ -262,8 +262,8 @@
   },
   "2026-10-07": {
     "fecha": "2026-10-07",
-    "archivoOrigen": "5.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "39076206.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:48",
     "totales": {
       "importe": 2671240,
       "tickets": 71,
@@ -287,14 +287,16 @@
         "comensales": 0,
         "ticketPromedio": 44158,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 88315,
         "calificacion": "⭐ 5.0",
-        "platoMasVendido": "LIMONADA MENTA Y JENGIBRE (15 u.)",
+        "platoMasVendido": "EVENTO MERIENDA (15 u.)",
         "postres": {
-          "unidades": 4,
-          "facturado": 70652,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 12,
+          "facturado": 162500,
+          "postreTop": "MINI CAKES",
+          "porcentajeMesas": 60
         },
         "porcentajeTotal": 33.06,
         "primeraVenta": "08:56",
@@ -315,14 +317,16 @@
         "comensales": 30,
         "ticketPromedio": 39080,
         "promedioCubierto": 19540,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 58620,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "MENU EJECUTIVO (20 u.)",
         "postres": {
           "unidades": 3,
-          "facturado": 46896,
-          "postreTop": "Torta Cheese de Limón",
-          "porcentajeMesas": 18
+          "facturado": 0,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 20
         },
         "porcentajeTotal": 21.94,
         "primeraVenta": "13:01",
@@ -343,14 +347,16 @@
         "comensales": 29,
         "ticketPromedio": 39958,
         "promedioCubierto": 19290,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 55941,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "MENU EJECUTIVO (9 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 44753,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 9,
+          "facturado": 66440,
+          "postreTop": "TORTA DEL DIA",
+          "porcentajeMesas": 64
         },
         "porcentajeTotal": 20.94,
         "primeraVenta": "09:41",
@@ -371,14 +377,16 @@
         "comensales": 24,
         "ticketPromedio": 28727,
         "promedioCubierto": 16758,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 40218,
         "calificacion": "⭐ 4.7",
         "platoMasVendido": "CAFE - LATTE (10 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 32174,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 2,
+          "facturado": 18500,
+          "postreTop": "PORCION DE TORTA - GOLOSA",
+          "porcentajeMesas": 14
         },
         "porcentajeTotal": 15.06,
         "primeraVenta": "13:23",
@@ -399,14 +407,16 @@
         "comensales": 0,
         "ticketPromedio": 32786,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 22950,
         "calificacion": "⭐ 4.6",
         "platoMasVendido": "ENSALADA CALANDRIA (1 u.)",
         "postres": {
           "unidades": 1,
-          "facturado": 18360,
-          "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "facturado": 16500,
+          "postreTop": "FROLA CHICA MEMBRILLO Y FRAMBU",
+          "porcentajeMesas": 14
         },
         "porcentajeTotal": 8.59,
         "primeraVenta": "11:36",
@@ -427,14 +437,16 @@
         "comensales": 0,
         "ticketPromedio": 10800,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 1080,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "BORLA NUDO SIMPLE GRANDE (1 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 864,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Ensalada de Frutas",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 0.4,
         "primeraVenta": "10:36",
@@ -442,27 +454,26 @@
       }
     ],
     "rubros": {
-      "MARKET": 82800,
       "RUBRO. INEXISTENTE": -124000,
+      "MARKET": 82800,
       "BEBIDAS": 340700,
       "ADICIONALES": 9800,
       "ALMUERZO CENA": 1225860,
       "POSTRES": 145000,
-      "PASTELERIA": 991080,
-      "CAFETERIA": 0
+      "PASTELERIA": 991080
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "9530",
         "nombre": "MENU EJECUTIVO",
         "rubro": "ALMUERZO CENA",
         "unidades": 29,
-        "unitario": 22683,
+        "unitario": 20700,
         "facturado": 657800,
         "porcentaje": 24.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1158",
         "nombre": "EVENTO MERIENDA",
         "rubro": "ALMUERZO CENA",
         "unidades": 15,
@@ -471,160 +482,160 @@
         "porcentaje": 15.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1533",
         "nombre": "DOCENA DE MEDIALUNAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 4,
-        "unitario": 33750,
+        "unitario": 33000,
         "facturado": 135000,
         "porcentaje": 5.1
       },
       {
-        "codigo": "ART",
+        "codigo": "32",
         "nombre": "LIMONADA MENTA Y JENGIBRE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 20,
-        "unitario": 5730,
+        "unitario": 0,
         "facturado": 114600,
         "porcentaje": 4.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1344",
         "nombre": "AMELITA DE MI AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 6,
-        "unitario": 16240,
+        "unitario": 15120,
         "facturado": 97440,
         "porcentaje": 3.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1434",
         "nombre": "BUDIN DE PAN DE COCO CON CREMA",
-        "rubro": "PASTELERIA",
+        "rubro": "POSTRES",
         "unidades": 7,
-        "unitario": 10714,
+        "unitario": 0,
         "facturado": 75000,
         "porcentaje": 2.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1232",
         "nombre": "MARQUISSE LIMA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 1,
         "unitario": 69000,
         "facturado": 69000,
         "porcentaje": 2.6
       },
       {
-        "codigo": "ART",
+        "codigo": "10012",
         "nombre": "UN CLAVEL",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
         "unitario": 19900,
         "facturado": 59700,
         "porcentaje": 2.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
         "unitario": 19900,
         "facturado": 59700,
         "porcentaje": 2.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1576",
         "nombre": "MILANESA SUPREMA CON FIDEOS CO",
         "rubro": "ALMUERZO CENA",
         "unidades": 2,
-        "unitario": 28500,
+        "unitario": 31000,
         "facturado": 57000,
         "porcentaje": 2.1
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 19,
-        "unitario": 2863,
+        "unitario": 6800,
         "facturado": 54400,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
-        "codigo": "ART",
+        "codigo": "10065",
         "nombre": "TORTA VASCA CLASICA",
-        "rubro": "PASTELERIA",
+        "rubro": "MARKET",
         "unidades": 1,
         "unitario": 49000,
         "facturado": 49000,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "10013",
         "nombre": "MINI CAKES",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
         "unitario": 16000,
         "facturado": 48000,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "9768",
         "nombre": "TARTAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 4,
         "unitario": 12000,
         "facturado": 48000,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1298",
         "nombre": "CHIPA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 10,
         "unitario": 4600,
         "facturado": 46000,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1346",
         "nombre": "PARA ANA CON AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
         "unitario": 14300,
         "facturado": 42900,
         "porcentaje": 1.6
       },
       {
-        "codigo": "ART",
+        "codigo": "607",
         "nombre": "CAFE - JARRITO CORTADO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 18,
-        "unitario": 2147,
+        "unitario": 5600,
         "facturado": 38640,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "10082",
         "nombre": "FRENCH TOAST",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 18900,
         "facturado": 37800,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 16800,
         "facturado": 33600,
         "porcentaje": 1.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1106",
         "nombre": "OJO DE BIFE GRILLADO CON GUARN",
         "rubro": "ALMUERZO CENA",
         "unidades": 1,
@@ -699,7 +710,7 @@
   "2026-10-12": {
     "fecha": "2026-10-12",
     "archivoOrigen": "39122690.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:21",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 7222960,
       "tickets": 158,
@@ -1236,14 +1247,14 @@
   },
   "2026-10-08": {
     "fecha": "2026-10-08",
-    "archivoOrigen": "5.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "42412338.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 3224480,
       "tickets": 90,
       "cubiertos": 112,
       "promedio": 35827.56,
-      "promedioCubierto": 28790.0
+      "promedioCubierto": 28790
     },
     "mozos": [
       {
@@ -1261,14 +1272,16 @@
         "comensales": 46,
         "ticketPromedio": 42149,
         "promedioCubierto": 22907,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 105373,
         "calificacion": "⭐ 4.7",
         "platoMasVendido": "MENU EJECUTIVO (21 u.)",
         "postres": {
-          "unidades": 4,
-          "facturado": 84298,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 13,
+          "facturado": 40800,
+          "postreTop": "TORTA DEL DIA",
+          "porcentajeMesas": 52
         },
         "porcentajeTotal": 32.68,
         "primeraVenta": "13:11",
@@ -1289,14 +1302,16 @@
         "comensales": 0,
         "ticketPromedio": 33543,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 77150,
         "calificacion": "⭐ 5.0",
         "platoMasVendido": "BUDIN CHICO (9 u.)",
         "postres": {
-          "unidades": 4,
-          "facturado": 61720,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 12,
+          "facturado": 304600,
+          "postreTop": "COOKIES EN CAJITA",
+          "porcentajeMesas": 52
         },
         "porcentajeTotal": 23.93,
         "primeraVenta": "08:03",
@@ -1317,14 +1332,16 @@
         "comensales": 29,
         "ticketPromedio": 31477,
         "promedioCubierto": 19538,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 56659,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (11 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 45327,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 4,
+          "facturado": 22000,
+          "postreTop": "PORCION TORTA - CH. LIMON CON",
+          "porcentajeMesas": 22
         },
         "porcentajeTotal": 17.57,
         "primeraVenta": "10:09",
@@ -1345,14 +1362,16 @@
         "comensales": 27,
         "ticketPromedio": 34611,
         "promedioCubierto": 17947,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 48456,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - LATTE (6 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 38765,
-          "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "unidades": 5,
+          "facturado": 52600,
+          "postreTop": "COOKIES MANTECA, CHOCOLATE Y A",
+          "porcentajeMesas": 36
         },
         "porcentajeTotal": 15.03,
         "primeraVenta": "16:46",
@@ -1373,14 +1392,16 @@
         "comensales": 7,
         "ticketPromedio": 48175,
         "promedioCubierto": 27529,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 19270,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "AGUA SIN GAS (4 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 15416,
-          "postreTop": "Torta Cheese de Limón",
-          "porcentajeMesas": 18
+          "unidades": 2,
+          "facturado": 10000,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 50
         },
         "porcentajeTotal": 5.98,
         "primeraVenta": "13:52",
@@ -1401,14 +1422,16 @@
         "comensales": 0,
         "ticketPromedio": 34933,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 10480,
         "calificacion": "⭐ 4.6",
         "platoMasVendido": "FROLA CHICA MEMBRILLO Y FRAMBU (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 8384,
-          "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "unidades": 2,
+          "facturado": 33000,
+          "postreTop": "FROLA CHICA MEMBRILLO Y FRAMBU",
+          "porcentajeMesas": 67
         },
         "porcentajeTotal": 3.25,
         "primeraVenta": "14:09",
@@ -1429,14 +1452,16 @@
         "comensales": 3,
         "ticketPromedio": 16867,
         "promedioCubierto": 16867,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 5060,
         "calificacion": "⭐ 4.8",
-        "platoMasVendido": "ENSALADA DE FRUTAS (2 u.)",
+        "platoMasVendido": "MENU EJECUTIVO (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 4048,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 1.57,
         "primeraVenta": "14:16",
@@ -1451,75 +1476,74 @@
       "RUBRO. INEXISTENTE": 39000,
       "PASTELERIA": 1512340,
       "CAFETERIA": 37240,
-      "MARKET": 167600,
-      "AGUA": 0
+      "MARKET": 167600
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "9530",
         "nombre": "MENU EJECUTIVO",
         "rubro": "ALMUERZO CENA",
         "unidades": 30,
-        "unitario": 22080,
+        "unitario": 20700,
         "facturado": 662400,
         "porcentaje": 20.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1251",
         "nombre": "BUDIN CHICO",
         "rubro": "PASTELERIA",
         "unidades": 10,
-        "unitario": 17640,
+        "unitario": 18000,
         "facturado": 176400,
         "porcentaje": 5.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 6,
         "unitario": 19900,
         "facturado": 119400,
         "porcentaje": 3.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 7,
-        "unitario": 16320,
+        "unitario": 15120,
         "facturado": 114240,
         "porcentaje": 3.5
       },
       {
-        "codigo": "ART",
+        "codigo": "9521",
         "nombre": "TORTA MATILDA",
-        "rubro": "PASTELERIA",
+        "rubro": "MARKET",
         "unidades": 1,
         "unitario": 79000,
         "facturado": 79000,
         "porcentaje": 2.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1334",
         "nombre": "ROSA ROSA TAN MARAVILLOSA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 8,
         "unitario": 9200,
         "facturado": 73600,
         "porcentaje": 2.3
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 26,
-        "unitario": 2798,
+        "unitario": 6800,
         "facturado": 72760,
         "porcentaje": 2.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1445",
         "nombre": "TORTA  BALCARCE",
         "rubro": "PASTELERIA",
         "unidades": 1,
@@ -1528,34 +1552,34 @@
         "porcentaje": 2.1
       },
       {
-        "codigo": "ART",
+        "codigo": "1533",
         "nombre": "DOCENA DE MEDIALUNAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 33000,
         "facturado": 66000,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
-        "codigo": "ART",
+        "codigo": "607",
         "nombre": "CAFE - JARRITO CORTADO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 22,
-        "unitario": 2978,
+        "unitario": 0,
         "facturado": 65520,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
-        "codigo": "ART",
+        "codigo": "1312",
         "nombre": "TOSTADO ARABE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 6,
         "unitario": 10500,
         "facturado": 63000,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
-        "codigo": "ART",
+        "codigo": "1238",
         "nombre": "TORTA - CHOCOTORTA",
         "rubro": "PASTELERIA",
         "unidades": 1,
@@ -1564,25 +1588,25 @@
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "10012",
         "nombre": "UN CLAVEL",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
         "unitario": 19900,
         "facturado": 59700,
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1338",
         "nombre": "GDS COMPARTE CON VOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 1,
         "unitario": 55000,
         "facturado": 55000,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1006",
         "nombre": "DEGUSTACION DE TOSTONES",
         "rubro": "ALMUERZO CENA",
         "unidades": 1,
@@ -1591,25 +1615,25 @@
         "porcentaje": 1.6
       },
       {
-        "codigo": "ART",
+        "codigo": "5003",
         "nombre": "DIFUSOR SANTAL",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "MARKET",
         "unidades": 2,
         "unitario": 25500,
         "facturado": 51000,
         "porcentaje": 1.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1219",
         "nombre": "COOKIES EN CAJITA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 5,
         "unitario": 10000,
         "facturado": 50000,
         "porcentaje": 1.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1001",
         "nombre": "TOSTON ALCANFOR",
         "rubro": "ALMUERZO CENA",
         "unidades": 2,
@@ -1618,18 +1642,18 @@
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "615",
         "nombre": "CAFE - CAPPU GDS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 6,
-        "unitario": 7505,
+        "unitario": 7110,
         "facturado": 45030,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1346",
         "nombre": "PARA ANA CON AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
         "unitario": 14300,
         "facturado": 42900,
@@ -1707,7 +1731,7 @@
   "2026-09-30": {
     "fecha": "2026-09-30",
     "archivoOrigen": "3333.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "fechaReporte": "23/10/2026, 09:14:59",
     "totales": {
       "importe": 3194420,
       "tickets": 86,
@@ -1930,7 +1954,7 @@
         "unidades": 7,
         "unitario": 13891,
         "facturado": 97240,
-        "porcentaje": 3.0
+        "porcentaje": 3
       },
       {
         "codigo": "ART",
@@ -1984,7 +2008,7 @@
         "unidades": 2,
         "unitario": 31500,
         "facturado": 63000,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
         "codigo": "ART",
@@ -3321,8 +3345,8 @@
   },
   "2026-10-06": {
     "fecha": "2026-10-06",
-    "archivoOrigen": "5.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "55802943.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 2928500,
       "tickets": 93,
@@ -3344,16 +3368,18 @@
         "tickets": 60,
         "cubiertos": 98,
         "comensales": 98,
-        "ticketPromedio": 31704,
+        "ticketPromedio": 31705,
         "promedioCubierto": 19411,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 190227,
         "calificacion": "⭐ 4.7",
         "platoMasVendido": "MENU EJECUTIVO (34 u.)",
         "postres": {
-          "unidades": 11,
-          "facturado": 152182,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 15,
+          "facturado": 13100,
+          "postreTop": "TORTA DEL DIA",
+          "porcentajeMesas": 25
         },
         "porcentajeTotal": 64.96,
         "primeraVenta": "08:58",
@@ -3374,14 +3400,16 @@
         "comensales": 2,
         "ticketPromedio": 30401,
         "promedioCubierto": 304010,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 60802,
         "calificacion": "⭐ 5.0",
         "platoMasVendido": "MEDIALUNA DE MANTECA (13 u.)",
         "postres": {
-          "unidades": 4,
-          "facturado": 48642,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 2,
+          "facturado": 65500,
+          "postreTop": "TORTA DE FRUTILLAS CHICA",
+          "porcentajeMesas": 10
         },
         "porcentajeTotal": 20.76,
         "primeraVenta": "08:58",
@@ -3402,14 +3430,16 @@
         "comensales": 17,
         "ticketPromedio": 28216,
         "promedioCubierto": 14938,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 25394,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - ESPRESSO JARRITO (4 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 20315,
-          "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "unidades": 1,
+          "facturado": 6000,
+          "postreTop": "ALFAJOR DE ALMENDRA Y DDL",
+          "porcentajeMesas": 11
         },
         "porcentajeTotal": 8.67,
         "primeraVenta": "17:02",
@@ -3430,14 +3460,16 @@
         "comensales": 3,
         "ticketPromedio": 69000,
         "promedioCubierto": 23000,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 6900,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "PLATO DEL DIA 1 (3 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 5520,
-          "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "unidades": 2,
+          "facturado": 0,
+          "postreTop": "TORTA DEL DIA",
+          "porcentajeMesas": 200
         },
         "porcentajeTotal": 2.36,
         "primeraVenta": "14:32",
@@ -3458,14 +3490,16 @@
         "comensales": 0,
         "ticketPromedio": 25900,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 5180,
         "calificacion": "⭐ 4.6",
         "platoMasVendido": "BONDIOLA LAQUEADA (1 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 4144,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 1.77,
         "primeraVenta": "12:39",
@@ -3486,14 +3520,16 @@
         "comensales": 2,
         "ticketPromedio": 43470,
         "promedioCubierto": 21735,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 4347,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 3478,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Ensalada de Frutas",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 1.48,
         "primeraVenta": "15:47",
@@ -3512,124 +3548,124 @@
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "9530",
         "nombre": "MENU EJECUTIVO",
         "rubro": "ALMUERZO CENA",
         "unidades": 37,
-        "unitario": 22316,
+        "unitario": 23000,
         "facturado": 825700,
         "porcentaje": 28.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 11,
-        "unitario": 18815,
+        "unitario": 17910,
         "facturado": 206960,
         "porcentaje": 7.1
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 9,
-        "unitario": 16427,
+        "unitario": 15120,
         "facturado": 147840,
-        "porcentaje": 5.0
+        "porcentaje": 5
       },
       {
-        "codigo": "ART",
+        "codigo": "1406",
         "nombre": "TARTA  KEY LIME PIE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 59000,
         "facturado": 118000,
-        "porcentaje": 4.0
+        "porcentaje": 4
       },
       {
-        "codigo": "ART",
+        "codigo": "607",
         "nombre": "CAFE - JARRITO CORTADO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 27,
-        "unitario": 2945,
+        "unitario": 5040,
         "facturado": 79520,
         "porcentaje": 2.7
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 29,
-        "unitario": 2720,
+        "unitario": 0,
         "facturado": 78880,
         "porcentaje": 2.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1227",
         "nombre": "MEDIALUNA DE MANTECA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 28,
-        "unitario": 2304,
+        "unitario": 2700,
         "facturado": 64500,
         "porcentaje": 2.2
       },
       {
-        "codigo": "ART",
+        "codigo": "4091",
         "nombre": "SEÑA EVENTO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "ADICIONALES",
         "unidades": 2,
         "unitario": 30000,
         "facturado": 60000,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
-        "codigo": "ART",
+        "codigo": "10094",
         "nombre": "TORTA DE FRUTILLAS CHICA",
         "rubro": "PASTELERIA",
         "unidades": 1,
         "unitario": 59000,
         "facturado": 59000,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
-        "codigo": "ART",
+        "codigo": "606",
         "nombre": "CAFE - ESPRESSO JARRITO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 14,
-        "unitario": 4000,
+        "unitario": 5600,
         "facturado": 56000,
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1457",
         "nombre": "MASAS SECAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 7,
         "unitario": 8000,
         "facturado": 56000,
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1338",
         "nombre": "GDS COMPARTE CON VOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 1,
         "unitario": 55000,
         "facturado": 55000,
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1333",
         "nombre": "ELSITA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
-        "unitario": 18270,
+        "unitario": 17010,
         "facturado": 54810,
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1200",
         "nombre": "ENSALADA PICAFLOR CON POLLO",
         "rubro": "ALMUERZO CENA",
         "unidades": 2,
@@ -3638,34 +3674,34 @@
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1576",
         "nombre": "MILANESA SUPREMA CON FIDEOS CO",
         "rubro": "ALMUERZO CENA",
         "unidades": 2,
-        "unitario": 24700,
+        "unitario": 23400,
         "facturado": 49400,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1336",
         "nombre": "ADORADO FRAN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 19900,
         "facturado": 39800,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "10012",
         "nombre": "UN CLAVEL",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
-        "unitario": 18905,
+        "unitario": 17910,
         "facturado": 37810,
         "porcentaje": 1.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1101",
         "nombre": "BONDIOLA LAQUEADA",
         "rubro": "ALMUERZO CENA",
         "unidades": 1,
@@ -3674,20 +3710,20 @@
         "porcentaje": 1.3
       },
       {
-        "codigo": "ART",
+        "codigo": "10082",
         "nombre": "FRENCH TOAST",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
-        "unitario": 17955,
+        "unitario": 17010,
         "facturado": 35910,
         "porcentaje": 1.2
       },
       {
-        "codigo": "ART",
+        "codigo": "9770",
         "nombre": "GASEOSA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 20,
-        "unitario": 1768,
+        "unitario": 0,
         "facturado": 35360,
         "porcentaje": 1.2
       }
@@ -3757,14 +3793,14 @@
   },
   "2026-10-05": {
     "fecha": "2026-10-05",
-    "archivoOrigen": "5.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "55802943.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 3124800,
       "tickets": 71,
       "cubiertos": 112,
       "promedio": 44011.27,
-      "promedioCubierto": 27900.0
+      "promedioCubierto": 27900
     },
     "mozos": [
       {
@@ -3782,14 +3818,16 @@
         "comensales": 53,
         "ticketPromedio": 32370,
         "promedioCubierto": 20155,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 106821,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - JARRITO CORTADO (15 u.)",
         "postres": {
-          "unidades": 6,
-          "facturado": 85457,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 9,
+          "facturado": 91000,
+          "postreTop": "TORTA DEL DIA",
+          "porcentajeMesas": 27
         },
         "porcentajeTotal": 34.18,
         "primeraVenta": "09:49",
@@ -3808,16 +3846,18 @@
         "tickets": 8,
         "cubiertos": 0,
         "comensales": 0,
-        "ticketPromedio": 80452,
+        "ticketPromedio": 80453,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 64362,
         "calificacion": "⭐ 5.0",
         "platoMasVendido": "MENU EJECUTIVO (21 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 51490,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 3,
+          "facturado": 79000,
+          "postreTop": "COOKIES MANTECA, CHOCOLATE Y A",
+          "porcentajeMesas": 38
         },
         "porcentajeTotal": 20.6,
         "primeraVenta": "09:56",
@@ -3838,14 +3878,16 @@
         "comensales": 22,
         "ticketPromedio": 52534,
         "promedioCubierto": 26267,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 57787,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "MENU EJECUTIVO (7 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 46230,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 3,
+          "facturado": 16600,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 27
         },
         "porcentajeTotal": 18.49,
         "primeraVenta": "13:25",
@@ -3866,14 +3908,16 @@
         "comensales": 29,
         "ticketPromedio": 42465,
         "promedioCubierto": 17572,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 50958,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "EXPRIMIDO NARANJA (10 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 40766,
-          "postreTop": "Crumble de Manzana",
-          "porcentajeMesas": 18
+          "unidades": 3,
+          "facturado": 15850,
+          "postreTop": "BROWNIE NUEZ",
+          "porcentajeMesas": 25
         },
         "porcentajeTotal": 16.31,
         "primeraVenta": "17:30",
@@ -3894,14 +3938,16 @@
         "comensales": 6,
         "ticketPromedio": 58455,
         "promedioCubierto": 38970,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 23382,
         "calificacion": "⭐ 4.7",
         "platoMasVendido": "SARA DE LEJOS (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 18706,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 7.48,
         "primeraVenta": "09:34",
@@ -3922,14 +3968,16 @@
         "comensales": 0,
         "ticketPromedio": 29500,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 5900,
         "calificacion": "⭐ 4.6",
         "platoMasVendido": "MILANESA SUPREMA CON FIDEOS CO (1 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 4720,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 1.89,
         "primeraVenta": "11:52",
@@ -3950,14 +3998,16 @@
         "comensales": 2,
         "ticketPromedio": 32700,
         "promedioCubierto": 16350,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 3270,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 2616,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Ensalada de Frutas",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 1.05,
         "primeraVenta": "19:30",
@@ -3971,57 +4021,56 @@
       "ALMUERZO CENA": 1273450,
       "MARKET": 29300,
       "POSTRES": 51000,
-      "RUBRO. INEXISTENTE": 0,
       "CAFETERIA": 7600
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "9530",
         "nombre": "MENU EJECUTIVO",
         "rubro": "ALMUERZO CENA",
         "unidades": 45,
-        "unitario": 22949,
+        "unitario": 20700,
         "facturado": 1032700,
-        "porcentaje": 33.0
+        "porcentaje": 33
       },
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 15,
-        "unitario": 19502,
+        "unitario": 17910,
         "facturado": 292530,
         "porcentaje": 9.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 8,
         "unitario": 16800,
         "facturado": 134400,
         "porcentaje": 4.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1333",
         "nombre": "ELSITA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 6,
-        "unitario": 18585,
+        "unitario": 18900,
         "facturado": 111510,
         "porcentaje": 3.6
       },
       {
-        "codigo": "ART",
+        "codigo": "607",
         "nombre": "CAFE - JARRITO CORTADO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 20,
-        "unitario": 3584,
+        "unitario": 5600,
         "facturado": 71680,
         "porcentaje": 2.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1236",
         "nombre": "TORTA - ROGEL",
         "rubro": "PASTELERIA",
         "unidades": 1,
@@ -4030,7 +4079,7 @@
         "porcentaje": 2.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1238",
         "nombre": "TORTA - CHOCOTORTA",
         "rubro": "PASTELERIA",
         "unidades": 1,
@@ -4039,43 +4088,43 @@
         "porcentaje": 2.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1346",
         "nombre": "PARA ANA CON AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 5,
-        "unitario": 13442,
+        "unitario": 12870,
         "facturado": 67210,
         "porcentaje": 2.2
       },
       {
-        "codigo": "ART",
+        "codigo": "606",
         "nombre": "CAFE - ESPRESSO JARRITO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 13,
-        "unitario": 4135,
+        "unitario": 5040,
         "facturado": 53760,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1336",
         "nombre": "ADORADO FRAN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 19900,
         "facturado": 39800,
         "porcentaje": 1.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1225",
         "nombre": "SCON DE TRUCHA X 6",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 1,
         "unitario": 39100,
         "facturado": 39100,
         "porcentaje": 1.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1004",
         "nombre": "CROQUE MADAME",
         "rubro": "ALMUERZO CENA",
         "unidades": 2,
@@ -4084,76 +4133,76 @@
         "porcentaje": 1.2
       },
       {
-        "codigo": "ART",
+        "codigo": "10082",
         "nombre": "FRENCH TOAST",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 18900,
         "facturado": 37800,
         "porcentaje": 1.2
       },
       {
-        "codigo": "ART",
+        "codigo": "42",
         "nombre": "AGUA SIN GAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 14,
-        "unitario": 2619,
+        "unitario": 4700,
         "facturado": 36660,
         "porcentaje": 1.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1426",
         "nombre": "ENSALADA DE FRUTAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "POSTRES",
         "unidades": 6,
-        "unitario": 6000,
+        "unitario": 0,
         "facturado": 36000,
         "porcentaje": 1.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1224",
         "nombre": "SCON DE CRUDO X 6",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 1,
         "unitario": 34800,
         "facturado": 34800,
         "porcentaje": 1.1
       },
       {
-        "codigo": "ART",
+        "codigo": "21",
         "nombre": "EXPRIMIDO NARANJA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 14,
-        "unitario": 2450,
+        "unitario": 0,
         "facturado": 34300,
         "porcentaje": 1.1
       },
       {
-        "codigo": "ART",
+        "codigo": "1344",
         "nombre": "AMELITA DE MI AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 16800,
         "facturado": 33600,
         "porcentaje": 1.1
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 27,
-        "unitario": 1234,
+        "unitario": 6800,
         "facturado": 33320,
         "porcentaje": 1.1
       },
       {
-        "codigo": "ART",
+        "codigo": "92",
         "nombre": "LICUADO MULTIFRUTA Y MULTIFRUT",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 4,
         "unitario": 8000,
         "facturado": 32000,
-        "porcentaje": 1.0
+        "porcentaje": 1
       }
     ],
     "horarios": [
@@ -4221,8 +4270,8 @@
   },
   "2026-10-15": {
     "fecha": "2026-10-15",
-    "archivoOrigen": "4444.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "42667972.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 4036425,
       "tickets": 108,
@@ -4246,14 +4295,16 @@
         "comensales": 0,
         "ticketPromedio": 37424,
         "promedioCubierto": 0,
-        "propinasEstimadas": 97302,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 97303,
         "calificacion": "⭐ 5.0",
         "platoMasVendido": "MEDIALUNA DE MANTECA (7 u.)",
         "postres": {
-          "unidades": 5,
-          "facturado": 77842,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 9,
+          "facturado": 110575,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 35
         },
         "porcentajeTotal": 24.11,
         "primeraVenta": "10:05",
@@ -4274,14 +4325,16 @@
         "comensales": 38,
         "ticketPromedio": 30819,
         "promedioCubierto": 18653,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 70883,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (17 u.)",
         "postres": {
-          "unidades": 4,
-          "facturado": 56706,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 6,
+          "facturado": 40000,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 26
         },
         "porcentajeTotal": 17.56,
         "primeraVenta": "09:13",
@@ -4302,14 +4355,16 @@
         "comensales": 26,
         "ticketPromedio": 57016,
         "promedioCubierto": 26315,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 68419,
         "calificacion": "⭐ 4.7",
         "platoMasVendido": "MENU EJECUTIVO (19 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 54735,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 3,
+          "facturado": 12000,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 25
         },
         "porcentajeTotal": 16.95,
         "primeraVenta": "13:18",
@@ -4330,14 +4385,16 @@
         "comensales": 28,
         "ticketPromedio": 39002,
         "promedioCubierto": 19501,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 54603,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (6 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 43682,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 5,
+          "facturado": 80040,
+          "postreTop": "PORCION TORTA - CH. PISTACHO",
+          "porcentajeMesas": 36
         },
         "porcentajeTotal": 13.53,
         "primeraVenta": "15:38",
@@ -4358,14 +4415,16 @@
         "comensales": 25,
         "ticketPromedio": 32123,
         "promedioCubierto": 19274,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 48184,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - JARRITO CORTADO (7 u.)",
         "postres": {
           "unidades": 3,
-          "facturado": 38547,
-          "postreTop": "Torta Cheese de Limón",
-          "porcentajeMesas": 18
+          "facturado": 13200,
+          "postreTop": "ALFAJOR DE NUEZ",
+          "porcentajeMesas": 20
         },
         "porcentajeTotal": 11.94,
         "primeraVenta": "08:59",
@@ -4386,14 +4445,16 @@
         "comensales": 18,
         "ticketPromedio": 37323,
         "promedioCubierto": 18662,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 33591,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - LATTE (8 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 26873,
-          "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "unidades": 1,
+          "facturado": 12000,
+          "postreTop": "PORCION TORTA - CHOCOTORTA GDS",
+          "porcentajeMesas": 11
         },
         "porcentajeTotal": 8.32,
         "primeraVenta": "17:55",
@@ -4414,14 +4475,16 @@
         "comensales": 0,
         "ticketPromedio": 33000,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 23100,
         "calificacion": "⭐ 4.6",
-        "platoMasVendido": "EMPANADA DE CARNE - FRITA (2 u.)",
+        "platoMasVendido": " (5 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 18480,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 5.72,
         "primeraVenta": "12:37",
@@ -4442,14 +4505,16 @@
         "comensales": 0,
         "ticketPromedio": 69000,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 6900,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "TORTA - CHOCOTORTA (1 u.)",
         "postres": {
           "unidades": 1,
-          "facturado": 5520,
-          "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "facturado": 69000,
+          "postreTop": "TORTA - CHOCOTORTA",
+          "porcentajeMesas": 100
         },
         "porcentajeTotal": 1.71,
         "primeraVenta": "12:14",
@@ -4470,14 +4535,16 @@
         "comensales": 4,
         "ticketPromedio": 6600,
         "promedioCubierto": 1650,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 660,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - DOBLE CORTADO (1 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 528,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 0.16,
         "primeraVenta": "15:38",
@@ -4497,43 +4564,43 @@
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "9530",
         "nombre": "MENU EJECUTIVO",
         "rubro": "ALMUERZO CENA",
         "unidades": 39,
-        "unitario": 22174,
+        "unitario": 20700,
         "facturado": 864800,
         "porcentaje": 21.4
       },
       {
-        "codigo": "ART",
+        "codigo": "4091",
         "nombre": "SEÑA EVENTO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "ADICIONALES",
         "unidades": 4,
-        "unitario": 52500,
+        "unitario": 30000,
         "facturado": 210000,
         "porcentaje": 5.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1338",
         "nombre": "GDS COMPARTE CON VOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
         "unitario": 57000,
         "facturado": 171000,
         "porcentaje": 4.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1346",
         "nombre": "PARA ANA CON AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 10,
-        "unitario": 14850,
+        "unitario": 15000,
         "facturado": 148500,
         "porcentaje": 3.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1251",
         "nombre": "BUDIN CHICO",
         "rubro": "PASTELERIA",
         "unidades": 6,
@@ -4542,79 +4609,79 @@
         "porcentaje": 2.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 5,
-        "unitario": 19740,
+        "unitario": 18900,
         "facturado": 98700,
         "porcentaje": 2.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1194",
         "nombre": "PESCA DEL DIA",
         "rubro": "ALMUERZO CENA",
         "unidades": 3,
-        "unitario": 30800,
+        "unitario": 33000,
         "facturado": 92400,
         "porcentaje": 2.3
       },
       {
-        "codigo": "ART",
+        "codigo": "9769",
         "nombre": "TORTAS",
-        "rubro": "PASTELERIA",
+        "rubro": "POSTRES",
         "unidades": 6,
         "unitario": 15000,
         "facturado": 90000,
         "porcentaje": 2.2
       },
       {
-        "codigo": "ART",
+        "codigo": "607",
         "nombre": "CAFE - JARRITO CORTADO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 26,
-        "unitario": 3145,
+        "unitario": 5040,
         "facturado": 81760,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 35,
-        "unitario": 2273,
+        "unitario": 0,
         "facturado": 79560,
-        "porcentaje": 2.0
+        "porcentaje": 2
       },
       {
-        "codigo": "ART",
+        "codigo": "606",
         "nombre": "CAFE - ESPRESSO JARRITO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 22,
-        "unitario": 3487,
+        "unitario": 0,
         "facturado": 76720,
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 4,
         "unitario": 17900,
         "facturado": 71600,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1332",
         "nombre": "AMELIA QUERIDA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 5,
         "unitario": 14300,
         "facturado": 71500,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1238",
         "nombre": "TORTA - CHOCOTORTA",
         "rubro": "PASTELERIA",
         "unidades": 1,
@@ -4623,16 +4690,16 @@
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1533",
         "nombre": "DOCENA DE MEDIALUNAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
-        "unitario": 34500,
+        "unitario": 33000,
         "facturado": 69000,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1101",
         "nombre": "BONDIOLA LAQUEADA",
         "rubro": "ALMUERZO CENA",
         "unidades": 2,
@@ -4641,25 +4708,25 @@
         "porcentaje": 1.6
       },
       {
-        "codigo": "ART",
+        "codigo": "2009",
         "nombre": "CAJA DESAYUNO EN CASA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BOX GDS",
         "unidades": 1,
         "unitario": 60000,
         "facturado": 60000,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "3371",
         "nombre": "GRANOLA 500GR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "MARKET",
         "unidades": 3,
-        "unitario": 18050,
+        "unitario": 19000,
         "facturado": 54150,
         "porcentaje": 1.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1022",
         "nombre": "ENSALADA CALANDRIA",
         "rubro": "ALMUERZO CENA",
         "unidades": 2,
@@ -4668,11 +4735,11 @@
         "porcentaje": 1.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1334",
         "nombre": "ROSA ROSA TAN MARAVILLOSA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 5,
-        "unitario": 9504,
+        "unitario": 9900,
         "facturado": 47520,
         "porcentaje": 1.2
       }
@@ -4742,8 +4809,8 @@
   },
   "2026-10-01": {
     "fecha": "2026-10-01",
-    "archivoOrigen": "5.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "55802943.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 7899510,
       "tickets": 114,
@@ -4767,14 +4834,16 @@
         "comensales": 24,
         "ticketPromedio": 170031,
         "promedioCubierto": 106270,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 255047,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (22 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 204038,
-          "postreTop": "Ensalada de Frutas",
-          "porcentajeMesas": 18
+          "unidades": 22,
+          "facturado": 230400,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 147
         },
         "porcentajeTotal": 32.29,
         "primeraVenta": "16:46",
@@ -4795,14 +4864,16 @@
         "comensales": 40,
         "ticketPromedio": 122966,
         "promedioCubierto": 46112,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 184449,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "COPA HELADO 1 BOCHA (20 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 147559,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 14,
+          "facturado": 166600,
+          "postreTop": "PORCION DE TORTA - GOLOSA",
+          "porcentajeMesas": 93
         },
         "porcentajeTotal": 23.35,
         "primeraVenta": "17:10",
@@ -4823,14 +4894,16 @@
         "comensales": 55,
         "ticketPromedio": 44868,
         "promedioCubierto": 22842,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 125631,
         "calificacion": "⭐ 4.7",
         "platoMasVendido": "MENU EJECUTIVO (24 u.)",
         "postres": {
-          "unidades": 5,
-          "facturado": 100505,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 14,
+          "facturado": 44000,
+          "postreTop": "TORTA DEL DIA",
+          "porcentajeMesas": 50
         },
         "porcentajeTotal": 15.9,
         "primeraVenta": "13:18",
@@ -4851,14 +4924,16 @@
         "comensales": 46,
         "ticketPromedio": 35956,
         "promedioCubierto": 18760,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 86294,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "MENU EJECUTIVO (16 u.)",
         "postres": {
-          "unidades": 4,
-          "facturado": 69035,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 8,
+          "facturado": 6000,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 33
         },
         "porcentajeTotal": 10.92,
         "primeraVenta": "09:24",
@@ -4879,14 +4954,16 @@
         "comensales": 26,
         "ticketPromedio": 55458,
         "promedioCubierto": 25596,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 66550,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - LATTE (6 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 53240,
-          "postreTop": "Torta Cheese de Limón",
-          "porcentajeMesas": 18
+          "unidades": 1,
+          "facturado": 10800,
+          "postreTop": "PORCION TORTA - CH. LIMON CON",
+          "porcentajeMesas": 8
         },
         "porcentajeTotal": 8.42,
         "primeraVenta": "09:06",
@@ -4907,14 +4984,16 @@
         "comensales": 0,
         "ticketPromedio": 33160,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 49740,
         "calificacion": "⭐ 5.0",
         "platoMasVendido": "CAFE PROMO GRATIS (3 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 39792,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 7,
+          "facturado": 178800,
+          "postreTop": "ALFAJOR DE NUEZ",
+          "porcentajeMesas": 47
         },
         "porcentajeTotal": 6.3,
         "primeraVenta": "09:08",
@@ -4935,14 +5014,16 @@
         "comensales": 0,
         "ticketPromedio": 44480,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 22240,
         "calificacion": "⭐ 4.6",
         "platoMasVendido": "PAPAS GARDENIAS (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 17792,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 2.82,
         "primeraVenta": "09:23",
@@ -4956,32 +5037,31 @@
       "MARKET": 114000,
       "ALMUERZO CENA": 3088200,
       "POSTRES": 413500,
-      "DESCUENTOS - PROMOS": 0,
       "RUBRO. INEXISTENTE": 172000,
       "CAFETERIA": 34960,
       "BOX GDS": 116000
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "9530",
         "nombre": "MENU EJECUTIVO",
         "rubro": "ALMUERZO CENA",
         "unidades": 57,
-        "unitario": 22758,
+        "unitario": 23000,
         "facturado": 1297200,
         "porcentaje": 16.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 22,
         "unitario": 19900,
         "facturado": 437800,
         "porcentaje": 5.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1101",
         "nombre": "BONDIOLA LAQUEADA",
         "rubro": "ALMUERZO CENA",
         "unidades": 13,
@@ -4990,34 +5070,34 @@
         "porcentaje": 5.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1194",
         "nombre": "PESCA DEL DIA",
         "rubro": "ALMUERZO CENA",
         "unidades": 8,
-        "unitario": 31200,
+        "unitario": 32000,
         "facturado": 249600,
         "porcentaje": 3.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 13,
-        "unitario": 16542,
+        "unitario": 16800,
         "facturado": 215040,
         "porcentaje": 2.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1332",
         "nombre": "AMELIA QUERIDA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 14,
-        "unitario": 14096,
+        "unitario": 14300,
         "facturado": 197340,
         "porcentaje": 2.5
       },
       {
-        "codigo": "ART",
+        "codigo": "10088",
         "nombre": "TRUCHON GRILLADO",
         "rubro": "ALMUERZO CENA",
         "unidades": 6,
@@ -5026,88 +5106,88 @@
         "porcentaje": 2.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1336",
         "nombre": "ADORADO FRAN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 10,
-        "unitario": 18905,
+        "unitario": 19900,
         "facturado": 189050,
         "porcentaje": 2.4
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 62,
-        "unitario": 3005,
+        "unitario": 6120,
         "facturado": 186320,
         "porcentaje": 2.4
       },
       {
-        "codigo": "ART",
+        "codigo": "606",
         "nombre": "CAFE - ESPRESSO JARRITO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 39,
-        "unitario": 4724,
+        "unitario": 5600,
         "facturado": 184240,
         "porcentaje": 2.3
       },
       {
-        "codigo": "ART",
+        "codigo": "32",
         "nombre": "LIMONADA MENTA Y JENGIBRE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 33,
-        "unitario": 4327,
+        "unitario": 0,
         "facturado": 142800,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1445",
         "nombre": "TORTA  BALCARCE",
         "rubro": "PASTELERIA",
         "unidades": 2,
-        "unitario": 67000,
+        "unitario": 69000,
         "facturado": 134000,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1421",
         "nombre": "FLAN DE ANA CON DULCE DE LECHE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "POSTRES",
         "unidades": 18,
-        "unitario": 6667,
+        "unitario": 0,
         "facturado": 120000,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1430",
         "nombre": "COPA HELADO 1 BOCHA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "POSTRES",
         "unidades": 20,
         "unitario": 6000,
         "facturado": 120000,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1346",
         "nombre": "PARA ANA CON AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 8,
-        "unitario": 14121,
+        "unitario": 14300,
         "facturado": 112970,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1041",
         "nombre": "ROTOLO DE JAMON Y QUESO CON SA",
         "rubro": "ALMUERZO CENA",
         "unidades": 8,
-        "unitario": 14012,
+        "unitario": 26700,
         "facturado": 112100,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1002",
         "nombre": "TOSTON GARDENIAS",
         "rubro": "ALMUERZO CENA",
         "unidades": 4,
@@ -5116,16 +5196,16 @@
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1576",
         "nombre": "MILANESA SUPREMA CON FIDEOS CO",
         "rubro": "ALMUERZO CENA",
         "unidades": 4,
-        "unitario": 24050,
+        "unitario": 26000,
         "facturado": 96200,
         "porcentaje": 1.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1251",
         "nombre": "BUDIN CHICO",
         "rubro": "PASTELERIA",
         "unidades": 5,
@@ -5134,11 +5214,11 @@
         "porcentaje": 1.1
       },
       {
-        "codigo": "ART",
+        "codigo": "1334",
         "nombre": "ROSA ROSA TAN MARAVILLOSA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 10,
-        "unitario": 8740,
+        "unitario": 9200,
         "facturado": 87400,
         "porcentaje": 1.1
       }
@@ -5208,8 +5288,8 @@
   },
   "2026-10-02": {
     "fecha": "2026-10-02",
-    "archivoOrigen": "5.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "55802943.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 3852350,
       "tickets": 106,
@@ -5233,14 +5313,16 @@
         "comensales": 64,
         "ticketPromedio": 35948,
         "promedioCubierto": 20221,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 129413,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - LATTE (22 u.)",
         "postres": {
-          "unidades": 6,
-          "facturado": 103530,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 13,
+          "facturado": 52000,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 36
         },
         "porcentajeTotal": 33.59,
         "primeraVenta": "11:02",
@@ -5261,14 +5343,16 @@
         "comensales": 42,
         "ticketPromedio": 37286,
         "promedioCubierto": 18643,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 78300,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (9 u.)",
         "postres": {
           "unidades": 4,
-          "facturado": 62640,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "facturado": 16000,
+          "postreTop": "TORTA DEL DIA",
+          "porcentajeMesas": 19
         },
         "porcentajeTotal": 20.33,
         "primeraVenta": "12:30",
@@ -5289,14 +5373,16 @@
         "comensales": 35,
         "ticketPromedio": 35239,
         "promedioCubierto": 18123,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 63431,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - LATTE (16 u.)",
         "postres": {
           "unidades": 3,
-          "facturado": 50745,
-          "postreTop": "Torta Cheese de Limón",
-          "porcentajeMesas": 18
+          "facturado": 0,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 17
         },
         "porcentajeTotal": 16.47,
         "primeraVenta": "08:57",
@@ -5317,14 +5403,16 @@
         "comensales": 0,
         "ticketPromedio": 29180,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 43770,
         "calificacion": "⭐ 5.0",
         "platoMasVendido": "SCON DE QUESO (9 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 35016,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 9,
+          "facturado": 106000,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 60
         },
         "porcentajeTotal": 11.36,
         "primeraVenta": "08:45",
@@ -5345,14 +5433,16 @@
         "comensales": 15,
         "ticketPromedio": 54570,
         "promedioCubierto": 21828,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 32742,
         "calificacion": "⭐ 4.7",
         "platoMasVendido": "LIMONADA MENTA Y JENGIBRE (4 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 26194,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 3,
+          "facturado": 23940,
+          "postreTop": "ALFAJOR DE NUEZ",
+          "porcentajeMesas": 50
         },
         "porcentajeTotal": 8.5,
         "primeraVenta": "18:18",
@@ -5373,14 +5463,16 @@
         "comensales": 0,
         "ticketPromedio": 34025,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 27220,
         "calificacion": "⭐ 4.6",
         "platoMasVendido": "MEDIALUNA DE MANTECA (3 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 21776,
-          "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "unidades": 2,
+          "facturado": 12000,
+          "postreTop": "ALFAJOR DE COCO",
+          "porcentajeMesas": 25
         },
         "porcentajeTotal": 7.07,
         "primeraVenta": "11:45",
@@ -5401,14 +5493,16 @@
         "comensales": 4,
         "ticketPromedio": 51795,
         "promedioCubierto": 25898,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 10359,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "LIMONADA MENTA Y JENGIBRE (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 8287,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Ensalada de Frutas",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 2.69,
         "primeraVenta": "18:00",
@@ -5427,160 +5521,160 @@
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "9530",
         "nombre": "MENU EJECUTIVO",
         "rubro": "ALMUERZO CENA",
         "unidades": 24,
-        "unitario": 22617,
+        "unitario": 23000,
         "facturado": 542800,
         "porcentaje": 14.1
       },
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 13,
-        "unitario": 19594,
+        "unitario": 19900,
         "facturado": 254720,
         "porcentaje": 6.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 10,
-        "unitario": 16296,
+        "unitario": 16800,
         "facturado": 162960,
         "porcentaje": 4.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1406",
         "nombre": "TARTA  KEY LIME PIE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 59000,
         "facturado": 118000,
         "porcentaje": 3.1
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 52,
-        "unitario": 2158,
+        "unitario": 6120,
         "facturado": 112200,
         "porcentaje": 2.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1332",
         "nombre": "AMELIA QUERIDA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 8,
-        "unitario": 13942,
+        "unitario": 14300,
         "facturado": 111540,
         "porcentaje": 2.9
       },
       {
-        "codigo": "ART",
+        "codigo": "607",
         "nombre": "CAFE - JARRITO CORTADO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 28,
-        "unitario": 3920,
+        "unitario": 5040,
         "facturado": 109760,
         "porcentaje": 2.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1106",
         "nombre": "OJO DE BIFE GRILLADO CON GUARN",
         "rubro": "ALMUERZO CENA",
         "unidades": 3,
-        "unitario": 33833,
+        "unitario": 31500,
         "facturado": 101500,
         "porcentaje": 2.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1312",
         "nombre": "TOSTADO ARABE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 8,
-        "unitario": 10106,
+        "unitario": 9450,
         "facturado": 80850,
         "porcentaje": 2.1
       },
       {
-        "codigo": "ART",
+        "codigo": "32",
         "nombre": "LIMONADA MENTA Y JENGIBRE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 15,
-        "unitario": 4900,
+        "unitario": 6300,
         "facturado": 73500,
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "606",
         "nombre": "CAFE - ESPRESSO JARRITO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 14,
-        "unitario": 4400,
+        "unitario": 5600,
         "facturado": 61600,
         "porcentaje": 1.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1336",
         "nombre": "ADORADO FRAN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
-        "unitario": 19237,
+        "unitario": 17910,
         "facturado": 57710,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "9769",
         "nombre": "TORTAS",
-        "rubro": "PASTELERIA",
+        "rubro": "POSTRES",
         "unidades": 4,
         "unitario": 14000,
         "facturado": 56000,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "615",
         "nombre": "CAFE - CAPPU GDS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 7,
         "unitario": 7900,
         "facturado": 55300,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1338",
         "nombre": "GDS COMPARTE CON VOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 1,
         "unitario": 55000,
         "facturado": 55000,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1333",
         "nombre": "ELSITA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
-        "unitario": 18270,
+        "unitario": 17010,
         "facturado": 54810,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1334",
         "nombre": "ROSA ROSA TAN MARAVILLOSA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 6,
-        "unitario": 8893,
+        "unitario": 9200,
         "facturado": 53360,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1004",
         "nombre": "CROQUE MADAME",
         "rubro": "ALMUERZO CENA",
         "unidades": 3,
@@ -5589,7 +5683,7 @@
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1576",
         "nombre": "MILANESA SUPREMA CON FIDEOS CO",
         "rubro": "ALMUERZO CENA",
         "unidades": 2,
@@ -5598,11 +5692,11 @@
         "porcentaje": 1.3
       },
       {
-        "codigo": "ART",
+        "codigo": "1534",
         "nombre": "MEDIA DOCENA DE MEDIALUNAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 3,
-        "unitario": 17000,
+        "unitario": 15000,
         "facturado": 51000,
         "porcentaje": 1.3
       }
@@ -5687,8 +5781,8 @@
   },
   "2026-10-03": {
     "fecha": "2026-10-03",
-    "archivoOrigen": "5.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "55802943.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 6571290,
       "tickets": 129,
@@ -5710,16 +5804,18 @@
         "tickets": 24,
         "cubiertos": 59,
         "comensales": 59,
-        "ticketPromedio": 63872,
+        "ticketPromedio": 63873,
         "promedioCubierto": 25982,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 153294,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "MEDIALUNA DE MANTECA (27 u.)",
         "postres": {
           "unidades": 4,
-          "facturado": 122635,
-          "postreTop": "Torta Cheese de Limón",
-          "porcentajeMesas": 18
+          "facturado": 109000,
+          "postreTop": "TORTA CARROT CAKE",
+          "porcentajeMesas": 17
         },
         "porcentajeTotal": 23.33,
         "primeraVenta": "09:57",
@@ -5740,14 +5836,16 @@
         "comensales": 67,
         "ticketPromedio": 49854,
         "promedioCubierto": 20090,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 134605,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (24 u.)",
         "postres": {
-          "unidades": 5,
-          "facturado": 107684,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 4,
+          "facturado": 40000,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 15
         },
         "porcentajeTotal": 20.48,
         "primeraVenta": "16:51",
@@ -5768,16 +5866,18 @@
         "comensales": 0,
         "ticketPromedio": 36514,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 131449,
         "calificacion": "⭐ 5.0",
         "platoMasVendido": "SCON DE QUESO (16 u.)",
         "postres": {
-          "unidades": 6,
-          "facturado": 105159,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 10,
+          "facturado": 164600,
+          "postreTop": "PORCION TORTA - ESPECIAL",
+          "porcentajeMesas": 28
         },
-        "porcentajeTotal": 20.0,
+        "porcentajeTotal": 20,
         "primeraVenta": "09:15",
         "ultimaVenta": "19:39"
       },
@@ -5796,14 +5896,16 @@
         "comensales": 46,
         "ticketPromedio": 81045,
         "promedioCubierto": 22904,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 105358,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "EVENTO MERIENDA (21 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 84286,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 3,
+          "facturado": 29000,
+          "postreTop": "PORCION TORTA - CH. LIMON CON",
+          "porcentajeMesas": 23
         },
         "porcentajeTotal": 16.03,
         "primeraVenta": "12:44",
@@ -5822,16 +5924,18 @@
         "tickets": 12,
         "cubiertos": 27,
         "comensales": 27,
-        "ticketPromedio": 46352,
+        "ticketPromedio": 46353,
         "promedioCubierto": 20601,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 55623,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "EXPRIMIDO NARANJA (8 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 44498,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 7,
+          "facturado": 77350,
+          "postreTop": "DEGUSTACION DE TORTAS",
+          "porcentajeMesas": 58
         },
         "porcentajeTotal": 8.46,
         "primeraVenta": "14:46",
@@ -5852,14 +5956,16 @@
         "comensales": 0,
         "ticketPromedio": 29344,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 26410,
         "calificacion": "⭐ 4.6",
         "platoMasVendido": "MEDIALUNA DE MANTECA (7 u.)",
         "postres": {
-          "unidades": 2,
-          "facturado": 21128,
-          "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "unidades": 7,
+          "facturado": 73900,
+          "postreTop": "ALFAJOR DE COCO",
+          "porcentajeMesas": 78
         },
         "porcentajeTotal": 4.02,
         "primeraVenta": "11:07",
@@ -5880,14 +5986,16 @@
         "comensales": 10,
         "ticketPromedio": 87100,
         "promedioCubierto": 26130,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 26130,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "SERVICIO DE MESA (5 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 20904,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 3.98,
         "primeraVenta": "20:23",
@@ -5908,14 +6016,16 @@
         "comensales": 8,
         "ticketPromedio": 54667,
         "promedioCubierto": 20500,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 16400,
         "calificacion": "⭐ 4.7",
         "platoMasVendido": "MEDIALUNA DE MANTECA (4 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 13120,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 2.5,
         "primeraVenta": "11:36",
@@ -5936,14 +6046,16 @@
         "comensales": 5,
         "ticketPromedio": 39300,
         "promedioCubierto": 15720,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 7860,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "LIMONADA MENTA Y JENGIBRE (2 u.)",
         "postres": {
           "unidades": 1,
-          "facturado": 6288,
-          "postreTop": "Ensalada de Frutas",
-          "porcentajeMesas": 18
+          "facturado": 11600,
+          "postreTop": "PORCION TORTA - CH. PISTACHO",
+          "porcentajeMesas": 50
         },
         "porcentajeTotal": 1.2,
         "primeraVenta": "18:35",
@@ -5955,7 +6067,6 @@
       "PASTELERIA": 3091580,
       "ADICIONALES": 89900,
       "ALMUERZO CENA": 1809758,
-      "AGUA": 0,
       "POSTRES": 153000,
       "MARKET": 351130,
       "CAFETERIA": 22800,
@@ -5964,25 +6075,25 @@
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "1158",
         "nombre": "EVENTO MERIENDA",
         "rubro": "ALMUERZO CENA",
         "unidades": 21,
-        "unitario": 20398,
+        "unitario": 20397.98,
         "facturado": 428358,
         "porcentaje": 6.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1338",
         "nombre": "GDS COMPARTE CON VOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 5,
         "unitario": 55000,
         "facturado": 275000,
         "porcentaje": 4.2
       },
       {
-        "codigo": "ART",
+        "codigo": "10120",
         "nombre": "PASTRON CASERO",
         "rubro": "ALMUERZO CENA",
         "unidades": 7,
@@ -5991,133 +6102,133 @@
         "porcentaje": 3.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 12,
-        "unitario": 19071,
+        "unitario": 17910,
         "facturado": 228850,
         "porcentaje": 3.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1334",
         "nombre": "ROSA ROSA TAN MARAVILLOSA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 22,
-        "unitario": 8698,
+        "unitario": 9200,
         "facturado": 191360,
         "porcentaje": 2.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1183",
         "nombre": "PLATO DEL DIA 2",
         "rubro": "ALMUERZO CENA",
         "unidades": 5,
-        "unitario": 31960,
+        "unitario": 30600,
         "facturado": 159800,
         "porcentaje": 2.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 9,
-        "unitario": 16053,
+        "unitario": 15120,
         "facturado": 144480,
         "porcentaje": 2.2
       },
       {
-        "codigo": "ART",
+        "codigo": "1533",
         "nombre": "DOCENA DE MEDIALUNAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 4,
-        "unitario": 34500,
+        "unitario": 33000,
         "facturado": 138000,
         "porcentaje": 2.1
       },
       {
-        "codigo": "ART",
+        "codigo": "1293",
         "nombre": "SCON DE QUESO",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 22,
-        "unitario": 5721,
+        "unitario": 5800,
         "facturado": 125860,
         "porcentaje": 1.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1406",
         "nombre": "TARTA  KEY LIME PIE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
-        "unitario": 60550,
+        "unitario": 62100,
         "facturado": 121100,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 65,
-        "unitario": 1852,
+        "unitario": 6800,
         "facturado": 120360,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "3371",
         "nombre": "GRANOLA 500GR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "MARKET",
         "unidades": 6,
         "unitario": 19000,
         "facturado": 114000,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "1230",
         "nombre": "VINNOISERIE RELLENA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 20,
-        "unitario": 5670,
+        "unitario": 6000,
         "facturado": 113400,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "32",
         "nombre": "LIMONADA MENTA Y JENGIBRE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 15,
-        "unitario": 6720,
+        "unitario": 7000,
         "facturado": 100800,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1233",
         "nombre": "MARQUISSE DDL",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 2,
         "unitario": 49000,
         "facturado": 98000,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1332",
         "nombre": "AMELIA QUERIDA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 7,
-        "unitario": 13891,
+        "unitario": 12870,
         "facturado": 97240,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "10082",
         "nombre": "FRENCH TOAST",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 5,
-        "unitario": 18144,
+        "unitario": 17010,
         "facturado": 90720,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1251",
         "nombre": "BUDIN CHICO",
         "rubro": "PASTELERIA",
         "unidades": 5,
@@ -6126,7 +6237,7 @@
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "10105",
         "nombre": "BLISTER MIGA X 10",
         "rubro": "ALMUERZO CENA",
         "unidades": 5,
@@ -6135,11 +6246,11 @@
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "21",
         "nombre": "EXPRIMIDO NARANJA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 17,
-        "unitario": 5188,
+        "unitario": 7000,
         "facturado": 88200,
         "porcentaje": 1.3
       }
@@ -6224,8 +6335,8 @@
   },
   "2026-10-04": {
     "fecha": "2026-10-04",
-    "archivoOrigen": "5.xls (Reporte Excel Maxirest POS)",
-    "fechaReporte": "22/10/2026, 09:38:59",
+    "archivoOrigen": "55802943.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 7492530,
       "tickets": 172,
@@ -6249,14 +6360,16 @@
         "comensales": 84,
         "ticketPromedio": 42526,
         "promedioCubierto": 20250,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 170102,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - LATTE (15 u.)",
         "postres": {
-          "unidades": 7,
-          "facturado": 136082,
-          "postreTop": "Torta Cheese Pistacho",
-          "porcentajeMesas": 18
+          "unidades": 9,
+          "facturado": 101000,
+          "postreTop": "PORCION TORTA  - BALCARCE",
+          "porcentajeMesas": 23
         },
         "porcentajeTotal": 22.7,
         "primeraVenta": "13:21",
@@ -6277,14 +6390,16 @@
         "comensales": 96,
         "ticketPromedio": 53379,
         "promedioCubierto": 15569,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 149462,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CAFE - LATTE (18 u.)",
         "postres": {
-          "unidades": 5,
-          "facturado": 119570,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 6,
+          "facturado": 121600,
+          "postreTop": "DEGUSTACION DE TORTAS",
+          "porcentajeMesas": 21
         },
         "porcentajeTotal": 19.95,
         "primeraVenta": "13:21",
@@ -6305,14 +6420,16 @@
         "comensales": 63,
         "ticketPromedio": 42991,
         "promedioCubierto": 19790,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 124675,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - LATTE (13 u.)",
         "postres": {
-          "unidades": 5,
-          "facturado": 99740,
-          "postreTop": "Torta Cheese de Limón",
-          "porcentajeMesas": 18
+          "unidades": 2,
+          "facturado": 9900,
+          "postreTop": "COOKIES MANTECA, CHOCOLATE Y A",
+          "porcentajeMesas": 7
         },
         "porcentajeTotal": 16.64,
         "primeraVenta": "09:49",
@@ -6333,14 +6450,16 @@
         "comensales": 53,
         "ticketPromedio": 55236,
         "promedioCubierto": 22928,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 121519,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "LIMONADA MENTA Y JENGIBRE (11 u.)",
         "postres": {
-          "unidades": 4,
-          "facturado": 97215,
-          "postreTop": "Mini Cakes",
-          "porcentajeMesas": 18
+          "unidades": 15,
+          "facturado": 107600,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 68
         },
         "porcentajeTotal": 16.22,
         "primeraVenta": "14:22",
@@ -6361,14 +6480,16 @@
         "comensales": 0,
         "ticketPromedio": 34775,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 104325,
         "calificacion": "⭐ 5.0",
         "platoMasVendido": "MASAS SECAS (10 u.)",
         "postres": {
-          "unidades": 5,
-          "facturado": 83460,
-          "postreTop": "Masas Secas",
-          "porcentajeMesas": 18
+          "unidades": 9,
+          "facturado": 249440,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 30
         },
         "porcentajeTotal": 13.92,
         "primeraVenta": "09:56",
@@ -6389,14 +6510,16 @@
         "comensales": 0,
         "ticketPromedio": 38257,
         "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 53560,
         "calificacion": "⭐ 4.6",
-        "platoMasVendido": "DOCENA DE MEDIALUNAS (3 u.)",
+        "platoMasVendido": " (4 u.)",
         "postres": {
-          "unidades": 3,
-          "facturado": 42848,
-          "postreTop": "Frola Chica Membrillo",
-          "porcentajeMesas": 18
+          "unidades": 4,
+          "facturado": 34900,
+          "postreTop": "ALFAJOR DE COCO",
+          "porcentajeMesas": 29
         },
         "porcentajeTotal": 7.15,
         "primeraVenta": "10:17",
@@ -6417,14 +6540,16 @@
         "comensales": 7,
         "ticketPromedio": 28020,
         "promedioCubierto": 20014,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 14010,
         "calificacion": "⭐ 4.8",
         "platoMasVendido": "CHIPA (3 u.)",
         "postres": {
           "unidades": 1,
-          "facturado": 11208,
-          "postreTop": "Ensalada de Frutas",
-          "porcentajeMesas": 18
+          "facturado": 12000,
+          "postreTop": "PORCION TORTA - CH. LIMON CON",
+          "porcentajeMesas": 20
         },
         "porcentajeTotal": 1.87,
         "primeraVenta": "15:23",
@@ -6445,14 +6570,16 @@
         "comensales": 5,
         "ticketPromedio": 23000,
         "promedioCubierto": 9200,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 4600,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "CAFE - LATTE (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 3680,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 0.61,
         "primeraVenta": "19:04",
@@ -6473,14 +6600,16 @@
         "comensales": 2,
         "ticketPromedio": 45200,
         "promedioCubierto": 22600,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 4520,
         "calificacion": "⭐ 4.9",
         "platoMasVendido": "SCON TRUCHA AHUMADA (1 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 3616,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 0.6,
         "primeraVenta": "13:22",
@@ -6501,14 +6630,16 @@
         "comensales": 2,
         "ticketPromedio": 24800,
         "promedioCubierto": 12400,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
         "propinasEstimadas": 2480,
         "calificacion": "⭐ 4.6",
         "platoMasVendido": "LIMONADA MENTA Y JENGIBRE (2 u.)",
         "postres": {
-          "unidades": 1,
-          "facturado": 1984,
+          "unidades": 0,
+          "facturado": 0,
           "postreTop": "Flan de Ana con DDL",
-          "porcentajeMesas": 18
+          "porcentajeMesas": 0
         },
         "porcentajeTotal": 0.33,
         "primeraVenta": "19:37",
@@ -6527,124 +6658,124 @@
     },
     "productos": [
       {
-        "codigo": "ART",
+        "codigo": "1335",
         "nombre": "SARA DE LEJOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 19,
-        "unitario": 19272,
+        "unitario": 17910,
         "facturado": 366160,
         "porcentaje": 4.9
       },
       {
-        "codigo": "ART",
+        "codigo": "1344",
         "nombre": "AMELITA DE MI AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 16,
         "unitario": 16800,
         "facturado": 268800,
         "porcentaje": 3.6
       },
       {
-        "codigo": "ART",
+        "codigo": "32",
         "nombre": "LIMONADA MENTA Y JENGIBRE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 32,
-        "unitario": 6934,
+        "unitario": 7000,
         "facturado": 221900,
-        "porcentaje": 3.0
+        "porcentaje": 3
       },
       {
-        "codigo": "ART",
+        "codigo": "1338",
         "nombre": "GDS COMPARTE CON VOS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 4,
         "unitario": 55000,
         "facturado": 220000,
         "porcentaje": 2.9
       },
       {
-        "codigo": "ART",
+        "codigo": "9768",
         "nombre": "TARTAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 15,
-        "unitario": 11840,
+        "unitario": 10800,
         "facturado": 177600,
         "porcentaje": 2.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1533",
         "nombre": "DOCENA DE MEDIALUNAS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 5,
-        "unitario": 35400,
+        "unitario": 36000,
         "facturado": 177000,
         "porcentaje": 2.4
       },
       {
-        "codigo": "ART",
+        "codigo": "611",
         "nombre": "CAFE - LATTE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 59,
-        "unitario": 2685,
+        "unitario": 6800,
         "facturado": 158440,
         "porcentaje": 2.1
       },
       {
-        "codigo": "ART",
+        "codigo": "9769",
         "nombre": "TORTAS",
-        "rubro": "PASTELERIA",
+        "rubro": "POSTRES",
         "unidades": 10,
-        "unitario": 13860,
+        "unitario": 14000,
         "facturado": 138600,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1336",
         "nombre": "ADORADO FRAN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 7,
-        "unitario": 19047,
+        "unitario": 17910,
         "facturado": 133330,
         "porcentaje": 1.8
       },
       {
-        "codigo": "ART",
+        "codigo": "1343",
         "nombre": "ALEGRE AGUSTIN",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 8,
-        "unitario": 16380,
+        "unitario": 16800,
         "facturado": 131040,
         "porcentaje": 1.7
       },
       {
-        "codigo": "ART",
+        "codigo": "615",
         "nombre": "CAFE - CAPPU GDS",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 15,
         "unitario": 7900,
         "facturado": 118500,
         "porcentaje": 1.6
       },
       {
-        "codigo": "ART",
+        "codigo": "1333",
         "nombre": "ELSITA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 6,
-        "unitario": 18585,
+        "unitario": 17010,
         "facturado": 111510,
         "porcentaje": 1.5
       },
       {
-        "codigo": "ART",
+        "codigo": "1314",
         "nombre": "TOSTADO MIGA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 13,
-        "unitario": 8077,
+        "unitario": 0,
         "facturado": 105000,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1106",
         "nombre": "OJO DE BIFE GRILLADO CON GUARN",
         "rubro": "ALMUERZO CENA",
         "unidades": 3,
@@ -6653,34 +6784,34 @@
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1230",
         "nombre": "VINNOISERIE RELLENA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 18,
-        "unitario": 5800,
+        "unitario": 6000,
         "facturado": 104400,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1023",
         "nombre": "ENSALADA GARZA",
         "rubro": "ALMUERZO CENA",
         "unidades": 3,
-        "unitario": 34317,
+        "unitario": 31950,
         "facturado": 102950,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "21",
         "nombre": "EXPRIMIDO NARANJA",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "BEBIDAS",
         "unidades": 32,
-        "unitario": 3216,
+        "unitario": 0,
         "facturado": 102900,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1183",
         "nombre": "PLATO DEL DIA 2",
         "rubro": "ALMUERZO CENA",
         "unidades": 3,
@@ -6689,18 +6820,18 @@
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1312",
         "nombre": "TOSTADO ARABE",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 10,
-        "unitario": 10185,
+        "unitario": 10500,
         "facturado": 101850,
         "porcentaje": 1.4
       },
       {
-        "codigo": "ART",
+        "codigo": "1346",
         "nombre": "PARA ANA CON AMOR",
-        "rubro": "ALMUERZO CENA",
+        "rubro": "PASTELERIA",
         "unidades": 7,
         "unitario": 14300,
         "facturado": 100100,
@@ -6773,7 +6904,7 @@
   "2025-08-01": {
     "fecha": "2025-08-01",
     "archivoOrigen": "47778738.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 4120965,
       "tickets": 132,
@@ -7375,7 +7506,7 @@
   "2025-08-03": {
     "fecha": "2025-08-03",
     "archivoOrigen": "47778738.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 7529800,
       "tickets": 197,
@@ -7913,7 +8044,7 @@
   "2025-08-04": {
     "fecha": "2025-08-04",
     "archivoOrigen": "47778738.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 2831590,
       "tickets": 95,
@@ -8394,7 +8525,7 @@
   "2025-08-07": {
     "fecha": "2025-08-07",
     "archivoOrigen": "47778738.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 2460820,
       "tickets": 98,
@@ -8900,7 +9031,7 @@
   "2025-08-10": {
     "fecha": "2025-08-10",
     "archivoOrigen": "53706635.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 6915400,
       "tickets": 179,
@@ -9461,7 +9592,7 @@
   "2025-08-11": {
     "fecha": "2025-08-11",
     "archivoOrigen": "53706635.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 2450540,
       "tickets": 87,
@@ -9996,7 +10127,7 @@
   "2025-08-12": {
     "fecha": "2025-08-12",
     "archivoOrigen": "53706635.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 3268640,
       "tickets": 116,
@@ -10564,7 +10695,7 @@
   "2025-08-02": {
     "fecha": "2025-08-02",
     "archivoOrigen": "47778738.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 8411040,
       "tickets": 213,
@@ -11166,7 +11297,7 @@
   "2025-08-08": {
     "fecha": "2025-08-08",
     "archivoOrigen": "53706635.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 4919375,
       "tickets": 159,
@@ -11738,7 +11869,7 @@
   "2025-08-09": {
     "fecha": "2025-08-09",
     "archivoOrigen": "53706635.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 7111675,
       "tickets": 189,
@@ -12330,7 +12461,7 @@
   "2025-08-13": {
     "fecha": "2025-08-13",
     "archivoOrigen": "53706635.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 3245575,
       "tickets": 124,
@@ -12867,7 +12998,7 @@
   "2025-08-14": {
     "fecha": "2025-08-14",
     "archivoOrigen": "53706635.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 2993050,
       "tickets": 105,
@@ -13367,7 +13498,7 @@
   "2025-08-06": {
     "fecha": "2025-08-06",
     "archivoOrigen": "47778738.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 3284620,
       "tickets": 114,
@@ -13868,7 +13999,7 @@
   "2025-08-05": {
     "fecha": "2025-08-05",
     "archivoOrigen": "47778738.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:24",
+    "fechaReporte": "26/10/2026, 09:46:50",
     "totales": {
       "importe": 3153390,
       "tickets": 117,
@@ -44523,7 +44654,7 @@
   "2026-10-21": {
     "fecha": "2026-10-21",
     "archivoOrigen": "29644602.dbf (Informe Oficial Maxirest POS)",
-    "fechaReporte": "22/10/2026, 08:44:21",
+    "fechaReporte": "26/10/2026, 09:46:47",
     "totales": {
       "importe": 2903785,
       "tickets": 90,
@@ -45030,6 +45161,1977 @@
         "hora": "20:00",
         "importe": 105350,
         "tickets": 16
+      }
+    ]
+  },
+  "2026-10-22": {
+    "fecha": "2026-10-22",
+    "archivoOrigen": "31257625.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
+    "totales": {
+      "importe": 2765420,
+      "tickets": 74,
+      "cubiertos": 81,
+      "promedio": 37370.54,
+      "promedioCubierto": 34140.99
+    },
+    "mozos": [
+      {
+        "id": 2,
+        "codigo": 984,
+        "nombre": "BELEN",
+        "avatar": "👩‍🌾",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2024 - 2026",
+        "ventas": 933460,
+        "tickets": 22,
+        "cubiertos": 40,
+        "comensales": 40,
+        "ticketPromedio": 42430,
+        "promedioCubierto": 23337,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 93346,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "CAFE - LATTE (13 u.)",
+        "postres": {
+          "unidades": 16,
+          "facturado": 96250,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 73
+        },
+        "porcentajeTotal": 33.75,
+        "primeraVenta": "10:21",
+        "ultimaVenta": "19:57"
+      },
+      {
+        "id": 998,
+        "codigo": 998,
+        "nombre": "ARI",
+        "avatar": "👤",
+        "estado": "ACTIVO",
+        "fechaIngreso": null,
+        "fechaEgreso": null,
+        "periodoActividad": "Turno Activo en Maxirest POS",
+        "ventas": 732080,
+        "tickets": 20,
+        "cubiertos": 35,
+        "comensales": 35,
+        "ticketPromedio": 36604,
+        "promedioCubierto": 20917,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 73208,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "CAFE - LATTE (16 u.)",
+        "postres": {
+          "unidades": 7,
+          "facturado": 45200,
+          "postreTop": "PORCION TORTA -VASCA CLASICA",
+          "porcentajeMesas": 35
+        },
+        "porcentajeTotal": 26.47,
+        "primeraVenta": "12:56",
+        "ultimaVenta": "20:08"
+      },
+      {
+        "id": 17,
+        "codigo": 500,
+        "nombre": "MARKET",
+        "avatar": "🛍️",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Estación Mostrador / Tienda",
+        "ventas": 645800,
+        "tickets": 19,
+        "cubiertos": 0,
+        "comensales": 0,
+        "ticketPromedio": 33989,
+        "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 64580,
+        "calificacion": "⭐ 5.0",
+        "platoMasVendido": "BUDIN CHICO (7 u.)",
+        "postres": {
+          "unidades": 8,
+          "facturado": 73500,
+          "postreTop": "COOKIES EN CAJITA",
+          "porcentajeMesas": 42
+        },
+        "porcentajeTotal": 23.35,
+        "primeraVenta": "08:46",
+        "ultimaVenta": "20:10"
+      },
+      {
+        "id": 18,
+        "codigo": 952,
+        "nombre": "DELIVERY / PLATAFORMAS",
+        "avatar": "🛵",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Canal Envíos y Plataformas",
+        "ventas": 305810,
+        "tickets": 7,
+        "cubiertos": 0,
+        "comensales": 0,
+        "ticketPromedio": 43687,
+        "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 30581,
+        "calificacion": "⭐ 4.6",
+        "platoMasVendido": "MEDIALUNA DE MANTECA (6 u.)",
+        "postres": {
+          "unidades": 0,
+          "facturado": 0,
+          "postreTop": "Frola Chica Membrillo",
+          "porcentajeMesas": 0
+        },
+        "porcentajeTotal": 11.06,
+        "primeraVenta": "12:07",
+        "ultimaVenta": "18:47"
+      },
+      {
+        "id": 3,
+        "codigo": 315,
+        "nombre": "MARINA",
+        "avatar": "👩‍💻",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2023-05-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2023 - 2026",
+        "ventas": 120470,
+        "tickets": 5,
+        "cubiertos": 5,
+        "comensales": 5,
+        "ticketPromedio": 24094,
+        "promedioCubierto": 24094,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 12047,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "CAFE - DOBLE CORTADO (3 u.)",
+        "postres": {
+          "unidades": 1,
+          "facturado": 0,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 20
+        },
+        "porcentajeTotal": 4.36,
+        "primeraVenta": "09:11",
+        "ultimaVenta": "18:05"
+      },
+      {
+        "id": 8,
+        "codigo": 983,
+        "nombre": "LUCIA",
+        "avatar": "👱‍♀️",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2025-09-07",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2025 - 2026",
+        "ventas": 27800,
+        "tickets": 1,
+        "cubiertos": 1,
+        "comensales": 1,
+        "ticketPromedio": 27800,
+        "promedioCubierto": 27800,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 2780,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "FLAN DE ANA CON DULCE DE LECHE (1 u.)",
+        "postres": {
+          "unidades": 1,
+          "facturado": 0,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 100
+        },
+        "porcentajeTotal": 1.01,
+        "primeraVenta": "13:26",
+        "ultimaVenta": "13:26"
+      }
+    ],
+    "rubros": {
+      "BEBIDAS": 407940,
+      "ADICIONALES": 138560,
+      "PASTELERIA": 1052260,
+      "ALMUERZO CENA": 923550,
+      "MARKET": 91110,
+      "POSTRES": 30000,
+      "RUBRO. INEXISTENTE": 122000
+    },
+    "productos": [
+      {
+        "codigo": "9530",
+        "nombre": "MENU EJECUTIVO",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 23,
+        "unitario": 20700,
+        "facturado": 515200,
+        "porcentaje": 18.6
+      },
+      {
+        "codigo": "1251",
+        "nombre": "BUDIN CHICO",
+        "rubro": "PASTELERIA",
+        "unidades": 8,
+        "unitario": 18000,
+        "facturado": 144000,
+        "porcentaje": 5.2
+      },
+      {
+        "codigo": "4091",
+        "nombre": "SEÑA EVENTO",
+        "rubro": "ADICIONALES",
+        "unidades": 1,
+        "unitario": 120000,
+        "facturado": 120000,
+        "porcentaje": 4.3
+      },
+      {
+        "codigo": "611",
+        "nombre": "CAFE - LATTE",
+        "rubro": "BEBIDAS",
+        "unidades": 30,
+        "unitario": 0,
+        "facturado": 113560,
+        "porcentaje": 4.1
+      },
+      {
+        "codigo": "1338",
+        "nombre": "GDS COMPARTE CON VOS",
+        "rubro": "PASTELERIA",
+        "unidades": 2,
+        "unitario": 57000,
+        "facturado": 108300,
+        "porcentaje": 3.9
+      },
+      {
+        "codigo": "1533",
+        "nombre": "DOCENA DE MEDIALUNAS",
+        "rubro": "PASTELERIA",
+        "unidades": 3,
+        "unitario": 33000,
+        "facturado": 102000,
+        "porcentaje": 3.7
+      },
+      {
+        "codigo": "1335",
+        "nombre": "SARA DE LEJOS",
+        "rubro": "PASTELERIA",
+        "unidades": 5,
+        "unitario": 18900,
+        "facturado": 100800,
+        "porcentaje": 3.6
+      },
+      {
+        "codigo": "1332",
+        "nombre": "AMELIA QUERIDA",
+        "rubro": "PASTELERIA",
+        "unidades": 5,
+        "unitario": 12870,
+        "facturado": 65780,
+        "porcentaje": 2.4
+      },
+      {
+        "codigo": "1002",
+        "nombre": "TOSTON GARDENIAS",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 2,
+        "unitario": 32500,
+        "facturado": 65000,
+        "porcentaje": 2.4
+      },
+      {
+        "codigo": "1005",
+        "nombre": "TOSTON CIRUELO",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 3,
+        "unitario": 18900,
+        "facturado": 60900,
+        "porcentaje": 2.2
+      },
+      {
+        "codigo": "1105",
+        "nombre": "POLLO GRILLADO CON CREMA VERDE",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 5,
+        "unitario": 31000,
+        "facturado": 58000,
+        "porcentaje": 2.1
+      },
+      {
+        "codigo": "606",
+        "nombre": "CAFE - ESPRESSO JARRITO",
+        "rubro": "BEBIDAS",
+        "unidades": 13,
+        "unitario": 5600,
+        "facturado": 56000,
+        "porcentaje": 2
+      },
+      {
+        "codigo": "607",
+        "nombre": "CAFE - JARRITO CORTADO",
+        "rubro": "BEBIDAS",
+        "unidades": 13,
+        "unitario": 0,
+        "facturado": 53200,
+        "porcentaje": 1.9
+      },
+      {
+        "codigo": "1025",
+        "nombre": "ENSALADA ZORZAL",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 3,
+        "unitario": 24000,
+        "facturado": 48000,
+        "porcentaje": 1.7
+      },
+      {
+        "codigo": "1219",
+        "nombre": "COOKIES EN CAJITA",
+        "rubro": "PASTELERIA",
+        "unidades": 4,
+        "unitario": 10000,
+        "facturado": 40000,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "9768",
+        "nombre": "TARTAS",
+        "rubro": "PASTELERIA",
+        "unidades": 3,
+        "unitario": 13000,
+        "facturado": 39000,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "3371",
+        "nombre": "GRANOLA 500GR",
+        "rubro": "MARKET",
+        "unidades": 2,
+        "unitario": 19000,
+        "facturado": 38000,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "1227",
+        "nombre": "MEDIALUNA DE MANTECA",
+        "rubro": "PASTELERIA",
+        "unidades": 17,
+        "unitario": 3000,
+        "facturado": 36600,
+        "porcentaje": 1.3
+      },
+      {
+        "codigo": "1271",
+        "nombre": "PORCION DE BUDIN",
+        "rubro": "PASTELERIA",
+        "unidades": 6,
+        "unitario": 6000,
+        "facturado": 36000,
+        "porcentaje": 1.3
+      },
+      {
+        "codigo": "1312",
+        "nombre": "TOSTADO ARABE",
+        "rubro": "PASTELERIA",
+        "unidades": 3,
+        "unitario": 11000,
+        "facturado": 33000,
+        "porcentaje": 1.2
+      }
+    ],
+    "horarios": [
+      {
+        "hora": "08:00",
+        "importe": 12800,
+        "tickets": 2
+      },
+      {
+        "hora": "09:00",
+        "importe": 51900,
+        "tickets": 6
+      },
+      {
+        "hora": "10:00",
+        "importe": 161580,
+        "tickets": 24
+      },
+      {
+        "hora": "11:00",
+        "importe": 253210,
+        "tickets": 28
+      },
+      {
+        "hora": "12:00",
+        "importe": 291240,
+        "tickets": 35
+      },
+      {
+        "hora": "13:00",
+        "importe": 439700,
+        "tickets": 54
+      },
+      {
+        "hora": "14:00",
+        "importe": 408000,
+        "tickets": 40
+      },
+      {
+        "hora": "15:00",
+        "importe": 301700,
+        "tickets": 42
+      },
+      {
+        "hora": "16:00",
+        "importe": 101700,
+        "tickets": 15
+      },
+      {
+        "hora": "17:00",
+        "importe": 142610,
+        "tickets": 16
+      },
+      {
+        "hora": "18:00",
+        "importe": 214530,
+        "tickets": 25
+      },
+      {
+        "hora": "19:00",
+        "importe": 317550,
+        "tickets": 38
+      },
+      {
+        "hora": "20:00",
+        "importe": 68900,
+        "tickets": 5
+      }
+    ]
+  },
+  "2026-10-23": {
+    "fecha": "2026-10-23",
+    "archivoOrigen": "32759679.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
+    "totales": {
+      "importe": 5616075,
+      "tickets": 124,
+      "cubiertos": 164,
+      "promedio": 45290.93,
+      "promedioCubierto": 34244.36
+    },
+    "mozos": [
+      {
+        "id": 13,
+        "codigo": 364,
+        "nombre": "MAITE",
+        "avatar": "👩",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2026-08-17",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2026",
+        "ventas": 1644955,
+        "tickets": 38,
+        "cubiertos": 60,
+        "comensales": 60,
+        "ticketPromedio": 43288,
+        "promedioCubierto": 27416,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 164496,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "CAFE - LATTE (16 u.)",
+        "postres": {
+          "unidades": 7,
+          "facturado": 75600,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 18
+        },
+        "porcentajeTotal": 29.29,
+        "primeraVenta": "09:05",
+        "ultimaVenta": "17:23"
+      },
+      {
+        "id": 998,
+        "codigo": 998,
+        "nombre": "ARI",
+        "avatar": "👤",
+        "estado": "ACTIVO",
+        "fechaIngreso": null,
+        "fechaEgreso": null,
+        "periodoActividad": "Turno Activo en Maxirest POS",
+        "ventas": 1134390,
+        "tickets": 25,
+        "cubiertos": 48,
+        "comensales": 48,
+        "ticketPromedio": 45376,
+        "promedioCubierto": 23633,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 113439,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "CAFE - LATTE (9 u.)",
+        "postres": {
+          "unidades": 4,
+          "facturado": 33500,
+          "postreTop": "ALFAJOR DE MAICENA",
+          "porcentajeMesas": 16
+        },
+        "porcentajeTotal": 20.2,
+        "primeraVenta": "17:24",
+        "ultimaVenta": "23:47"
+      },
+      {
+        "id": 17,
+        "codigo": 500,
+        "nombre": "MARKET",
+        "avatar": "🛍️",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Estación Mostrador / Tienda",
+        "ventas": 1012540,
+        "tickets": 23,
+        "cubiertos": 0,
+        "comensales": 0,
+        "ticketPromedio": 44023,
+        "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 101254,
+        "calificacion": "⭐ 5.0",
+        "platoMasVendido": "TARTAS (10 u.)",
+        "postres": {
+          "unidades": 13,
+          "facturado": 308540,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 57
+        },
+        "porcentajeTotal": 18.03,
+        "primeraVenta": "10:32",
+        "ultimaVenta": "22:52"
+      },
+      {
+        "id": 2,
+        "codigo": 984,
+        "nombre": "BELEN",
+        "avatar": "👩‍🌾",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2024 - 2026",
+        "ventas": 948890,
+        "tickets": 19,
+        "cubiertos": 40,
+        "comensales": 40,
+        "ticketPromedio": 49942,
+        "promedioCubierto": 23722,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 94889,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "MENU EJECUTIVO (13 u.)",
+        "postres": {
+          "unidades": 11,
+          "facturado": 63400,
+          "postreTop": "FLAN DE ANA CON DULCE DE LECHE",
+          "porcentajeMesas": 58
+        },
+        "porcentajeTotal": 16.9,
+        "primeraVenta": "13:33",
+        "ultimaVenta": "21:46"
+      },
+      {
+        "id": 18,
+        "codigo": 952,
+        "nombre": "DELIVERY / PLATAFORMAS",
+        "avatar": "🛵",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Canal Envíos y Plataformas",
+        "ventas": 386200,
+        "tickets": 9,
+        "cubiertos": 0,
+        "comensales": 0,
+        "ticketPromedio": 42911,
+        "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 38620,
+        "calificacion": "⭐ 4.6",
+        "platoMasVendido": "MEDIALUNA DE MANTECA (4 u.)",
+        "postres": {
+          "unidades": 1,
+          "facturado": 6000,
+          "postreTop": "ALFAJOR DE COCO",
+          "porcentajeMesas": 11
+        },
+        "porcentajeTotal": 6.88,
+        "primeraVenta": "10:33",
+        "ultimaVenta": "22:03"
+      },
+      {
+        "id": 3,
+        "codigo": 315,
+        "nombre": "MARINA",
+        "avatar": "👩‍💻",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2023-05-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2023 - 2026",
+        "ventas": 280300,
+        "tickets": 6,
+        "cubiertos": 10,
+        "comensales": 10,
+        "ticketPromedio": 46717,
+        "promedioCubierto": 28030,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 28030,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "CAFE - ESPRESSO CHICO (6 u.)",
+        "postres": {
+          "unidades": 0,
+          "facturado": 0,
+          "postreTop": "Torta Cheese de Limón",
+          "porcentajeMesas": 0
+        },
+        "porcentajeTotal": 4.99,
+        "primeraVenta": "09:39",
+        "ultimaVenta": "18:06"
+      },
+      {
+        "id": 9,
+        "codigo": 302,
+        "nombre": "STELLA",
+        "avatar": "👩‍🍳",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2023-08-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2023 - 2026",
+        "ventas": 208800,
+        "tickets": 4,
+        "cubiertos": 6,
+        "comensales": 6,
+        "ticketPromedio": 52200,
+        "promedioCubierto": 34800,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 20880,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "COOKIES EN CAJITA (3 u.)",
+        "postres": {
+          "unidades": 6,
+          "facturado": 35600,
+          "postreTop": "COOKIES EN CAJITA",
+          "porcentajeMesas": 150
+        },
+        "porcentajeTotal": 3.72,
+        "primeraVenta": "13:17",
+        "ultimaVenta": "14:27"
+      }
+    ],
+    "rubros": {
+      "PASTELERIA": 1934490,
+      "ALMUERZO CENA": 1881520,
+      "ADICIONALES": 66040,
+      "POSTRES": 194800,
+      "BEBIDAS": 999235,
+      "RUBRO. INEXISTENTE": 182000,
+      "MARKET": 312090,
+      "CAFETERIA": 45900
+    },
+    "productos": [
+      {
+        "codigo": "9530",
+        "nombre": "MENU EJECUTIVO",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 26,
+        "unitario": 20700,
+        "facturado": 584200,
+        "porcentaje": 10.4
+      },
+      {
+        "codigo": "1343",
+        "nombre": "ALEGRE AGUSTIN",
+        "rubro": "PASTELERIA",
+        "unidades": 9,
+        "unitario": 17900,
+        "facturado": 161100,
+        "porcentaje": 2.9
+      },
+      {
+        "codigo": "32",
+        "nombre": "LIMONADA MENTA Y JENGIBRE",
+        "rubro": "BEBIDAS",
+        "unidades": 20,
+        "unitario": 7700,
+        "facturado": 143220,
+        "porcentaje": 2.6
+      },
+      {
+        "codigo": "9768",
+        "nombre": "TARTAS",
+        "rubro": "PASTELERIA",
+        "unidades": 11,
+        "unitario": 13000,
+        "facturado": 143000,
+        "porcentaje": 2.5
+      },
+      {
+        "codigo": "607",
+        "nombre": "CAFE - JARRITO CORTADO",
+        "rubro": "BEBIDAS",
+        "unidades": 27,
+        "unitario": 5600,
+        "facturado": 127680,
+        "porcentaje": 2.3
+      },
+      {
+        "codigo": "1335",
+        "nombre": "SARA DE LEJOS",
+        "rubro": "PASTELERIA",
+        "unidades": 6,
+        "unitario": 21000,
+        "facturado": 118650,
+        "porcentaje": 2.1
+      },
+      {
+        "codigo": "3371",
+        "nombre": "GRANOLA 500GR",
+        "rubro": "MARKET",
+        "unidades": 6,
+        "unitario": 19000,
+        "facturado": 112100,
+        "porcentaje": 2
+      },
+      {
+        "codigo": "9769",
+        "nombre": "TORTAS",
+        "rubro": "POSTRES",
+        "unidades": 7,
+        "unitario": 15000,
+        "facturado": 105000,
+        "porcentaje": 1.9
+      },
+      {
+        "codigo": "1124",
+        "nombre": "BERENJENAS FRITAS",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 5,
+        "unitario": 18000,
+        "facturado": 88200,
+        "porcentaje": 1.6
+      },
+      {
+        "codigo": "1576",
+        "nombre": "MILANESA SUPREMA CON FIDEOS CO",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 3,
+        "unitario": 26000,
+        "facturado": 88000,
+        "porcentaje": 1.6
+      },
+      {
+        "codigo": "1002",
+        "nombre": "TOSTON GARDENIAS",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 3,
+        "unitario": 28900,
+        "facturado": 80920,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "42",
+        "nombre": "AGUA SIN GAS",
+        "rubro": "BEBIDAS",
+        "unidades": 27,
+        "unitario": 0,
+        "facturado": 79200,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "611",
+        "nombre": "CAFE - LATTE",
+        "rubro": "BEBIDAS",
+        "unidades": 34,
+        "unitario": 0,
+        "facturado": 78880,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "92",
+        "nombre": "LICUADO MULTIFRUTA Y MULTIFRUT",
+        "rubro": "BEBIDAS",
+        "unidades": 9,
+        "unitario": 8100,
+        "facturado": 78300,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "1105",
+        "nombre": "POLLO GRILLADO CON CREMA VERDE",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 4,
+        "unitario": 0,
+        "facturado": 78300,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "1333",
+        "nombre": "ELSITA",
+        "rubro": "PASTELERIA",
+        "unidades": 4,
+        "unitario": 17910,
+        "facturado": 77610,
+        "porcentaje": 1.4
+      },
+      {
+        "codigo": "10082",
+        "nombre": "FRENCH TOAST",
+        "rubro": "PASTELERIA",
+        "unidades": 4,
+        "unitario": 18900,
+        "facturado": 72765,
+        "porcentaje": 1.3
+      },
+      {
+        "codigo": "1346",
+        "nombre": "PARA ANA CON AMOR",
+        "rubro": "PASTELERIA",
+        "unidades": 5,
+        "unitario": 13500,
+        "facturado": 72000,
+        "porcentaje": 1.3
+      },
+      {
+        "codigo": "21",
+        "nombre": "EXPRIMIDO NARANJA",
+        "rubro": "BEBIDAS",
+        "unidades": 12,
+        "unitario": 0,
+        "facturado": 72000,
+        "porcentaje": 1.3
+      },
+      {
+        "codigo": "1106",
+        "nombre": "OJO DE BIFE GRILLADO CON GUARN",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 2,
+        "unitario": 35000,
+        "facturado": 70000,
+        "porcentaje": 1.2
+      }
+    ],
+    "horarios": [
+      {
+        "hora": "09:00",
+        "importe": 74000,
+        "tickets": 13
+      },
+      {
+        "hora": "10:00",
+        "importe": 197695,
+        "tickets": 24
+      },
+      {
+        "hora": "11:00",
+        "importe": 229610,
+        "tickets": 33
+      },
+      {
+        "hora": "12:00",
+        "importe": 274870,
+        "tickets": 29
+      },
+      {
+        "hora": "13:00",
+        "importe": 612120,
+        "tickets": 74
+      },
+      {
+        "hora": "14:00",
+        "importe": 722340,
+        "tickets": 60
+      },
+      {
+        "hora": "15:00",
+        "importe": 611530,
+        "tickets": 65
+      },
+      {
+        "hora": "16:00",
+        "importe": 529930,
+        "tickets": 41
+      },
+      {
+        "hora": "17:00",
+        "importe": 308700,
+        "tickets": 37
+      },
+      {
+        "hora": "18:00",
+        "importe": 816890,
+        "tickets": 82
+      },
+      {
+        "hora": "19:00",
+        "importe": 111420,
+        "tickets": 18
+      },
+      {
+        "hora": "20:00",
+        "importe": 246600,
+        "tickets": 17
+      },
+      {
+        "hora": "21:00",
+        "importe": 343150,
+        "tickets": 39
+      },
+      {
+        "hora": "22:00",
+        "importe": 91000,
+        "tickets": 3
+      },
+      {
+        "hora": "23:00",
+        "importe": 446220,
+        "tickets": 58
+      }
+    ]
+  },
+  "2026-10-24": {
+    "fecha": "2026-10-24",
+    "archivoOrigen": "32759679.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
+    "totales": {
+      "importe": 7109280,
+      "tickets": 145,
+      "cubiertos": 251,
+      "promedio": 49029.52,
+      "promedioCubierto": 28323.82
+    },
+    "mozos": [
+      {
+        "id": 13,
+        "codigo": 364,
+        "nombre": "MAITE",
+        "avatar": "👩",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2026-08-17",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2026",
+        "ventas": 1991350,
+        "tickets": 31,
+        "cubiertos": 77,
+        "comensales": 77,
+        "ticketPromedio": 64237,
+        "promedioCubierto": 25862,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 199135,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "GASEOSA (12 u.)",
+        "postres": {
+          "unidades": 14,
+          "facturado": 122940,
+          "postreTop": "ALFAJOR DE ALMENDRA Y DDL",
+          "porcentajeMesas": 45
+        },
+        "porcentajeTotal": 28.01,
+        "primeraVenta": "12:49",
+        "ultimaVenta": "20:53"
+      },
+      {
+        "id": 17,
+        "codigo": 500,
+        "nombre": "MARKET",
+        "avatar": "🛍️",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Estación Mostrador / Tienda",
+        "ventas": 1514240,
+        "tickets": 38,
+        "cubiertos": 0,
+        "comensales": 0,
+        "ticketPromedio": 39848,
+        "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 151424,
+        "calificacion": "⭐ 5.0",
+        "platoMasVendido": "MINI CAKES (16 u.)",
+        "postres": {
+          "unidades": 35,
+          "facturado": 686500,
+          "postreTop": "MINI CAKES",
+          "porcentajeMesas": 92
+        },
+        "porcentajeTotal": 21.3,
+        "primeraVenta": "10:07",
+        "ultimaVenta": "21:39"
+      },
+      {
+        "id": 3,
+        "codigo": 315,
+        "nombre": "MARINA",
+        "avatar": "👩‍💻",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2023-05-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2023 - 2026",
+        "ventas": 1064200,
+        "tickets": 21,
+        "cubiertos": 63,
+        "comensales": 63,
+        "ticketPromedio": 50676,
+        "promedioCubierto": 16892,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 106420,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "CAFE - LATTE (31 u.)",
+        "postres": {
+          "unidades": 5,
+          "facturado": 44500,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 24
+        },
+        "porcentajeTotal": 14.97,
+        "primeraVenta": "10:58",
+        "ultimaVenta": "18:33"
+      },
+      {
+        "id": 2,
+        "codigo": 984,
+        "nombre": "BELEN",
+        "avatar": "👩‍🌾",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2024 - 2026",
+        "ventas": 1030330,
+        "tickets": 17,
+        "cubiertos": 44,
+        "comensales": 44,
+        "ticketPromedio": 60608,
+        "promedioCubierto": 23417,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 103033,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "CAFE - LATTE (13 u.)",
+        "postres": {
+          "unidades": 14,
+          "facturado": 127000,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 82
+        },
+        "porcentajeTotal": 14.49,
+        "primeraVenta": "17:06",
+        "ultimaVenta": "23:34"
+      },
+      {
+        "id": 8,
+        "codigo": 983,
+        "nombre": "LUCIA",
+        "avatar": "👱‍♀️",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2025-09-07",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2025 - 2026",
+        "ventas": 457040,
+        "tickets": 14,
+        "cubiertos": 32,
+        "comensales": 32,
+        "ticketPromedio": 32646,
+        "promedioCubierto": 14283,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 45704,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "CAFE - LATTE (9 u.)",
+        "postres": {
+          "unidades": 8,
+          "facturado": 62000,
+          "postreTop": "COOKIES EN CAJITA",
+          "porcentajeMesas": 57
+        },
+        "porcentajeTotal": 6.43,
+        "primeraVenta": "18:13",
+        "ultimaVenta": "20:40"
+      },
+      {
+        "id": 998,
+        "codigo": 998,
+        "nombre": "ARI",
+        "avatar": "👤",
+        "estado": "ACTIVO",
+        "fechaIngreso": null,
+        "fechaEgreso": null,
+        "periodoActividad": "Turno Activo en Maxirest POS",
+        "ventas": 400540,
+        "tickets": 9,
+        "cubiertos": 21,
+        "comensales": 21,
+        "ticketPromedio": 44504,
+        "promedioCubierto": 19073,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 40054,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "CAFE - LATTE (8 u.)",
+        "postres": {
+          "unidades": 4,
+          "facturado": 46500,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 44
+        },
+        "porcentajeTotal": 5.63,
+        "primeraVenta": "16:58",
+        "ultimaVenta": "23:35"
+      },
+      {
+        "id": 18,
+        "codigo": 952,
+        "nombre": "DELIVERY / PLATAFORMAS",
+        "avatar": "🛵",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Canal Envíos y Plataformas",
+        "ventas": 355700,
+        "tickets": 7,
+        "cubiertos": 0,
+        "comensales": 0,
+        "ticketPromedio": 50814,
+        "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 35570,
+        "calificacion": "⭐ 4.6",
+        "platoMasVendido": " (4 u.)",
+        "postres": {
+          "unidades": 3,
+          "facturado": 18800,
+          "postreTop": "ALFAJOR DE ALMENDRA Y DDL",
+          "porcentajeMesas": 43
+        },
+        "porcentajeTotal": 5,
+        "primeraVenta": "10:06",
+        "ultimaVenta": "22:22"
+      },
+      {
+        "id": 9,
+        "codigo": 302,
+        "nombre": "STELLA",
+        "avatar": "👩‍🍳",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2023-08-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2023 - 2026",
+        "ventas": 218780,
+        "tickets": 6,
+        "cubiertos": 12,
+        "comensales": 12,
+        "ticketPromedio": 36463,
+        "promedioCubierto": 18232,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 21878,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "CAFE - LATTE (4 u.)",
+        "postres": {
+          "unidades": 2,
+          "facturado": 13500,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 33
+        },
+        "porcentajeTotal": 3.08,
+        "primeraVenta": "14:49",
+        "ultimaVenta": "19:19"
+      },
+      {
+        "id": 10,
+        "codigo": 337,
+        "nombre": "ADRIANA",
+        "avatar": "👩‍🦱",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-06-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2024 - 2026",
+        "ventas": 77100,
+        "tickets": 2,
+        "cubiertos": 2,
+        "comensales": 2,
+        "ticketPromedio": 38550,
+        "promedioCubierto": 38550,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 7710,
+        "calificacion": "⭐ 4.7",
+        "platoMasVendido": "VINNOISERIE RELLENA (4 u.)",
+        "postres": {
+          "unidades": 0,
+          "facturado": 0,
+          "postreTop": "Torta Cheese Pistacho",
+          "porcentajeMesas": 0
+        },
+        "porcentajeTotal": 1.08,
+        "primeraVenta": "10:22",
+        "ultimaVenta": "14:47"
+      }
+    ],
+    "rubros": {
+      "PASTELERIA": 3319950,
+      "BEBIDAS": 1403350,
+      "POSTRES": 245700,
+      "ADICIONALES": 156750,
+      "ALMUERZO CENA": 1722010,
+      "RUBRO. INEXISTENTE": 146000,
+      "CAFETERIA": 51520,
+      "MARKET": 64000
+    },
+    "productos": [
+      {
+        "codigo": "10013",
+        "nombre": "MINI CAKES",
+        "rubro": "PASTELERIA",
+        "unidades": 17,
+        "unitario": 17000,
+        "facturado": 282200,
+        "porcentaje": 4
+      },
+      {
+        "codigo": "611",
+        "nombre": "CAFE - LATTE",
+        "rubro": "BEBIDAS",
+        "unidades": 77,
+        "unitario": 6120,
+        "facturado": 241400,
+        "porcentaje": 3.4
+      },
+      {
+        "codigo": "1346",
+        "nombre": "PARA ANA CON AMOR",
+        "rubro": "PASTELERIA",
+        "unidades": 15,
+        "unitario": 13500,
+        "facturado": 223500,
+        "porcentaje": 3.1
+      },
+      {
+        "codigo": "1338",
+        "nombre": "GDS COMPARTE CON VOS",
+        "rubro": "PASTELERIA",
+        "unidades": 4,
+        "unitario": 57000,
+        "facturado": 222300,
+        "porcentaje": 3.1
+      },
+      {
+        "codigo": "9769",
+        "nombre": "TORTAS",
+        "rubro": "POSTRES",
+        "unidades": 15,
+        "unitario": 13500,
+        "facturado": 220500,
+        "porcentaje": 3.1
+      },
+      {
+        "codigo": "9768",
+        "nombre": "TARTAS",
+        "rubro": "PASTELERIA",
+        "unidades": 17,
+        "unitario": 13000,
+        "facturado": 215800,
+        "porcentaje": 3
+      },
+      {
+        "codigo": "1335",
+        "nombre": "SARA DE LEJOS",
+        "rubro": "PASTELERIA",
+        "unidades": 10,
+        "unitario": 18900,
+        "facturado": 195300,
+        "porcentaje": 2.7
+      },
+      {
+        "codigo": "1230",
+        "nombre": "VINNOISERIE RELLENA",
+        "rubro": "PASTELERIA",
+        "unidades": 29,
+        "unitario": 6600,
+        "facturado": 190740,
+        "porcentaje": 2.7
+      },
+      {
+        "codigo": "1121",
+        "nombre": "TABLA CHICA - FIAMBRES Y QUESO",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 5,
+        "unitario": 36000,
+        "facturado": 184400,
+        "porcentaje": 2.6
+      },
+      {
+        "codigo": "1251",
+        "nombre": "BUDIN CHICO",
+        "rubro": "PASTELERIA",
+        "unidades": 8,
+        "unitario": 18000,
+        "facturado": 142200,
+        "porcentaje": 2
+      },
+      {
+        "codigo": "1235",
+        "nombre": "TORTA - CHEESE DE LIMON",
+        "rubro": "PASTELERIA",
+        "unidades": 2,
+        "unitario": 69000,
+        "facturado": 138000,
+        "porcentaje": 1.9
+      },
+      {
+        "codigo": "607",
+        "nombre": "CAFE - JARRITO CORTADO",
+        "rubro": "BEBIDAS",
+        "unidades": 30,
+        "unitario": 5040,
+        "facturado": 137200,
+        "porcentaje": 1.9
+      },
+      {
+        "codigo": "1101",
+        "nombre": "BONDIOLA LAQUEADA",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 4,
+        "unitario": 33000,
+        "facturado": 133500,
+        "porcentaje": 1.9
+      },
+      {
+        "codigo": "21",
+        "nombre": "EXPRIMIDO NARANJA",
+        "rubro": "BEBIDAS",
+        "unidades": 20,
+        "unitario": 8100,
+        "facturado": 126900,
+        "porcentaje": 1.8
+      },
+      {
+        "codigo": "1343",
+        "nombre": "ALEGRE AGUSTIN",
+        "rubro": "PASTELERIA",
+        "unidades": 7,
+        "unitario": 17900,
+        "facturado": 123510,
+        "porcentaje": 1.7
+      },
+      {
+        "codigo": "1194",
+        "nombre": "PESCA DEL DIA",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 4,
+        "unitario": 29700,
+        "facturado": 118800,
+        "porcentaje": 1.7
+      },
+      {
+        "codigo": "615",
+        "nombre": "CAFE - CAPPU GDS",
+        "rubro": "BEBIDAS",
+        "unidades": 15,
+        "unitario": 7900,
+        "facturado": 116130,
+        "porcentaje": 1.6
+      },
+      {
+        "codigo": "1219",
+        "nombre": "COOKIES EN CAJITA",
+        "rubro": "PASTELERIA",
+        "unidades": 12,
+        "unitario": 10000,
+        "facturado": 116000,
+        "porcentaje": 1.6
+      },
+      {
+        "codigo": "1334",
+        "nombre": "ROSA ROSA TAN MARAVILLOSA",
+        "rubro": "PASTELERIA",
+        "unidades": 12,
+        "unitario": 8910,
+        "facturado": 113850,
+        "porcentaje": 1.6
+      },
+      {
+        "codigo": "1002",
+        "nombre": "TOSTON GARDENIAS",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 4,
+        "unitario": 26010,
+        "facturado": 112710,
+        "porcentaje": 1.6
+      }
+    ],
+    "horarios": [
+      {
+        "hora": "10:00",
+        "importe": 290860,
+        "tickets": 33
+      },
+      {
+        "hora": "11:00",
+        "importe": 184400,
+        "tickets": 29
+      },
+      {
+        "hora": "12:00",
+        "importe": 542620,
+        "tickets": 54
+      },
+      {
+        "hora": "13:00",
+        "importe": 632190,
+        "tickets": 49
+      },
+      {
+        "hora": "14:00",
+        "importe": 316630,
+        "tickets": 29
+      },
+      {
+        "hora": "15:00",
+        "importe": 743400,
+        "tickets": 38
+      },
+      {
+        "hora": "16:00",
+        "importe": 752200,
+        "tickets": 58
+      },
+      {
+        "hora": "17:00",
+        "importe": 688370,
+        "tickets": 57
+      },
+      {
+        "hora": "18:00",
+        "importe": 1046690,
+        "tickets": 136
+      },
+      {
+        "hora": "19:00",
+        "importe": 777580,
+        "tickets": 118
+      },
+      {
+        "hora": "20:00",
+        "importe": 647780,
+        "tickets": 66
+      },
+      {
+        "hora": "21:00",
+        "importe": 15000,
+        "tickets": 1
+      },
+      {
+        "hora": "22:00",
+        "importe": 70000,
+        "tickets": 3
+      },
+      {
+        "hora": "23:00",
+        "importe": 401560,
+        "tickets": 34
+      }
+    ]
+  },
+  "2026-10-25": {
+    "fecha": "2026-10-25",
+    "archivoOrigen": "32759679.dbf (Informe Oficial Maxirest POS)",
+    "fechaReporte": "26/10/2026, 09:46:47",
+    "totales": {
+      "importe": 5753520,
+      "tickets": 121,
+      "cubiertos": 189,
+      "promedio": 47549.75,
+      "promedioCubierto": 30441.9
+    },
+    "mozos": [
+      {
+        "id": 2,
+        "codigo": 984,
+        "nombre": "BELEN",
+        "avatar": "👩‍🌾",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2024 - 2026",
+        "ventas": 1527130,
+        "tickets": 37,
+        "cubiertos": 82,
+        "comensales": 82,
+        "ticketPromedio": 41274,
+        "promedioCubierto": 18624,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 152713,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "CAFE - LATTE (19 u.)",
+        "postres": {
+          "unidades": 16,
+          "facturado": 154800,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 43
+        },
+        "porcentajeTotal": 26.54,
+        "primeraVenta": "12:47",
+        "ultimaVenta": "20:08"
+      },
+      {
+        "id": 1,
+        "codigo": 982,
+        "nombre": "ROCIO",
+        "avatar": "👩‍💼",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-03-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2024 - 2026",
+        "ventas": 1346770,
+        "tickets": 22,
+        "cubiertos": 60,
+        "comensales": 60,
+        "ticketPromedio": 61217,
+        "promedioCubierto": 22446,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 134677,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "CAFE - LATTE (16 u.)",
+        "postres": {
+          "unidades": 10,
+          "facturado": 106000,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 45
+        },
+        "porcentajeTotal": 23.41,
+        "primeraVenta": "12:40",
+        "ultimaVenta": "20:15"
+      },
+      {
+        "id": 17,
+        "codigo": 500,
+        "nombre": "MARKET",
+        "avatar": "🛍️",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Estación Mostrador / Tienda",
+        "ventas": 1306260,
+        "tickets": 27,
+        "cubiertos": 0,
+        "comensales": 0,
+        "ticketPromedio": 48380,
+        "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 130626,
+        "calificacion": "⭐ 5.0",
+        "platoMasVendido": "VINNOISERIE RELLENA (19 u.)",
+        "postres": {
+          "unidades": 11,
+          "facturado": 177200,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 41
+        },
+        "porcentajeTotal": 22.7,
+        "primeraVenta": "09:47",
+        "ultimaVenta": "19:12"
+      },
+      {
+        "id": 3,
+        "codigo": 315,
+        "nombre": "MARINA",
+        "avatar": "👩‍💻",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2023-05-15",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2023 - 2026",
+        "ventas": 608040,
+        "tickets": 14,
+        "cubiertos": 26,
+        "comensales": 26,
+        "ticketPromedio": 43431,
+        "promedioCubierto": 23386,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 60804,
+        "calificacion": "⭐ 4.9",
+        "platoMasVendido": "CAFE - LATTE (8 u.)",
+        "postres": {
+          "unidades": 3,
+          "facturado": 25000,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 21
+        },
+        "porcentajeTotal": 10.57,
+        "primeraVenta": "10:05",
+        "ultimaVenta": "17:49"
+      },
+      {
+        "id": 18,
+        "codigo": 952,
+        "nombre": "DELIVERY / PLATAFORMAS",
+        "avatar": "🛵",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-01-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Canal Envíos y Plataformas",
+        "ventas": 446100,
+        "tickets": 12,
+        "cubiertos": 0,
+        "comensales": 0,
+        "ticketPromedio": 37175,
+        "promedioCubierto": 0,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 44610,
+        "calificacion": "⭐ 4.6",
+        "platoMasVendido": "BUDIN ENTERO NARANJA (2 u.)",
+        "postres": {
+          "unidades": 1,
+          "facturado": 6400,
+          "postreTop": "ALFAJOR DE ALMENDRA Y DDL",
+          "porcentajeMesas": 8
+        },
+        "porcentajeTotal": 7.75,
+        "primeraVenta": "09:47",
+        "ultimaVenta": "19:54"
+      },
+      {
+        "id": 10,
+        "codigo": 337,
+        "nombre": "ADRIANA",
+        "avatar": "👩‍🦱",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2024-06-01",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2024 - 2026",
+        "ventas": 261540,
+        "tickets": 3,
+        "cubiertos": 7,
+        "comensales": 7,
+        "ticketPromedio": 87180,
+        "promedioCubierto": 37363,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 26154,
+        "calificacion": "⭐ 4.7",
+        "platoMasVendido": "VINNOISERIE DEL DIA (4 u.)",
+        "postres": {
+          "unidades": 2,
+          "facturado": 15000,
+          "postreTop": "TORTAS",
+          "porcentajeMesas": 67
+        },
+        "porcentajeTotal": 4.55,
+        "primeraVenta": "11:43",
+        "ultimaVenta": "15:03"
+      },
+      {
+        "id": 8,
+        "codigo": 983,
+        "nombre": "LUCIA",
+        "avatar": "👱‍♀️",
+        "estado": "ACTIVO",
+        "fechaIngreso": "2025-09-07",
+        "fechaEgreso": null,
+        "periodoActividad": "Plantilla Activa 2025 - 2026",
+        "ventas": 257680,
+        "tickets": 6,
+        "cubiertos": 14,
+        "comensales": 14,
+        "ticketPromedio": 42947,
+        "promedioCubierto": 18406,
+        "anulaciones": 0,
+        "impAnulaciones": 0,
+        "propinasEstimadas": 25768,
+        "calificacion": "⭐ 4.8",
+        "platoMasVendido": "CAFE - LATTE (8 u.)",
+        "postres": {
+          "unidades": 4,
+          "facturado": 28500,
+          "postreTop": "PORCION TORTA  - BALCARCE",
+          "porcentajeMesas": 67
+        },
+        "porcentajeTotal": 4.48,
+        "primeraVenta": "13:05",
+        "ultimaVenta": "19:36"
+      }
+    ],
+    "rubros": {
+      "ADICIONALES": 351450,
+      "PASTELERIA": 2543040,
+      "BEBIDAS": 1067040,
+      "MARKET": 206100,
+      "ALMUERZO CENA": 1090920,
+      "POSTRES": 289500,
+      "CAFETERIA": 74070,
+      "RUBRO. INEXISTENTE": 131400
+    },
+    "productos": [
+      {
+        "codigo": "4091",
+        "nombre": "SEÑA EVENTO",
+        "rubro": "ADICIONALES",
+        "unidades": 1,
+        "unitario": 340000,
+        "facturado": 340000,
+        "porcentaje": 5.9
+      },
+      {
+        "codigo": "1338",
+        "nombre": "GDS COMPARTE CON VOS",
+        "rubro": "PASTELERIA",
+        "unidades": 4,
+        "unitario": 57000,
+        "facturado": 228000,
+        "porcentaje": 4
+      },
+      {
+        "codigo": "9769",
+        "nombre": "TORTAS",
+        "rubro": "POSTRES",
+        "unidades": 15,
+        "unitario": 15000,
+        "facturado": 220500,
+        "porcentaje": 3.8
+      },
+      {
+        "codigo": "1230",
+        "nombre": "VINNOISERIE RELLENA",
+        "rubro": "PASTELERIA",
+        "unidades": 32,
+        "unitario": 5940,
+        "facturado": 207240,
+        "porcentaje": 3.6
+      },
+      {
+        "codigo": "9768",
+        "nombre": "TARTAS",
+        "rubro": "PASTELERIA",
+        "unidades": 14,
+        "unitario": 13000,
+        "facturado": 179400,
+        "porcentaje": 3.1
+      },
+      {
+        "codigo": "611",
+        "nombre": "CAFE - LATTE",
+        "rubro": "BEBIDAS",
+        "unidades": 52,
+        "unitario": 0,
+        "facturado": 145520,
+        "porcentaje": 2.5
+      },
+      {
+        "codigo": "1343",
+        "nombre": "ALEGRE AGUSTIN",
+        "rubro": "PASTELERIA",
+        "unidades": 8,
+        "unitario": 16110,
+        "facturado": 141410,
+        "porcentaje": 2.5
+      },
+      {
+        "codigo": "1333",
+        "nombre": "ELSITA",
+        "rubro": "PASTELERIA",
+        "unidades": 7,
+        "unitario": 17910,
+        "facturado": 135320,
+        "porcentaje": 2.4
+      },
+      {
+        "codigo": "1001",
+        "nombre": "TOSTON ALCANFOR",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 5,
+        "unitario": 26500,
+        "facturado": 121600,
+        "porcentaje": 2.1
+      },
+      {
+        "codigo": "1336",
+        "nombre": "ADORADO FRAN",
+        "rubro": "PASTELERIA",
+        "unidades": 6,
+        "unitario": 19900,
+        "facturado": 117410,
+        "porcentaje": 2
+      },
+      {
+        "codigo": "607",
+        "nombre": "CAFE - JARRITO CORTADO",
+        "rubro": "BEBIDAS",
+        "unidades": 23,
+        "unitario": 5600,
+        "facturado": 112560,
+        "porcentaje": 2
+      },
+      {
+        "codigo": "1406",
+        "nombre": "TARTA  KEY LIME PIE",
+        "rubro": "PASTELERIA",
+        "unidades": 2,
+        "unitario": 53100,
+        "facturado": 112100,
+        "porcentaje": 1.9
+      },
+      {
+        "codigo": "1576",
+        "nombre": "MILANESA SUPREMA CON FIDEOS CO",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 4,
+        "unitario": 26000,
+        "facturado": 109000,
+        "porcentaje": 1.9
+      },
+      {
+        "codigo": "1533",
+        "nombre": "DOCENA DE MEDIALUNAS",
+        "rubro": "PASTELERIA",
+        "unidades": 3,
+        "unitario": 33000,
+        "facturado": 105000,
+        "porcentaje": 1.8
+      },
+      {
+        "codigo": "1332",
+        "nombre": "AMELIA QUERIDA",
+        "rubro": "PASTELERIA",
+        "unidades": 7,
+        "unitario": 14300,
+        "facturado": 98670,
+        "porcentaje": 1.7
+      },
+      {
+        "codigo": "1102",
+        "nombre": "MUSAKA DE CORDERO",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 3,
+        "unitario": 29700,
+        "facturado": 95700,
+        "porcentaje": 1.7
+      },
+      {
+        "codigo": "1183",
+        "nombre": "PLATO DEL DIA 2",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 3,
+        "unitario": 30600,
+        "facturado": 95200,
+        "porcentaje": 1.7
+      },
+      {
+        "codigo": "1101",
+        "nombre": "BONDIOLA LAQUEADA",
+        "rubro": "ALMUERZO CENA",
+        "unidades": 3,
+        "unitario": 29700,
+        "facturado": 92400,
+        "porcentaje": 1.6
+      },
+      {
+        "codigo": "1251",
+        "nombre": "BUDIN CHICO",
+        "rubro": "PASTELERIA",
+        "unidades": 5,
+        "unitario": 16200,
+        "facturado": 86400,
+        "porcentaje": 1.5
+      },
+      {
+        "codigo": "615",
+        "nombre": "CAFE - CAPPU GDS",
+        "rubro": "BEBIDAS",
+        "unidades": 11,
+        "unitario": 7900,
+        "facturado": 85320,
+        "porcentaje": 1.5
+      }
+    ],
+    "horarios": [
+      {
+        "hora": "09:00",
+        "importe": 96400,
+        "tickets": 7
+      },
+      {
+        "hora": "10:00",
+        "importe": 97830,
+        "tickets": 15
+      },
+      {
+        "hora": "11:00",
+        "importe": 364120,
+        "tickets": 32
+      },
+      {
+        "hora": "12:00",
+        "importe": 206200,
+        "tickets": 28
+      },
+      {
+        "hora": "13:00",
+        "importe": 552100,
+        "tickets": 43
+      },
+      {
+        "hora": "14:00",
+        "importe": 493710,
+        "tickets": 29
+      },
+      {
+        "hora": "15:00",
+        "importe": 713450,
+        "tickets": 56
+      },
+      {
+        "hora": "16:00",
+        "importe": 925500,
+        "tickets": 47
+      },
+      {
+        "hora": "17:00",
+        "importe": 797530,
+        "tickets": 104
+      },
+      {
+        "hora": "18:00",
+        "importe": 640490,
+        "tickets": 87
+      },
+      {
+        "hora": "19:00",
+        "importe": 810690,
+        "tickets": 92
+      },
+      {
+        "hora": "20:00",
+        "importe": 55500,
+        "tickets": 8
       }
     ]
   }

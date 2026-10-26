@@ -184,22 +184,40 @@ app.post('/api/staff/toggle', (req, res) => {
   res.json({ success: true, staff: updated, allStaff });
 });
 
-// Endpoint de sincronización forzada desde el botón de la UI
-app.post('/api/sync', (req, res) => {
+// Endpoint de sincronización forzada desde los botones de la UI (Autonomía Total)
+app.all(['/api/sync', '/api/sync-exported'], (req, res) => {
   try {
     const result = analytics.syncAll();
     io.emit('data_synced', {
       timestamp: Date.now(),
       today: result.today,
       yesterday: result.yesterday,
-      yesterdayData: result.yesterdayData
+      yesterdayData: result.yesterdayData,
+      latestClosedDay: result.latestClosedDay,
+      latestFacturacion: result.latestFacturacion,
+      syncedDates: result.syncedDates,
+      syncedDatesCount: result.syncedDatesCount
     });
     io.emit('staff_updated', { staff: result.staff, allStaff: result.staff });
+
+    const yFact = result.yesterdayData ? result.yesterdayData.kpis.facturacionTotal : 0;
+    const yTickets = result.yesterdayData ? result.yesterdayData.kpis.totalTickets : 0;
+    const yCubs = result.yesterdayData ? result.yesterdayData.kpis.totalComensales : 0;
+
     res.json({
       success: true,
-      message: 'Sincronización completada con Maxirest POS',
+      message: `Sincronización completada con éxito. ${result.syncedDatesCount} fechas procesadas desde Maxirest POS.`,
+      today: result.today,
       yesterday: result.yesterday,
-      yesterdayFacturacion: result.yesterdayData ? result.yesterdayData.kpis.facturacionTotal : 0,
+      yesterdayFacturacion: yFact,
+      yesterdayTickets: yTickets,
+      yesterdayCubiertos: yCubs,
+      latestClosedDay: result.latestClosedDay,
+      latestFacturacion: result.latestFacturacion,
+      syncedDates: result.syncedDates,
+      syncedDatesCount: result.syncedDatesCount,
+      datesDetails: result.datesDetails,
+      totalFacturadoReciente: result.totalFacturadoReciente,
       daysCount: result.availableDays.length,
       staffCount: result.staff.length,
       staff: result.staff
@@ -401,17 +419,23 @@ app.get('/api/export/history', (req, res) => {
 });
 
 // Auto-sincronización y Monitoreo Inteligente con Maxirest POS
-let lastBakinformeMtime = 0;
+let lastBakinformeMtime = (() => {
+  const p = 'C:/MaxiREST_SQL/bakinforme.dbf';
+  return fs.existsSync(p) ? fs.statSync(p).mtimeMs : 0;
+})();
+let lastMaxirestDirMtime = (() => {
+  const p = 'C:/MaxiRest';
+  return fs.existsSync(p) ? fs.statSync(p).mtimeMs : 0;
+})();
 let lastDesktopXlsMtime = 0;
-let lastMaxirestDbfCount = 0;
-let lastMaxirestMaxMtime = 0;
+let lastDownloadsXlsMtime = 0;
 
 setInterval(() => {
   try {
     let needsSync = false;
     let reason = '';
 
-    // 1. Monitoreo de bakinforme.dbf (cierre contable diario / arqueo)
+    // 1. Monitoreo de bakinforme.dbf (cierre contable diario / arqueo / informe detallado)
     const bakPath = 'C:/MaxiREST_SQL/bakinforme.dbf';
     if (fs.existsSync(bakPath)) {
       const mtime = fs.statSync(bakPath).mtimeMs;
@@ -422,45 +446,41 @@ setInterval(() => {
       lastBakinformeMtime = mtime;
     }
 
-    // 2. Monitoreo de C:/MaxiRest (tablas DBF generadas por informes de Maxirest)
+    // 2. Monitoreo de C:/MaxiRest (nuevas tablas DBF generadas por informes de Maxirest)
     const maxirestDir = 'C:/MaxiRest';
     if (fs.existsSync(maxirestDir)) {
       try {
-        const files = fs.readdirSync(maxirestDir).filter(f => f.endsWith('.dbf') && /^\d+\.dbf$/i.test(f));
-        const count = files.length;
-        let maxMtime = 0;
-        for (let i = 0; i < Math.min(count, 20); i++) {
-          try {
-            const mt = fs.statSync(path.join(maxirestDir, files[i])).mtimeMs;
-            if (mt > maxMtime) maxMtime = mt;
-          } catch (_) {}
-        }
-        if ((lastMaxirestDbfCount && count !== lastMaxirestDbfCount) ||
-            (lastMaxirestMaxMtime && maxMtime > lastMaxirestMaxMtime)) {
-          reason = `nuevo informe DBF en C:\\MaxiRest (${count} tablas)`;
+        const dirMtime = fs.statSync(maxirestDir).mtimeMs;
+        if (lastMaxirestDirMtime && dirMtime > lastMaxirestDirMtime) {
+          reason = 'nuevas tablas DBF exportadas en C:\\MaxiRest';
           needsSync = true;
         }
-        lastMaxirestDbfCount = count;
-        lastMaxirestMaxMtime = maxMtime;
+        lastMaxirestDirMtime = dirMtime;
       } catch (_) {}
     }
 
-    // 3. Monitoreo de reportes .xls emitidos al Escritorio por Maxirest
-    const desktopDir = 'C:/Users/Gardenias/Desktop';
-    if (fs.existsSync(desktopDir)) {
-      try {
-        const xlsFiles = fs.readdirSync(desktopDir).filter(f => f.toLowerCase().endsWith('.xls') && !f.startsWith('~$'));
-        let maxMtime = 0;
-        for (const xf of xlsFiles) {
-          const mt = fs.statSync(path.join(desktopDir, xf)).mtimeMs;
-          if (mt > maxMtime) maxMtime = mt;
-        }
-        if (lastDesktopXlsMtime && maxMtime > lastDesktopXlsMtime) {
-          reason = 'nuevo reporte Excel en Escritorio';
-          needsSync = true;
-        }
-        lastDesktopXlsMtime = maxMtime;
-      } catch (_) {}
+    // 3. Monitoreo de reportes .xls emitidos al Escritorio o Descargas por Maxirest
+    const checkFolders = [
+      { path: 'C:/Users/Gardenias/Desktop', lastTime: lastDesktopXlsMtime, setTime: (t) => { lastDesktopXlsMtime = t; }, name: 'Escritorio' },
+      { path: 'C:/Users/Gardenias/Downloads', lastTime: lastDownloadsXlsMtime, setTime: (t) => { lastDownloadsXlsMtime = t; }, name: 'Descargas' }
+    ];
+
+    for (const folder of checkFolders) {
+      if (fs.existsSync(folder.path)) {
+        try {
+          const files = fs.readdirSync(folder.path).filter(f => (f.toLowerCase().endsWith('.xls') || f.toLowerCase().endsWith('.xlsx')) && !f.startsWith('~$'));
+          let maxMt = 0;
+          for (const f of files) {
+            const mt = fs.statSync(path.join(folder.path, f)).mtimeMs;
+            if (mt > maxMt) maxMt = mt;
+          }
+          if (folder.lastTime && maxMt > folder.lastTime) {
+            reason = `nuevo reporte Excel en ${folder.name}`;
+            needsSync = true;
+          }
+          folder.setTime(maxMt);
+        } catch (_) {}
+      }
     }
 
     if (needsSync) {

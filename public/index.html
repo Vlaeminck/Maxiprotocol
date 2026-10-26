@@ -58,9 +58,9 @@
 
       <!-- Action Buttons -->
       <div class="header-actions">
-        <button id="btn-sync-all" class="btn-config btn-sync" title="Sincronizar datos y personal con Maxirest POS">
+        <button id="btn-sync-all" class="btn-config btn-sync-prominent" title="Escanear e importar todas las bases de datos exportadas de Maxirest POS">
           <i class="fa-solid fa-arrows-rotate"></i>
-          <span>Sincronizar</span>
+          <span>Sincronizar POS</span>
         </button>
         <button id="btn-audio-toggle" class="btn-icon" title="Sonido de Notificaciones">
           <i class="fa-solid fa-volume-high"></i>
@@ -104,6 +104,10 @@
           </div>
 
           <div class="date-toolbar-right">
+            <button type="button" class="btn-stakeholder-sync" id="btn-sync-exported" title="Escanear e importar todas las bases de datos exportadas en Maxirest POS (por rango o fecha individual)">
+              <i class="fa-solid fa-cloud-arrow-down"></i>
+              <span>Traer Exportaciones</span>
+            </button>
             <div class="date-picker-wrap" id="date-picker-wrap" title="Seleccionar fecha contable en calendario (Cualquier día histórico)">
               <i class="fa-regular fa-calendar-days"></i>
               <input type="date" id="input-custom-date" title="Seleccionar fecha en calendario">
@@ -159,6 +163,10 @@
             <button type="button" class="btn-apply-range" id="btn-apply-custom-range">
               <i class="fa-solid fa-magnifying-glass-chart"></i>
               <span>Consultar Período</span>
+            </button>
+            <button type="button" class="btn-sync-range" id="btn-sync-range-toolbar" title="Sincronizar exportaciones de Maxirest POS para actualizar período">
+              <i class="fa-solid fa-cloud-arrow-down"></i>
+              <span>Traer Exportaciones</span>
             </button>
           </div>
         </div>

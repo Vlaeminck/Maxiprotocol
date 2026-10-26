@@ -32,14 +32,17 @@ def import_desktop_xls():
         except Exception as e:
             print(f"Error loading audit_map: {e}")
 
-    # Look for candidate xls files
+    # Look for candidate xls/xlsx files in Desktop and Downloads
+    search_dirs = ['C:/Users/Gardenias/Desktop', 'C:/Users/Gardenias/Downloads']
     candidates = []
-    try:
-        for fname in os.listdir(desktop):
-            if fname.lower().endswith('.xls') and not fname.startswith('~$'):
-                candidates.append(os.path.join(desktop, fname))
-    except Exception as e:
-        print(f"Error reading desktop: {e}")
+    for sdir in search_dirs:
+        if os.path.exists(sdir):
+            try:
+                for fname in os.listdir(sdir):
+                    if fname.lower().endswith('.xls') and not fname.startswith('~$'):
+                        candidates.append(os.path.join(sdir, fname))
+            except Exception as e:
+                print(f"Error reading {sdir}: {e}")
 
     imported_dates = set()
 

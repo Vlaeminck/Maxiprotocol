@@ -1073,7 +1073,7 @@ function detectClosureDate(total, tickets, filePath) {
   const auditMap = loadMozosAuditRegistry();
   if (auditMap && total > 0) {
     for (const [dKey, aData] of Object.entries(auditMap)) {
-      if (aData.totales && Math.abs(aData.totales.importe - total) < 1.0) {
+      if (aData.totales && Math.abs(aData.totales.importe - total) < 100.0) {
         return dKey;
       }
     }
@@ -1126,7 +1126,7 @@ function readAllClosureReports() {
           return { p, mtime: fs.statSync(p).mtimeMs };
         })
         .sort((a, b) => b.mtime - a.mtime)
-        .slice(0, 30)
+        .slice(0, 80)
         .map(x => x.p);
       candidateFiles.push(...dbfs);
     } catch (e) {}
@@ -1140,8 +1140,8 @@ function readAllClosureReports() {
   const closuresByDate = {};
   for (const p of candidateFiles) {
     const closure = parseClosureDbf(p);
-    // Filtrar solo cierres de turno diario (ignorar reportes mensuales acumulados con >500 tickets o >$20M)
-    if (closure && closure.total > 0 && closure.tickets > 0 && closure.tickets < 500 && closure.total < 20000000) {
+    // Filtrar solo cierres de turno diario (ignorar acumulados con >1000 tickets o >$60M)
+    if (closure && closure.total > 0 && closure.tickets > 0 && closure.tickets < 1000 && closure.total < 60000000) {
       const dKey = detectClosureDate(closure.total, closure.tickets, p);
       if (dKey) {
         if (!closuresByDate[dKey]) {
@@ -2842,7 +2842,12 @@ class MaxirestAnalytics {
   }
 
   // Sincroniza dinámicamente con todas las tablas DBF de concepto de Maxirest
-  syncWithConceptDbfs() {
+  syncWithConceptDbfs(force = false) {
+    const now = Date.now();
+    if (!force && this._lastConceptSyncTime && (now - this._lastConceptSyncTime < 25000)) {
+      return;
+    }
+    this._lastConceptSyncTime = now;
     const records = readAllConceptRecords();
     for (const [dateKey, rec] of Object.entries(records)) {
       if (this.daysData[dateKey]) {
@@ -2963,6 +2968,67 @@ class MaxirestAnalytics {
       }
     }
 
+    // 3. Incorporar de forma verídica todas las fechas auditadas en auditMap (mozos_daily_audit.json)
+    for (const [auditDateKey, auditedDay] of Object.entries(auditMap)) {
+      if (auditedDay && auditedDay.totales && auditedDay.totales.importe > 0) {
+        if (!this.daysData[auditDateKey] || (this.daysData[auditDateKey].kpis && this.daysData[auditDateKey].kpis.facturacionTotal === 0)) {
+          const parts = auditDateKey.split('-');
+          const dateObj = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+          const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+          const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+          const nombreDia = `${dayNames[dateObj.getDay()]} ${parts[2]} de ${months[parseInt(parts[1], 10) - 1]} de ${parts[0]}`;
+
+          const totalFact = auditedDay.totales.importe;
+          const ticketsTotal = auditedDay.totales.tickets;
+          const cubiertosTotal = auditedDay.totales.cubiertos || 0;
+          const tProm = auditedDay.totales.promedio || (ticketsTotal > 0 ? Math.round(totalFact / ticketsTotal) : 0);
+          const gCub = auditedDay.totales.promedioCubierto || (cubiertosTotal > 0 ? Math.round(totalFact / cubiertosTotal) : 0);
+
+          let mostrador = 0;
+          let delivery = 0;
+          if (auditedDay.mozos && auditedDay.mozos.length > 0) {
+            const m500 = auditedDay.mozos.find(m => m.codigo === 500);
+            const m952 = auditedDay.mozos.find(m => m.codigo === 952);
+            if (m500) mostrador = m500.ventas;
+            if (m952) delivery = m952.ventas;
+          }
+          const salon = Math.max(0, totalFact - mostrador - delivery);
+          const rawPm = (closuresByDate[auditDateKey] && closuresByDate[auditDateKey].medios) ? closuresByDate[auditDateKey].medios : {};
+
+          this.registerDay(
+            auditDateKey,
+            nombreDia,
+            `${auditedDay.archivoOrigen || 'Maxirest POS (Auditado)'}`,
+            totalFact,
+            ticketsTotal,
+            cubiertosTotal,
+            0,
+            auditDateKey === this.getYesterdayKey() ? 'Cierre Ayer' : 'Auditado',
+            rawPm,
+            {
+              ticketPromedio: tProm,
+              gastoPromedioComensal: gCub,
+              canales: { salon, mostrador, domicilio: delivery, otros: 0 },
+              mozos: auditedDay.mozos,
+              ventasPorRubro: auditedDay.rubros,
+              productosTop: auditedDay.productos,
+              distribucionHoraria: (auditedDay.horarios && auditedDay.horarios.length > 0) ? auditedDay.horarios : undefined
+            }
+          );
+        } else {
+          const d = this.daysData[auditDateKey];
+          if (auditedDay.mozos && auditedDay.mozos.length > 0) d.mozos = auditedDay.mozos;
+          if (auditedDay.rubros && Object.keys(auditedDay.rubros).length > 0) d.ventasPorRubro = auditedDay.rubros;
+          if (auditedDay.productos && auditedDay.productos.length > 0) d.productosTop = auditedDay.productos;
+          if (auditedDay.horarios && auditedDay.horarios.length > 0) d.distribucionHoraria = auditedDay.horarios;
+          if (auditedDay.totales && auditedDay.totales.cubiertos > 0 && d.kpis.totalComensales === 0) {
+            d.kpis.totalComensales = auditedDay.totales.cubiertos;
+            d.kpis.gastoPromedioComensal = Math.round(d.kpis.facturacionTotal / d.kpis.totalComensales);
+          }
+        }
+      }
+    }
+
     // Gestionar el estado de AYER (yesterdayKey) de forma transparente y verídica
     const yesterdayKey = this.getYesterdayKey();
     if (!this.daysData[yesterdayKey] || (this.daysData[yesterdayKey] && this.daysData[yesterdayKey].kpis.facturacionTotal === 0)) {
@@ -3000,17 +3066,43 @@ class MaxirestAnalytics {
   }
 
   syncAll() {
+    this._lastConceptSyncTime = 0;
     const yesterdayKey = this.getYesterdayKey();
     this.scanAndSyncMozosReports(yesterdayKey);
-    this.syncWithConceptDbfs();
+    this.syncWithConceptDbfs(true);
     this.initProductsIndex();
     this.refreshDaysMozos();
+
+    const availableDays = this.getAvailableDays();
+    const latestClosed = this.getLatestClosedAuditedDay();
+    const yesterdayData = this.daysData[yesterdayKey];
+
+    const syncedDates = Object.keys(this.daysData)
+      .filter(k => this.daysData[k] && this.daysData[k].kpis && this.daysData[k].kpis.facturacionTotal > 0 && !this.daysData[k].pendingClosure)
+      .sort((a, b) => b.localeCompare(a));
+
+    const datesDetails = syncedDates.slice(0, 10).map(k => ({
+      date: k,
+      total: this.daysData[k].kpis.facturacionTotal,
+      tickets: this.daysData[k].kpis.totalTickets,
+      cubiertos: this.daysData[k].kpis.totalComensales,
+      archivo: this.daysData[k].archivoOrigen
+    }));
+
+    const totalFact = datesDetails.slice(0, 4).reduce((sum, d) => sum + d.total, 0);
+
     return {
       success: true,
       today: this.getTodayKey(),
       yesterday: yesterdayKey,
-      yesterdayData: this.daysData[yesterdayKey],
-      availableDays: this.getAvailableDays(),
+      yesterdayData: yesterdayData,
+      latestClosedDay: latestClosed,
+      latestFacturacion: this.daysData[latestClosed] ? this.daysData[latestClosed].kpis.facturacionTotal : 0,
+      availableDays: availableDays,
+      syncedDates: syncedDates,
+      syncedDatesCount: syncedDates.length,
+      datesDetails: datesDetails,
+      totalFacturadoReciente: totalFact,
       staff: this.getStaffRegistry()
     };
   }
@@ -3074,6 +3166,50 @@ class MaxirestAnalytics {
     const diasNombres = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
     const mesesNombres = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     const nombreDia = `${diasNombres[dayOfWeek]} ${String(day).padStart(2, '0')} de ${mesesNombres[month - 1]} de ${year}`;
+
+    // 0. Prioridad 0: Verificar si existe en la auditoría oficial de mozos y comandas (mozos_daily_audit.json)
+    const auditMap = loadMozosAuditRegistry();
+    if (auditMap[dateKey] && auditMap[dateKey].totales && auditMap[dateKey].totales.importe > 0) {
+      const a = auditMap[dateKey];
+      const totalFact = a.totales.importe;
+      const tks = a.totales.tickets;
+      const cubs = a.totales.cubiertos || 0;
+      let mostrador = 0, delivery = 0;
+      if (a.mozos && a.mozos.length > 0) {
+        const m500 = a.mozos.find(m => m.codigo === 500);
+        const m952 = a.mozos.find(m => m.codigo === 952);
+        if (m500) mostrador = m500.ventas;
+        if (m952) delivery = m952.ventas;
+      }
+      const salon = Math.max(0, totalFact - mostrador - delivery);
+
+      const closures = readAllClosureReports();
+      const rawPm = closures[dateKey] ? closures[dateKey].medios : {};
+      const mediosFormatted = this.formatMediosPago(rawPm, totalFact, tks);
+
+      return {
+        fecha: dateKey,
+        nombreDia: nombreDia,
+        archivoOrigen: a.archivoOrigen || 'Maxirest POS (Auditado)',
+        kpis: {
+          facturacionTotal: totalFact,
+          totalTickets: tks,
+          ticketPromedio: a.totales.promedio || (tks > 0 ? Math.round(totalFact / tks) : 0),
+          totalComensales: cubs,
+          gastoPromedioComensal: a.totales.promedioCubierto || (cubs > 0 ? Math.round(totalFact / cubs) : 0),
+          mesasRotadas: tks,
+          tiempoPromedioMesaMin: 0,
+          horaPico: 'Turno Auditado',
+          variacionVsAnterior: dateKey === this.getYesterdayKey() ? 'Cierre Ayer' : 'Auditado',
+          canales: { salon, mostrador, domicilio: delivery, otros: 0 }
+        },
+        mediosPago: mediosFormatted,
+        mozos: a.mozos || this.generateMozosForDay(totalFact, tks, cubs, dateKey),
+        productosTop: a.productos || this.getProductsForDay(dateKey, totalFact, tks),
+        ventasPorRubro: a.rubros || this.generateRubrosForDay(totalFact),
+        distribucionHoraria: (a.horarios && a.horarios.length > 0) ? a.horarios : this.generateHorarios(totalFact, tks, isWeekend)
+      };
+    }
 
     // 1. Verificar si existe en el índice histórico verídico (tabla transaccional 45294870.dbf)
     const historyIndex = this.getHistoryIndex();

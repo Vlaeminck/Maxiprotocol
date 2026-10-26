@@ -142,40 +142,70 @@ function initSocket() {
   });
 }
 
-function initSyncButtons() {
-  const btnAll = document.getElementById('btn-sync-all');
-  const btnMozos = document.getElementById('btn-sync-mozos');
+async function triggerFullMaxirestSync() {
+  const syncButtons = [
+    document.getElementById('btn-sync-all'),
+    document.getElementById('btn-sync-exported'),
+    document.getElementById('btn-sync-range-toolbar')
+  ].filter(Boolean);
 
-  if (btnAll) {
-    btnAll.addEventListener('click', async () => {
-      btnAll.disabled = true;
-      const icon = btnAll.querySelector('i');
-      if (icon) icon.classList.add('fa-spin');
-      showToast('Sincronizando con Maxirest POS...', 'info');
-      try {
-        const res = await fetch('/api/sync', { method: 'POST' });
-        const data = await res.json();
-        if (data.success) {
-          const yFact = data.yesterdayFacturacion || 0;
-          const factStr = yFact > 0 ? `$${(yFact / 1000000).toFixed(2)}M` : '$0';
-          showToast(`✅ Sincronizado con éxito: Ayer ${data.yesterday} (${factStr}, ${data.yesterdayTickets || 0} tickets)`, 'success');
-          
-          // Si el día de ayer tiene facturación consolidada, activar ayer para que el usuario vea el balance de inmediato
-          const dateToLoad = (yFact > 0 && data.yesterday) ? data.yesterday : (AppState.selectedDate || data.yesterday);
-          await initDaySelector(dateToLoad);
-          selectAndActivateDate(dateToLoad);
-        } else {
-          showToast('Error sincronizando: ' + (data.error || 'Desconocido'), 'error');
-        }
-      } catch (err) {
-        console.error('[MaxiProtocol] Error de sincronización:', err);
-        showToast('Error de conexión al sincronizar con Maxirest POS', 'error');
-      } finally {
-        btnAll.disabled = false;
-        if (icon) icon.classList.remove('fa-spin');
+  syncButtons.forEach(btn => {
+    btn.disabled = true;
+    const icon = btn.querySelector('i');
+    if (icon) {
+      icon.dataset.origClass = icon.className;
+      icon.className = 'fa-solid fa-arrows-rotate fa-spin';
+    }
+  });
+
+  showToast('📥 Escaneando e importando bases de datos exportadas de Maxirest POS...', 'info');
+
+  try {
+    const res = await fetch('/api/sync', { method: 'POST' });
+    const data = await res.json();
+    if (data.success) {
+      const latestClosed = data.latestClosedDay || data.yesterday;
+      const latestFact = data.latestFacturacion || (data.yesterdayFacturacion || 0);
+      const factStr = latestFact > 0 ? `$${(latestFact / 1000000).toFixed(2)}M` : '$0';
+      const count = data.syncedDatesCount || (data.daysCount || 1);
+
+      showToast(`✅ Maxirest POS sincronizado: ${count} fechas disponibles (${latestClosed}: ${factStr})`, 'success');
+
+      // Actualizar el selector de días y activar la fecha con cierre más reciente
+      const dateToLoad = (latestFact > 0 && latestClosed) ? latestClosed : (AppState.selectedDate || data.yesterday);
+      await initDaySelector(dateToLoad);
+      selectAndActivateDate(dateToLoad);
+
+      // Si está en modo rango, refrescar consulta
+      if (AppState.currentScopeMode === 'range' && typeof applyRangeQuery === 'function') {
+        applyRangeQuery();
+      }
+    } else {
+      showToast('Error sincronizando: ' + (data.error || 'Desconocido'), 'error');
+    }
+  } catch (err) {
+    console.error('[MaxiProtocol] Error de sincronización:', err);
+    showToast('Error de conexión al sincronizar con Maxirest POS', 'error');
+  } finally {
+    syncButtons.forEach(btn => {
+      btn.disabled = false;
+      const icon = btn.querySelector('i');
+      if (icon && icon.dataset.origClass) {
+        icon.className = icon.dataset.origClass;
       }
     });
   }
+}
+
+function initSyncButtons() {
+  const btnAll = document.getElementById('btn-sync-all');
+  const btnExported = document.getElementById('btn-sync-exported');
+  const btnRangeToolbar = document.getElementById('btn-sync-range-toolbar');
+  const btnMozos = document.getElementById('btn-sync-mozos');
+
+  if (btnAll) btnAll.addEventListener('click', triggerFullMaxirestSync);
+  if (btnExported) btnExported.addEventListener('click', triggerFullMaxirestSync);
+  if (btnRangeToolbar) btnRangeToolbar.addEventListener('click', triggerFullMaxirestSync);
 
   if (btnMozos) {
     btnMozos.addEventListener('click', async () => {

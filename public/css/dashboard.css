@@ -244,6 +244,22 @@ body.dark-theme {
   border-color: var(--border-medium);
 }
 
+.btn-sync-prominent {
+  background: rgba(56, 189, 248, 0.12) !important;
+  border: 1px solid rgba(56, 189, 248, 0.45) !important;
+  color: #38bdf8 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.15);
+}
+
+.btn-sync-prominent:hover {
+  background: rgba(56, 189, 248, 0.24) !important;
+  border-color: #38bdf8 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+  transform: translateY(-1px);
+}
+
 /* ==========================================================================
    2. TOOLBAR: CONTROL DE PERÍODO CONTABLE
    ========================================================================== */
@@ -421,6 +437,60 @@ body.dark-theme {
 
 .btn-stakeholder-export:hover {
   background: #7dd3fc;
+}
+
+.btn-stakeholder-sync {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.45);
+  border-radius: var(--radius-md);
+  color: #34d399;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.15);
+}
+
+.btn-stakeholder-sync:hover {
+  background: rgba(16, 185, 129, 0.25);
+  border-color: #34d399;
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
+}
+
+.btn-stakeholder-sync:disabled,
+.btn-sync-prominent:disabled,
+.btn-sync-range:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-sync-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: var(--radius-md);
+  color: #38bdf8;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sync-range:hover {
+  background: rgba(56, 189, 248, 0.22);
+  border-color: #38bdf8;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
