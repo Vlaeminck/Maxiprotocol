@@ -257,3 +257,6 @@ Disponible tanto desde el botón **"Exportar Balance"** en la interfaz como vía
 - `GET /api/export/mozos?date=YYYY-MM-DD` → Tabla completa de rendimiento y upselling de mozos.
 - `GET /api/export/products?date=YYYY-MM-DD` → Ingeniería de menú y Pareto de artículos.
 - `GET /api/export/history` → Maestro fiscal histórico completo multianual (1.965 días 2020-2026).
+
+### 12.4. Guía Maestra de Informes de Ventas en Maxirest POS:
+- Consultar [GUIA_EXPORTACIONES_MAXIREST.md](file:///c:/Users/Gardenias/Desktop/DEVS/Maxiprotocol/Maxiprotocol/GUIA_EXPORTACIONES_MAXIREST.md) para el catálogo exhaustivo de los 10 reportes de Maxirest POS (`Ventas detallada`, `Ventas por mozo detalladas`, `Ventas por empleado`, `Ventas por concepto`, `Ventas por formas de cobro`, etc.) y las salidas por Monitor (`.dbf` en `C:\MaxiRest`) y Excel (`.xls` en Escritorio/Descargas).
