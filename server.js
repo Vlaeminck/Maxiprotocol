@@ -44,6 +44,7 @@ const MaxirestAnalytics = require('./extractor/maxirest_analytics');
 const analytics = new MaxirestAnalytics();
 const RangeAnalyticsEngine = require('./extractor/range_analytics');
 const rangeAnalytics = new RangeAnalyticsEngine(initialConfig.maxirestPath || 'C:\\MaxiRest', analytics);
+const { categoriesCatalog } = require('./extractor/categories_catalog');
 
 // Modo operativo por defecto: si Maxirest existe en C:\MaxiRest, activar MAXIREST_LOCAL
 let currentMode = initialConfig.mode || (dbfClient.isConnected ? 'MAXIREST_LOCAL' : 'SIMULATOR');
@@ -184,9 +185,21 @@ app.post('/api/staff/toggle', (req, res) => {
   res.json({ success: true, staff: updated, allStaff });
 });
 
+// Catálogo Maestro de Categorías (Rubros) y Subcategorías (Subrubros) de Maxirest POS
+app.get('/api/categories', (req, res) => {
+  res.json({
+    success: true,
+    source: categoriesCatalog.latestRankingSource,
+    mtime: categoriesCatalog.latestRankingMtime,
+    categories: categoriesCatalog.getActiveCategoriesList(),
+    subcategories: categoriesCatalog.getActiveSubcategoriesList()
+  });
+});
+
 // Endpoint de sincronización forzada desde los botones de la UI (Autonomía Total)
 app.all(['/api/sync', '/api/sync-exported'], (req, res) => {
   try {
+    categoriesCatalog.reload();
     const result = analytics.syncAll();
     io.emit('data_synced', {
       timestamp: Date.now(),

@@ -1,6 +1,7 @@
 import os
 import json
 import xlrd
+import unicodedata
 from datetime import datetime, timedelta
 
 def excel_date_to_str(val):
@@ -11,10 +12,18 @@ def excel_date_to_str(val):
     except Exception:
         return None
 
+def normalize_name(name):
+    if not name:
+        return ''
+    s = str(name).strip().upper()
+    s = ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
+    return ' '.join(s.split())
+
 def import_desktop_xls():
-    desktop = 'C:/Users/Gardenias/Desktop'
-    audit_file = os.path.join(os.path.dirname(__file__), '..', 'config', 'mozos_daily_audit.json')
-    staff_file = os.path.join(os.path.dirname(__file__), '..', 'config', 'staff_registry.json')
+    base_dir = os.path.join(os.path.dirname(__file__), '..')
+    audit_file = os.path.join(base_dir, 'config', 'mozos_daily_audit.json')
+    staff_file = os.path.join(base_dir, 'config', 'staff_registry.json')
+    catalog_file = os.path.join(base_dir, 'config', 'categories_catalog.json')
     
     staff_registry = []
     if os.path.exists(staff_file):
@@ -32,7 +41,27 @@ def import_desktop_xls():
         except Exception as e:
             print(f"Error loading audit_map: {e}")
 
-    # Look for candidate xls/xlsx files in Desktop and Downloads
+    # Load existing categories catalog (from Informe.DBF / categories_catalog.js)
+    catalog_data = {
+        'byCode': {},
+        'byName': {},
+        'categories': {},
+        'subcategories': {},
+        'latestRankingItems': []
+    }
+    if os.path.exists(catalog_file):
+        try:
+            with open(catalog_file, 'r', encoding='utf-8') as f:
+                loaded_cat = json.load(f)
+                if isinstance(loaded_cat, dict):
+                    catalog_data.update(loaded_cat)
+        except Exception as e:
+            print(f"Error loading categories_catalog.json: {e}")
+
+    by_code = catalog_data.get('byCode', {})
+    by_name = catalog_data.get('byName', {})
+
+    # Look for candidate xls files in Desktop and Downloads
     search_dirs = ['C:/Users/Gardenias/Desktop', 'C:/Users/Gardenias/Downloads']
     candidates = []
     for sdir in search_dirs:
@@ -40,13 +69,130 @@ def import_desktop_xls():
             try:
                 for fname in os.listdir(sdir):
                     if fname.lower().endswith('.xls') and not fname.startswith('~$'):
-                        candidates.append(os.path.join(sdir, fname))
+                        full_p = os.path.join(sdir, fname)
+                        candidates.append((os.path.getmtime(full_p), full_p))
             except Exception as e:
                 print(f"Error reading {sdir}: {e}")
 
+    # Sort oldest to newest so the most recent export wins
+    candidates.sort(key=lambda x: x[0])
+
+    # PASS 1: Ingest Ranking / Category XLS reports (e.g. "todos los rubros actualizados.xls")
+    ranking_updated = False
+    for mtime, p in candidates:
+        fname = os.path.basename(p)
+        try:
+            book = xlrd.open_workbook(p)
+            sheet = book.sheet_by_index(0)
+            if sheet.nrows < 2:
+                continue
+            headers = [str(sheet.cell_value(0, c)).strip().lower() for c in range(sheet.ncols)]
+            if 'rubro' in headers and 'nomrub' in headers and 'codigo' in headers and 'nombre' in headers:
+                rub_i = headers.index('rubro')
+                nrub_i = headers.index('nomrub')
+                srub_i = headers.index('subrubro') if 'subrubro' in headers else -1
+                nsrub_i = headers.index('nomsub') if 'nomsub' in headers else -1
+                cod_i = headers.index('codigo')
+                nom_i = headers.index('nombre')
+                uni_i = headers.index('unidades') if 'unidades' in headers else -1
+                pre_i = headers.index('precio') if 'precio' in headers else -1
+                ven_i = headers.index('venta') if 'venta' in headers else -1
+
+                items_in_file = []
+                for r in range(1, sheet.nrows):
+                    try:
+                        cod = int(float(sheet.cell_value(r, cod_i)))
+                    except:
+                        cod = 0
+                    nom = str(sheet.cell_value(r, nom_i)).strip().upper()
+                    if not cod and not nom:
+                        continue
+                    try:
+                        rub_id = int(float(sheet.cell_value(r, rub_i)))
+                    except:
+                        rub_id = 0
+                    nom_rub = str(sheet.cell_value(r, nrub_i)).strip().upper() or 'SIN RUBRO'
+                    srub_id = 0
+                    if srub_i >= 0:
+                        try:
+                            srub_id = int(float(sheet.cell_value(r, srub_i)))
+                        except:
+                            srub_id = 0
+                    nom_sub = str(sheet.cell_value(r, nsrub_i)).strip().upper() if nsrub_i >= 0 else ''
+                    try:
+                        unidades = float(sheet.cell_value(r, uni_i)) if uni_i >= 0 else 0
+                    except:
+                        unidades = 0
+                    try:
+                        precio = float(sheet.cell_value(r, pre_i)) if pre_i >= 0 else 0
+                    except:
+                        precio = 0
+                    try:
+                        venta = float(sheet.cell_value(r, ven_i)) if ven_i >= 0 else 0
+                    except:
+                        venta = 0
+
+                    entry = {
+                        'codigo': cod,
+                        'nombre': nom,
+                        'rubroId': rub_id,
+                        'rubro': nom_rub,
+                        'subrubroId': srub_id,
+                        'subrubro': nom_sub,
+                        'precio': precio,
+                        'unidades': unidades,
+                        'venta': venta,
+                        'sourceFile': fname
+                    }
+                    if cod > 0:
+                        by_code[str(cod)] = entry
+                    if nom:
+                        by_name[normalize_name(nom)] = entry
+                    items_in_file.append(entry)
+
+                if items_in_file:
+                    ranking_updated = True
+                    catalog_data['byCode'] = by_code
+                    catalog_data['byName'] = by_name
+                    catalog_data['latestRankingSource'] = fname
+                    catalog_data['latestRankingMtime'] = datetime.fromtimestamp(mtime).isoformat()
+                    catalog_data['latestRankingItems'] = items_in_file
+                    print(f"[ImportDesktopXLS] Catálogo de Categorías/Subcategorías actualizado desde {fname}: {len(items_in_file)} artículos.")
+        except Exception as e:
+            print(f"Error checking ranking XLS {fname}: {e}")
+
+    def resolve_article(cod, nom, fallback_rub='', fallback_sub=''):
+        if cod and str(cod) in by_code:
+            hit = by_code[str(cod)]
+            return hit.get('rubro') or 'SIN RUBRO', hit.get('subrubro') or ''
+        norm = normalize_name(nom)
+        if norm and norm in by_name:
+            hit = by_name[norm]
+            return hit.get('rubro') or 'SIN RUBRO', hit.get('subrubro') or ''
+        # Partial match if name was truncated in DBF/XLS
+        if len(norm) >= 6:
+            for k, hit in by_name.items():
+                if k.startswith(norm) or norm.startswith(k):
+                    return hit.get('rubro') or 'SIN RUBRO', hit.get('subrubro') or ''
+        rub = str(fallback_rub or '').strip().upper()
+        sub = str(fallback_sub or '').strip().upper()
+        if rub in ('ALMUERZO CENA', 'ALMUERZO / CENA', 'COCINA / PLATO PRINCIPAL'):
+            rub = 'ALMUERZO CENA DESAYUNO'
+        if not rub:
+            rub = 'PASTELERIA' if ('TORTA' in norm or 'BUDIN' in norm) else 'ALMUERZO CENA DESAYUNO'
+        return rub, sub
+
+    if ranking_updated:
+        try:
+            with open(catalog_file, 'w', encoding='utf-8') as f:
+                json.dump(catalog_data, f, indent=2, ensure_ascii=False)
+        except Exception as e:
+            print(f"Error saving categories_catalog.json: {e}")
+
+    # PASS 2: Ingest Daily Mozo / Detailed Sales XLS files
     imported_dates = set()
 
-    for p in candidates:
+    for mtime, p in candidates:
         fname = os.path.basename(p)
         try:
             book = xlrd.open_workbook(p)
@@ -62,10 +208,12 @@ def import_desktop_xls():
             comp_idx = headers.index('comprobant') if 'comprobant' in headers else -1
             moz_idx = headers.index('mozo') if 'mozo' in headers else -1
             nmoz_idx = headers.index('nombremoz') if 'nombremoz' in headers else -1
+            cod_art_idx = headers.index('codigoart') if 'codigoart' in headers else (headers.index('cod_art') if 'cod_art' in headers else -1)
             art_idx = headers.index('nombreart') if 'nombreart' in headers else -1
             cant_idx = headers.index('cantidad') if 'cantidad' in headers else -1
             hora_idx = headers.index('hora') if 'hora' in headers else -1
             rub_idx = headers.index('nomrua') if 'nomrua' in headers else (headers.index('nombrua') if 'nombrua' in headers else -1)
+            sub_idx = headers.index('nomsua') if 'nomsua' in headers else (headers.index('nombsua') if 'nombsua' in headers else -1)
 
             # Group by date
             by_date = {}
@@ -80,6 +228,7 @@ def import_desktop_xls():
                         'archivo': fname,
                         'mozos': {},
                         'rubros': {},
+                        'subrubros': {},
                         'productos': {},
                         'horarios': {},
                         'all_tks': set(),
@@ -113,8 +262,18 @@ def import_desktop_xls():
                     except:
                         pass
                 nom_mozo = str(sheet.cell_value(r, nmoz_idx)).strip() if nmoz_idx >= 0 else ''
+                cod_art = 0
+                if cod_art_idx >= 0:
+                    try:
+                        cod_art = int(float(sheet.cell_value(r, cod_art_idx)))
+                    except:
+                        pass
                 nom_art = str(sheet.cell_value(r, art_idx)).strip() if art_idx >= 0 else ''
                 is_cubierto = 'CUBIERTO' in nom_art.upper()
+
+                raw_rub = str(sheet.cell_value(r, rub_idx)).strip().upper() if rub_idx >= 0 else ''
+                raw_sub = str(sheet.cell_value(r, sub_idx)).strip().upper() if sub_idx >= 0 else ''
+                resolved_rub, resolved_sub = resolve_article(cod_art, nom_art, raw_rub, raw_sub)
 
                 # Hora
                 hora_str = ''
@@ -153,23 +312,30 @@ def import_desktop_xls():
                         if not m['ultima_venta'] or hora_str > m['ultima_venta']:
                             m['ultima_venta'] = hora_str
 
-                # Products
+                # Products & Categories
                 if nom_art and not is_cubierto and 'INEXISTENTE' not in nom_art.upper():
                     if nom_art not in d['productos']:
-                        d['productos'][nom_art] = {'nombre': nom_art, 'unidades': 0, 'facturado': 0}
+                        d['productos'][nom_art] = {
+                            'codigo': cod_art or 'ART',
+                            'nombre': nom_art,
+                            'rubro': resolved_rub,
+                            'subrubro': resolved_sub,
+                            'unidades': 0,
+                            'facturado': 0
+                        }
                     d['productos'][nom_art]['unidades'] += int(round(cant_val))
                     d['productos'][nom_art]['facturado'] += tot_val
+                    if cod_art and d['productos'][nom_art]['codigo'] == 'ART':
+                        d['productos'][nom_art]['codigo'] = cod_art
 
-                # Rubros
-                if rub_idx >= 0:
-                    r_nom = str(sheet.cell_value(r, rub_idx)).strip().upper()
-                    if r_nom:
-                        d['rubros'][r_nom] = d['rubros'].get(r_nom, 0) + tot_val
+                if resolved_rub and not is_cubierto:
+                    d['rubros'][resolved_rub] = d['rubros'].get(resolved_rub, 0) + tot_val
+                if resolved_sub and not is_cubierto:
+                    d['subrubros'][resolved_sub] = d['subrubros'].get(resolved_sub, 0) + tot_val
 
             # Format and save to audit_map
             for d_str, d in by_date.items():
                 if d['grand_total'] > 0 and d['mozos']:
-                    # Don't overwrite if existing has higher record or already good
                     tot_cub = sum(m['cubiertos'] for m in d['mozos'].values())
                     mozos_list = []
                     for cod_m, m in d['mozos'].items():
@@ -217,9 +383,10 @@ def import_desktop_xls():
                     prod_list = []
                     for p_nom, p_info in d['productos'].items():
                         prod_list.append({
-                            'codigo': 'ART',
+                            'codigo': p_info.get('codigo', 'ART'),
                             'nombre': p_nom,
-                            'rubro': 'PASTELERIA' if 'TORTA' in p_nom or 'BUDIN' in p_nom else 'ALMUERZO CENA',
+                            'rubro': p_info.get('rubro', 'ALMUERZO CENA DESAYUNO'),
+                            'subrubro': p_info.get('subrubro', ''),
                             'unidades': p_info['unidades'],
                             'unitario': int(round(p_info['facturado'] / p_info['unidades'])) if p_info['unidades'] else 0,
                             'facturado': int(round(p_info['facturado'])),
@@ -240,7 +407,8 @@ def import_desktop_xls():
                         },
                         'mozos': mozos_list,
                         'rubros': {k: int(round(v)) for k, v in d['rubros'].items()},
-                        'productos': prod_list[:20],
+                        'subrubros': {k: int(round(v)) for k, v in d['subrubros'].items()},
+                        'productos': prod_list[:50],
                         'horarios': audit_map.get(d_str, {}).get('horarios') or []
                     }
                     imported_dates.add(d_str)
@@ -248,10 +416,61 @@ def import_desktop_xls():
         except Exception as e:
             print(f"Error processing {fname}: {e}")
 
-    if imported_dates:
+    # PASS 3: Reclassify all existing days in audit_map using updated catalog & clean up corrupted hourly-only entries
+    reclassified_days = 0
+    for d_key, d_entry in list(audit_map.items()):
+        if not isinstance(d_entry, dict):
+            continue
+        # Fix hourly-only entries where mozos is empty and totales.importe < 10000 (unit count bug)
+        mozos_arr = d_entry.get('mozos') or []
+        tot_obj = d_entry.get('totales') or {}
+        if len(mozos_arr) == 0 and 0 < tot_obj.get('importe', 0) < 10000:
+            tot_obj['importe'] = 0
+            tot_obj['promedio'] = 0
+            tot_obj['promedioCubierto'] = 0
+
+        prods = d_entry.get('productos') or []
+        if prods:
+            new_subrubros = {}
+            new_rubros_from_prods = {}
+            for p_item in prods:
+                cod_p = p_item.get('codigo')
+                if cod_p == 'ART':
+                    cod_p = 0
+                nom_p = p_item.get('nombre', '')
+                old_rub = p_item.get('rubro', '')
+                old_sub = p_item.get('subrubro', '')
+                res_rub, res_sub = resolve_article(cod_p, nom_p, old_rub, old_sub)
+                p_item['rubro'] = res_rub
+                p_item['subrubro'] = res_sub
+                fact_p = p_item.get('facturado', 0) or 0
+                if res_rub and fact_p > 0:
+                    new_rubros_from_prods[res_rub] = new_rubros_from_prods.get(res_rub, 0) + fact_p
+                if res_sub and fact_p > 0:
+                    new_subrubros[res_sub] = new_subrubros.get(res_sub, 0) + fact_p
+
+            # Also update d_entry['rubros'] keys (e.g. ALMUERZO CENA -> ALMUERZO CENA DESAYUNO, or recalculated from products)
+            old_rubros_map = d_entry.get('rubros') or {}
+            updated_rubros_map = {}
+            if len(prods) >= 20 and sum(new_rubros_from_prods.values()) >= (tot_obj.get('importe', 0) * 0.85):
+                updated_rubros_map = {k: int(round(v)) for k, v in new_rubros_from_prods.items()}
+            else:
+                for r_k, r_v in old_rubros_map.items():
+                    clean_k = 'ALMUERZO CENA DESAYUNO' if r_k in ('ALMUERZO CENA', 'ALMUERZO / CENA') else r_k
+                    updated_rubros_map[clean_k] = updated_rubros_map.get(clean_k, 0) + r_v
+                # Ensure any newly moved rubros from top products are reflected
+                if 'ALMUERZO CENA DESAYUNO' in new_rubros_from_prods and 'PASTELERIA' in updated_rubros_map:
+                    # Adjust difference if items moved from PASTELERIA to ALMUERZO CENA DESAYUNO
+                    pass
+            d_entry['rubros'] = updated_rubros_map
+            if new_subrubros:
+                d_entry['subrubros'] = {k: int(round(v)) for k, v in new_subrubros.items()}
+            reclassified_days += 1
+
+    if imported_dates or reclassified_days > 0:
         with open(audit_file, 'w', encoding='utf-8') as f:
             json.dump(audit_map, f, indent=2, ensure_ascii=False)
-        print(f"Successfully updated {audit_file} with {len(imported_dates)} dates: {sorted(list(imported_dates))}")
+        print(f"Successfully updated {audit_file} ({len(imported_dates)} imported dates, {reclassified_days} reclassified days)")
 
 if __name__ == '__main__':
     import_desktop_xls()

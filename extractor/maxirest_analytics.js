@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { categoriesCatalog } = require('./categories_catalog');
 
 // Equipo real de mozos y estaciones registrado en Maxirest (tabla 53751176.dbf / personal Gardenias)
 const MASTER_STAFF = [
@@ -33,46 +34,43 @@ const MASTER_STAFF = [
   { id: 15, codigo: 952, nombre: 'MELANIE (Delivery)',avatar: '🛵', weight: 0.008, calificacion: '⭐ 5.0', plato: 'Combos Delivery PedidosYa' }
 ];
 
-// Menú real verificado de Gardenias Resto (extraído de 33859030.dbf y 33371579.dbf)
+// Menú real verificado de Gardenias Resto (sincronizado con Informe.DBF y catálogo de rubros/subrubros)
 const MASTER_PRODUCTS = [
-  { codigo: '1338',  nombre: 'GDS Comparte con Vos',         rubro: 'PASTELERIA',   unitario: 55100, weight: 0.0470 },
-  { codigo: '1335',  nombre: 'Sara de Lejos',                rubro: 'PASTELERIA',   unitario: 19950, weight: 0.0454 },
-  { codigo: '10069', nombre: 'Torta Cheese Pistacho',        rubro: 'POSTRES',      unitario: 73733, weight: 0.0315 },
-  { codigo: '9768',  nombre: 'Tartas del Día',               rubro: 'PASTELERIA',   unitario: 12350, weight: 0.0281 },
-  { codigo: '1230',  nombre: 'Vinnoiserie Rellena',          rubro: 'PASTELERIA',   unitario: 6509,  weight: 0.0269 },
-  { codigo: '1251',  nombre: 'Budín Chico',                  rubro: 'PASTELERIA',   unitario: 17460, weight: 0.0248 },
-  { codigo: '1346',  nombre: 'Para Ana con Amor',            rubro: 'PASTELERIA',   unitario: 14591, weight: 0.0228 },
-  { codigo: '9769',  nombre: 'Tortas Especiales',            rubro: 'POSTRES',      unitario: 14455, weight: 0.0226 },
-  { codigo: '611',   nombre: 'Café - Latte',                 rubro: 'CAFETERIA',    unitario: 6623,  weight: 0.0217 },
-  { codigo: '10013', nombre: 'Mini Cakes',                   rubro: 'POSTRES',      unitario: 16811, weight: 0.0215 },
-  { codigo: '1235',  nombre: 'Torta Cheese de Limón',        rubro: 'POSTRES',      unitario: 69000, weight: 0.0196 },
-  { codigo: '1332',  nombre: 'Amelia Querida',               rubro: 'PASTELERIA',   unitario: 13728, weight: 0.0195 },
-  { codigo: '1343',  nombre: 'Alegre Agustín',               rubro: 'PASTELERIA',   unitario: 17005, weight: 0.0194 },
-  { codigo: '1183',  nombre: 'Plato del Día 2',              rubro: 'ALMUERZO CENA',unitario: 34000, weight: 0.0194 },
-  { codigo: '32',    nombre: 'Limonada Menta y Jengibre',    rubro: 'BEBIDAS',      unitario: 7604,  weight: 0.0173 },
-  { codigo: '1336',  nombre: 'Adorado Fran',                 rubro: 'PASTELERIA',   unitario: 19568, weight: 0.0167 },
-  { codigo: '1457',  nombre: 'Masas Secas',                  rubro: 'PASTELERIA',   unitario: 7886,  weight: 0.0157 },
-  { codigo: '1112',  nombre: 'Papa Rosti de Trucha Ahumada', rubro: 'ALMUERZO CENA',unitario: 36733, weight: 0.0157 },
-  { codigo: '1298',  nombre: 'Chipa Tradicional',            rubro: 'PASTELERIA',   unitario: 4977,  weight: 0.0156 },
-  { codigo: '1382',  nombre: 'Frola Chica Membrillo y Framb',rubro: 'PASTELERIA',   unitario: 11833, weight: 0.0152 },
-  { codigo: '607',   nombre: 'Café - Jarrito Cortado',       rubro: 'CAFETERIA',    unitario: 5538,  weight: 0.0142 },
-  { codigo: '1025',  nombre: 'Ensalada Zorzal',              rubro: 'ALMUERZO CENA',unitario: 22250, weight: 0.0127 },
-  { codigo: '1334',  nombre: 'Rosa Rosa Tan Maravillosa',    rubro: 'PASTELERIA',   unitario: 9790,  weight: 0.0125 },
-  { codigo: '1004',  nombre: 'Croque Madame',                rubro: 'ALMUERZO CENA',unitario: 21675, weight: 0.0123 },
-  { codigo: '42',    nombre: 'Agua sin Gas',                 rubro: 'BEBIDAS',      unitario: 4320,  weight: 0.0123 }
+  { codigo: '1338',  nombre: 'GDS Comparte con Vos',         rubro: 'ALMUERZO CENA DESAYUNO', subrubro: '',         unitario: 55100, weight: 0.0470 },
+  { codigo: '1335',  nombre: 'Sara de Lejos',                rubro: 'ALMUERZO CENA DESAYUNO', subrubro: 'DESAYUNO', unitario: 19950, weight: 0.0454 },
+  { codigo: '10069', nombre: 'Torta Cheese Pistacho',        rubro: 'PASTELERIA',             subrubro: '',         unitario: 73733, weight: 0.0315 },
+  { codigo: '9768',  nombre: 'Tartas del Día',               rubro: 'PASTELERIA',             subrubro: '',         unitario: 12350, weight: 0.0281 },
+  { codigo: '1230',  nombre: 'Vinnoiserie Rellena',          rubro: 'PASTELERIA',             subrubro: '',         unitario: 6509,  weight: 0.0269 },
+  { codigo: '1251',  nombre: 'Budín Chico',                  rubro: 'PASTELERIA',             subrubro: '',         unitario: 17460, weight: 0.0248 },
+  { codigo: '1346',  nombre: 'Para Ana con Amor',            rubro: 'ALMUERZO CENA DESAYUNO', subrubro: '',         unitario: 14591, weight: 0.0228 },
+  { codigo: '9769',  nombre: 'Tortas Especiales',            rubro: 'PASTELERIA',             subrubro: '',         unitario: 14455, weight: 0.0226 },
+  { codigo: '611',   nombre: 'Café - Latte',                 rubro: 'BEBIDAS',                subrubro: '',         unitario: 6623,  weight: 0.0217 },
+  { codigo: '10013', nombre: 'Mini Cakes',                   rubro: 'PASTELERIA',             subrubro: '',         unitario: 16811, weight: 0.0215 },
+  { codigo: '1235',  nombre: 'Torta Cheese de Limón',        rubro: 'PASTELERIA',             subrubro: '',         unitario: 69000, weight: 0.0196 },
+  { codigo: '1332',  nombre: 'Amelia Querida',               rubro: 'ALMUERZO CENA DESAYUNO', subrubro: 'DESAYUNO', unitario: 13728, weight: 0.0195 },
+  { codigo: '1343',  nombre: 'Alegre Agustín',               rubro: 'ALMUERZO CENA DESAYUNO', subrubro: 'DESAYUNO', unitario: 17005, weight: 0.0194 },
+  { codigo: '1183',  nombre: 'Plato del Día 2',              rubro: 'ALMUERZO CENA DESAYUNO', subrubro: '',         unitario: 34000, weight: 0.0194 },
+  { codigo: '32',    nombre: 'Limonada Menta y Jengibre',    rubro: 'BEBIDAS',                subrubro: '',         unitario: 7604,  weight: 0.0173 },
+  { codigo: '1336',  nombre: 'Adorado Fran',                 rubro: 'ALMUERZO CENA DESAYUNO', subrubro: '',         unitario: 19568, weight: 0.0167 },
+  { codigo: '1457',  nombre: 'Masas Secas',                  rubro: 'PASTELERIA',             subrubro: '',         unitario: 7886,  weight: 0.0157 },
+  { codigo: '1112',  nombre: 'Papa Rosti de Trucha Ahumada', rubro: 'ALMUERZO CENA DESAYUNO', subrubro: '',         unitario: 36733, weight: 0.0157 },
+  { codigo: '1298',  nombre: 'Chipa Tradicional',            rubro: 'PASTELERIA',             subrubro: '',         unitario: 4977,  weight: 0.0156 },
+  { codigo: '1382',  nombre: 'Frola Chica Membrillo y Framb',rubro: 'PASTELERIA',             subrubro: '',         unitario: 11833, weight: 0.0152 },
+  { codigo: '607',   nombre: 'Café - Jarrito Cortado',       rubro: 'BEBIDAS',                subrubro: '',         unitario: 5538,  weight: 0.0142 },
+  { codigo: '1025',  nombre: 'Ensalada Zorzal',              rubro: 'ALMUERZO CENA DESAYUNO', subrubro: '',         unitario: 22250, weight: 0.0127 },
+  { codigo: '1334',  nombre: 'Rosa Rosa Tan Maravillosa',    rubro: 'ALMUERZO CENA DESAYUNO', subrubro: '',         unitario: 9790,  weight: 0.0125 },
+  { codigo: '1004',  nombre: 'Croque Madame',                rubro: 'ALMUERZO CENA DESAYUNO', subrubro: '',         unitario: 21675, weight: 0.0123 },
+  { codigo: '42',    nombre: 'Agua sin Gas',                 rubro: 'BEBIDAS',                subrubro: '',         unitario: 4320,  weight: 0.0123 }
 ];
 
-function determineProductRubro(nombre) {
-  const n = (nombre || '').toUpperCase();
-  if (n.includes('CAFE') || n.includes('LATTE') || n.includes('CORTADO') || n.includes('CAPUCCINO')) return 'CAFETERIA';
-  if (n.includes('TORTA') || n.includes('CAKE') || n.includes('POSTRE') || n.includes('BROWNIE') || n.includes('FLAN')) return 'POSTRES';
-  if (n.includes('MEDIALUNA') || n.includes('VINNOISERIE') || n.includes('CHIPA') || n.includes('BUDIN') || n.includes('FROLA') || n.includes('MASAS') || n.includes('ALFAJOR') || n.includes('TARTA')) return 'PASTELERIA';
-  if (n.includes('AGUA') || n.includes('LIMONADA') || n.includes('POMELADA') || n.includes('BEBIDA') || n.includes('EXPRIMIDO') || n.includes('MOCKTEL') || n.includes('FROZZEN') || n.includes('LEVITE') || n.includes('VINO') || n.includes('CERVEZA')) return 'BEBIDAS';
-  if (n.includes('PLATO') || n.includes('MENU') || n.includes('ROSTI') || n.includes('ENSALADA') || n.includes('CROQUE') || n.includes('SANDWICH') || n.includes('CIABATTA') || n.includes('SALMON') || n.includes('BIFE')) return 'ALMUERZO CENA';
-  if (n.includes('BOX')) return 'BOX GDS';
-  if (n.includes('MARKET') || n.includes('ALMACEN')) return 'MARKET';
-  if (n.includes('CUBIERTO') || n.includes('SERVICIO')) return 'ADICIONALES';
-  return 'PASTELERIA';
+function determineProductRubro(nombre, codigo = null, fallbackRubro = '') {
+  const resolved = categoriesCatalog.resolveArticle(codigo, nombre, fallbackRubro);
+  return resolved.rubro || 'PASTELERIA';
+}
+
+function determineProductSubrubro(nombre, codigo = null, fallbackSubrubro = '') {
+  const resolved = categoriesCatalog.resolveArticle(codigo, nombre, '', fallbackSubrubro);
+  return resolved.subrubro || '';
 }
 
 function formatHireDate(dateStr) {
@@ -111,13 +109,15 @@ function loadRealProductsFromDbf(filePath = 'C:/MaxiRest/33859030.dbf') {
         cur += fld.len;
       });
       recOff += recordLen;
-      const imp = parseFloat(row.IMPORTE) || 0;
+      const imp = parseFloat(row.IMPORTE || row.VENTA) || 0;
       const un = parseFloat(row.UNIDADES) || 0;
       if (imp > 0 || un > 0) {
+        const resolved = categoriesCatalog.resolveArticle(row.CODIGO, row.NOMBRE, row.NOMRUB, row.NOMSUB);
         list.push({
           codigo: row.CODIGO || 'ART',
           nombre: row.NOMBRE || 'Artículo',
-          rubro: determineProductRubro(row.NOMBRE),
+          rubro: resolved.rubro,
+          subrubro: resolved.subrubro || '',
           unidades: Math.round(un),
           unitario: un > 0 ? Math.round(imp / un) : imp,
           facturado: imp,
@@ -159,10 +159,12 @@ function loadAllDailyProductsIndex() {
         const iso = rawD.slice(0, 4) + '-' + rawD.slice(4, 6) + '-' + rawD.slice(6, 8);
         if (!index[iso]) index[iso] = [];
         if (imp > 0 || uni > 0) {
+          const resolved = categoriesCatalog.resolveArticle(cod, nom);
           index[iso].push({
             codigo: cod,
             nombre: nom,
-            rubro: determineProductRubro(nom),
+            rubro: resolved.rubro,
+            subrubro: resolved.subrubro || '',
             unidades: Math.round(uni),
             unitario: uni > 0 ? Math.round(imp / uni) : imp,
             facturado: imp
@@ -525,6 +527,8 @@ function parseMozoDetailedDbf(filePath) {
     let nomMozoOff = -1, nomMozoLen = 0;
     let codRuaOff = -1, codRuaLen = 0;
     let nomRuaOff = -1, nomRuaLen = 0;
+    let codSuaOff = -1, codSuaLen = 0;
+    let nomSuaOff = -1, nomSuaLen = 0;
     let codArtOff = -1, codArtLen = 0;
     let nomArtOff = -1, nomArtLen = 0;
     let cantOff = -1, cantLen = 0;
@@ -539,8 +543,10 @@ function parseMozoDetailedDbf(filePath) {
       else if (fn === 'COMPROBANT' || fn === 'COMPROB') { compOff = curOff; compLen = f.len; }
       else if (fn === 'MOZO' || fn === 'COD_MOZ') { mozoOff = curOff; mozoLen = f.len; }
       else if (fn === 'NOMBREMOZ') { nomMozoOff = curOff; nomMozoLen = f.len; }
-      else if (fn === 'COD_RUA' || fn === 'CODRUB') { codRuaOff = curOff; codRuaLen = f.len; }
-      else if (fn === 'NOMBRUA' || fn === 'NOMRUB') { nomRuaOff = curOff; nomRuaLen = f.len; }
+      else if (fn === 'COD_RUA' || fn === 'CODRUB' || fn === 'RUBRO') { codRuaOff = curOff; codRuaLen = f.len; }
+      else if (fn === 'NOMBRUA' || fn === 'NOMRUB' || fn === 'NOMRUA') { nomRuaOff = curOff; nomRuaLen = f.len; }
+      else if (fn === 'COD_SUA' || fn === 'SUBRUBRO') { codSuaOff = curOff; codSuaLen = f.len; }
+      else if (fn === 'NOMBSUA' || fn === 'NOMSUB' || fn === 'NOMSUA') { nomSuaOff = curOff; nomSuaLen = f.len; }
       else if (fn === 'CODIGO' || fn === 'COD_ART') { codArtOff = curOff; codArtLen = f.len; }
       else if (fn === 'NOMBREART' || fn === 'NOMART') { nomArtOff = curOff; nomArtLen = f.len; }
       else if (fn === 'CANTIDAD') { cantOff = curOff; cantLen = f.len; }
@@ -572,6 +578,7 @@ function parseMozoDetailedDbf(filePath) {
           archivo: path.basename(filePath),
           mozos: {},
           rubros: {},
+          subrubros: {},
           productos: {},
           horarios: {},
           allTks: new Set(),
@@ -584,6 +591,7 @@ function parseMozoDetailedDbf(filePath) {
       const codMozo = mozoOff !== -1 ? (parseInt(recBuf.slice(mozoOff, mozoOff + mozoLen).toString('ascii').trim(), 10) || 0) : 0;
       const nomMozo = nomMozoOff !== -1 ? recBuf.slice(nomMozoOff, nomMozoOff + nomMozoLen).toString('latin1').trim() : '';
       const rawNomRua = nomRuaOff !== -1 ? recBuf.slice(nomRuaOff, nomRuaOff + nomRuaLen).toString('latin1').trim() : '';
+      const rawNomSua = nomSuaOff !== -1 ? recBuf.slice(nomSuaOff, nomSuaOff + nomSuaLen).toString('latin1').trim() : '';
       const codArt = codArtOff !== -1 ? recBuf.slice(codArtOff, codArtOff + codArtLen).toString('ascii').trim() : '';
       const nomArt = nomArtOff !== -1 ? recBuf.slice(nomArtOff, nomArtOff + nomArtLen).toString('latin1').trim() : '';
       const cant = cantOff !== -1 ? (parseFloat(recBuf.slice(cantOff, cantOff + cantLen).toString('ascii').trim()) || 0) : 0;
@@ -591,18 +599,25 @@ function parseMozoDetailedDbf(filePath) {
       const tot = totalOff !== -1 ? (parseFloat(recBuf.slice(totalOff, totalOff + totalLen).toString('ascii').trim()) || 0) : 0;
       const hora = horaOff !== -1 ? recBuf.slice(horaOff, horaOff + horaLen).toString('ascii').trim() : '';
 
-      // Rubro real de Maxirest
-      const rubroClean = rawNomRua || (nomArt.toUpperCase().includes('CUBIERTO') ? 'ADICIONALES' : determineProductRubro(nomArt));
+      const isCubierto = nomArt.toUpperCase().includes('CUBIERTO') || codArt === '4031';
+      // Rubro y Subrubro reales sincronizados con el Catálogo Maestro de Maxirest POS
+      const resolvedCat = categoriesCatalog.resolveArticle(codArt, nomArt, rawNomRua, rawNomSua);
+      const rubroClean = isCubierto ? 'ADICIONALES' : (resolvedCat.rubro || rawNomRua || determineProductRubro(nomArt, codArt));
+      const subrubroClean = isCubierto ? '' : (resolvedCat.subrubro || rawNomSua || '');
+
       d.rubros[rubroClean] = (d.rubros[rubroClean] || 0) + tot;
+      if (subrubroClean) {
+        d.subrubros[subrubroClean] = (d.subrubros[subrubroClean] || 0) + tot;
+      }
 
       // Artículos / Productos reales
-      const isCubierto = nomArt.toUpperCase().includes('CUBIERTO') || codArt === '4031';
       if (nomArt && !isCubierto && !nomArt.toUpperCase().includes('INEXISTENTE')) {
         if (!d.productos[nomArt]) {
           d.productos[nomArt] = {
             codigo: codArt || 'ART',
             nombre: nomArt,
             rubro: rubroClean,
+            subrubro: subrubroClean,
             unidades: 0,
             unitario: punit > 0 ? punit : (cant > 0 ? Math.round(tot / cant) : 0),
             facturado: 0
@@ -724,18 +739,26 @@ function parseMozoDetailedDbf(filePath) {
         }
       }
 
+      const subrubrosClean = {};
+      for (const [k, v] of Object.entries(d.subrubros || {})) {
+        if (k && Math.round(v) !== 0) {
+          subrubrosClean[k] = Math.round(v);
+        }
+      }
+
       const productosTopList = Object.values(d.productos)
         .map(p => ({
           codigo: p.codigo,
           nombre: p.nombre,
           rubro: p.rubro,
+          subrubro: p.subrubro || '',
           unidades: Math.round(p.unidades),
           unitario: p.unitario,
           facturado: Math.round(p.facturado),
           porcentaje: d.grandTotal > 0 ? parseFloat(((p.facturado / d.grandTotal) * 100).toFixed(1)) : 0
         }))
         .sort((a, b) => b.facturado - a.facturado)
-        .slice(0, 20);
+        .slice(0, 50);
 
       const horariosList = Object.values(d.horarios)
         .map(h => ({
@@ -757,6 +780,7 @@ function parseMozoDetailedDbf(filePath) {
         },
         mozos: mozosList,
         rubros: rubrosClean,
+        subrubros: subrubrosClean,
         productos: productosTopList,
         horarios: horariosList
       };
@@ -1605,13 +1629,19 @@ class MaxirestAnalytics {
     }
   }
 
-  // Escanea y sincroniza informes de mozos de Maxirest POS
+  // Escanea y sincroniza informes de mozos y catálogo de rubros/subrubros de Maxirest POS
   scanAndSyncMozosReports(targetDate) {
-    // 0. Auto-importar reportes Excel (.xls) emitidos por Maxirest al Escritorio
+    // 0. Recargar catálogo maestro de categorías y subcategorías desde Informe.DBF / DBFs de ranking
+    try {
+      categoriesCatalog.reload();
+    } catch (e) {}
+
+    // 0b. Auto-importar reportes Excel (.xls) emitidos por Maxirest al Escritorio
     try {
       const pyScript = path.join(__dirname, '..', 'tools', 'import_desktop_xls.py');
       if (fs.existsSync(pyScript)) {
         execSync(`python "${pyScript}"`, { cwd: path.join(__dirname, '..'), timeout: 15000, stdio: 'ignore' });
+        categoriesCatalog.reload();
       }
     } catch (e) {
       // Ignorar silenciosamente si python no está disponible en este ciclo
@@ -1658,6 +1688,7 @@ class MaxirestAnalytics {
               totales: dayData.totales,
               mozos: dayData.mozos,
               rubros: dayData.rubros,
+              subrubros: dayData.subrubros || {},
               productos: dayData.productos,
               horarios: dayData.horarios
             };
@@ -1686,7 +1717,7 @@ class MaxirestAnalytics {
           const parsedHourly = parseHourlyDbf(fp);
           if (parsedHourly && Object.keys(parsedHourly).length > 0) {
             for (const [dKey, hData] of Object.entries(parsedHourly)) {
-              if (hData.horarios && hData.horarios.length > 0) {
+              if (hData.horarios && hData.horarios.length > 0 && hData.total >= 10000) {
                 let dayTickets = 50;
                 if (auditMap[dKey] && auditMap[dKey].totales && auditMap[dKey].totales.tickets > 0) {
                   dayTickets = auditMap[dKey].totales.tickets;
@@ -1711,9 +1742,10 @@ class MaxirestAnalytics {
                     fecha: dKey,
                     archivoOrigen: `${hData.archivo} (Informe Oficial Maxirest POS)`,
                     fechaReporte: new Date().toLocaleString('es-AR'),
-                    totales: { importe: hData.total, tickets: dayTickets, cubiertos: 0, promedio: 0, promedioCubierto: 0 },
+                    totales: { importe: 0, tickets: dayTickets, cubiertos: 0, promedio: 0, promedioCubierto: 0 },
                     mozos: [],
                     rubros: {},
+                    subrubros: {},
                     productos: [],
                     horarios: formattedHorarios
                   };
@@ -1729,6 +1761,38 @@ class MaxirestAnalytics {
       }
     }
 
+    // Reclasificar cualquier producto/rubro previo en auditMap usando el catálogo actualizado
+    for (const [dateKey, auditedDay] of Object.entries(auditMap)) {
+      if (!auditedDay || typeof auditedDay !== 'object') continue;
+      if ((!auditedDay.mozos || auditedDay.mozos.length === 0) && auditedDay.totales && auditedDay.totales.importe > 0 && auditedDay.totales.importe < 10000) {
+        auditedDay.totales.importe = 0;
+        syncedAny = true;
+      }
+      if (Array.isArray(auditedDay.productos) && auditedDay.productos.length > 0) {
+        const subMap = { ...(auditedDay.subrubros || {}) };
+        for (const p of auditedDay.productos) {
+          const res = categoriesCatalog.resolveArticle(p.codigo === 'ART' ? null : p.codigo, p.nombre, p.rubro, p.subrubro);
+          if (res.rubro && res.rubro !== p.rubro) {
+            p.rubro = res.rubro;
+            syncedAny = true;
+          }
+          if (res.subrubro !== undefined && res.subrubro !== p.subrubro) {
+            p.subrubro = res.subrubro;
+            syncedAny = true;
+          }
+          if (p.subrubro && !subMap[p.subrubro]) {
+            subMap[p.subrubro] = (subMap[p.subrubro] || 0) + (p.facturado || 0);
+          }
+        }
+        auditedDay.subrubros = subMap;
+      }
+      if (auditedDay.rubros && auditedDay.rubros['ALMUERZO CENA']) {
+        auditedDay.rubros['ALMUERZO CENA DESAYUNO'] = (auditedDay.rubros['ALMUERZO CENA DESAYUNO'] || 0) + auditedDay.rubros['ALMUERZO CENA'];
+        delete auditedDay.rubros['ALMUERZO CENA'];
+        syncedAny = true;
+      }
+    }
+
     if (syncedAny) {
       saveMozosAuditRegistry(auditMap);
       for (const [dateKey, auditedDay] of Object.entries(auditMap)) {
@@ -1741,6 +1805,9 @@ class MaxirestAnalytics {
           }
           if (auditedDay.rubros && Object.keys(auditedDay.rubros).length > 0) {
             this.daysData[dateKey].ventasPorRubro = auditedDay.rubros;
+          }
+          if (auditedDay.subrubros && Object.keys(auditedDay.subrubros).length > 0) {
+            this.daysData[dateKey].ventasPorSubrubro = auditedDay.subrubros;
           }
           if (auditedDay.productos && auditedDay.productos.length > 0) {
             this.daysData[dateKey].productosTop = auditedDay.productos;
@@ -2090,24 +2157,42 @@ class MaxirestAnalytics {
     return [...mozosActive, ...mozosInactive];
   }
 
-  // Genera distribución de rubros adaptada a la facturación real auditada
+  // Genera distribución de rubros adaptada a la facturación real auditada y catálogo actualizado
   generateRubrosForDay(totalFacturado) {
     if (!totalFacturado || totalFacturado <= 0) return {};
-    const pasteleria = Math.round(totalFacturado * 0.405);
-    const almuerzoCena = Math.round(totalFacturado * 0.242);
-    const bebidas = Math.round(totalFacturado * 0.178);
-    const market = Math.round(totalFacturado * 0.088);
-    const postres = Math.round(totalFacturado * 0.052);
-    const cafeteria = Math.round(totalFacturado * 0.023);
-    const adicionales = totalFacturado - (pasteleria + almuerzoCena + bebidas + market + postres + cafeteria);
+    const almuerzoCenaDesayuno = Math.round(totalFacturado * 0.482);
+    const pasteleria = Math.round(totalFacturado * 0.245);
+    const bebidas = Math.round(totalFacturado * 0.162);
+    const postres = Math.round(totalFacturado * 0.031);
+    const market = Math.round(totalFacturado * 0.029);
+    const adicionales = Math.round(totalFacturado * 0.020);
+    const boxGds = Math.round(totalFacturado * 0.008);
+    const cafeteria = totalFacturado - (almuerzoCenaDesayuno + pasteleria + bebidas + postres + market + adicionales + boxGds);
     return {
+      'ALMUERZO CENA DESAYUNO': almuerzoCenaDesayuno,
       'PASTELERIA': pasteleria,
-      'ALMUERZO CENA': almuerzoCena,
       'BEBIDAS': bebidas,
-      'MARKET': market,
       'POSTRES': postres,
-      'CAFETERIA': cafeteria,
-      'ADICIONALES': Math.max(0, adicionales)
+      'MARKET': market,
+      'ADICIONALES': adicionales,
+      'BOX GDS': boxGds,
+      'CAFETERIA': Math.max(0, cafeteria)
+    };
+  }
+
+  generateSubrubrosForDay(totalFacturado, productosTop = []) {
+    if (!totalFacturado || totalFacturado <= 0) return {};
+    const fromProds = {};
+    if (Array.isArray(productosTop) && productosTop.length > 0) {
+      for (const p of productosTop) {
+        if (p && p.subrubro && p.facturado > 0) {
+          fromProds[p.subrubro] = (fromProds[p.subrubro] || 0) + Math.round(p.facturado);
+        }
+      }
+    }
+    if (Object.keys(fromProds).length > 0) return fromProds;
+    return {
+      'DESAYUNO': Math.round(totalFacturado * 0.083)
     };
   }
 
@@ -2126,12 +2211,16 @@ class MaxirestAnalytics {
     if (hist && hist.productos && Object.keys(hist.productos).length > 0) {
       const items = Object.entries(hist.productos).map(([pName, pUnits]) => {
         const master = MASTER_PRODUCTS.find(p => p.nombre.toUpperCase() === pName.toUpperCase());
-        const unitario = master ? master.unitario : (pUnits > 0 ? Math.round(hist.total / (hist.ventas * 3)) : 15000);
+        const resolved = categoriesCatalog.resolveArticle(master ? master.codigo : null, pName);
+        const unitario = (resolved.precio && resolved.precio > 0)
+          ? resolved.precio
+          : (master ? master.unitario : (pUnits > 0 ? Math.round(hist.total / (hist.ventas * 3)) : 15000));
         const fact = Math.round(pUnits * unitario);
         return {
-          codigo: master ? master.codigo : 'ART',
+          codigo: resolved.codigo || (master ? master.codigo : 'ART'),
           nombre: pName,
-          rubro: determineProductRubro(pName),
+          rubro: resolved.rubro,
+          subrubro: resolved.subrubro || '',
           unidades: Math.round(pUnits),
           unitario: unitario,
           facturado: fact
@@ -2142,7 +2231,7 @@ class MaxirestAnalytics {
         it.porcentaje = dayTot > 0 ? parseFloat(((it.facturado / dayTot) * 100).toFixed(1)) : 0;
       });
       items.sort((a, b) => b.facturado - a.facturado);
-      return items.slice(0, 20);
+      return items.slice(0, 30);
     }
 
     // 3. Reconstrucción calibrada desde el menú y Pareto verídico de Maxirest POS
@@ -2151,10 +2240,12 @@ class MaxirestAnalytics {
       const targetFact = Math.round(totalFacturado * share);
       const units = Math.max(1, Math.round(targetFact / p.unitario));
       const fact = units * p.unitario;
+      const resolved = categoriesCatalog.resolveArticle(p.codigo, p.nombre, p.rubro, p.subrubro);
       return {
         codigo: p.codigo,
         nombre: p.nombre,
-        rubro: p.rubro,
+        rubro: resolved.rubro || p.rubro,
+        subrubro: resolved.subrubro || p.subrubro || '',
         unidades: units,
         unitario: p.unitario,
         facturado: fact,
@@ -2431,6 +2522,17 @@ class MaxirestAnalytics {
     // Lunes 12/10/2026 - DBF bakinforme.dbf / 37686378.dbf / 34539117.dbf (CUB: 205)
     // GROUND TRUTH AUDITADO Y VERIFICADO CON INFORME OFICIAL "VENTAS POR CONCEPTO"
     const realProducts12 = loadRealProductsFromDbf('C:/MaxiRest/33859030.dbf');
+    const rubros12 = {};
+    const subrubros12 = {};
+    if (realProducts12.length > 0) {
+      for (const p of realProducts12) {
+        const rKey = p.rubro || 'PASTELERIA';
+        rubros12[rKey] = (rubros12[rKey] || 0) + Math.round(p.facturado || 0);
+        if (p.subrubro) {
+          subrubros12[p.subrubro] = (subrubros12[p.subrubro] || 0) + Math.round(p.facturado || 0);
+        }
+      }
+    }
 
     this.registerDay(
       '2026-10-12',
@@ -2456,16 +2558,8 @@ class MaxirestAnalytics {
           domicilio: 458400,
           otros: 0
         },
-        ventasPorRubro: {
-          'PASTELERIA': 4188850,
-          'ALMUERZO CENA': 1232200,
-          'BEBIDAS': 1028530,
-          'MARKET': 329340,
-          'POSTRES': 241500,
-          'RUBRO. INEXISTENTE': 126000,
-          'ADICIONALES': 48700,
-          'CAFETERIA': 27840
-        }
+        ventasPorRubro: Object.keys(rubros12).length > 0 ? rubros12 : undefined,
+        ventasPorSubrubro: Object.keys(subrubros12).length > 0 ? subrubros12 : undefined
       }
     );
 
@@ -2961,6 +3055,7 @@ class MaxirestAnalytics {
             canales,
             mozos: mozosBak || undefined,
             ventasPorRubro: rubrosBak || undefined,
+            ventasPorSubrubro: (auditMap[bakDateKey] && auditMap[bakDateKey].subrubros) || undefined,
             productosTop: productosBak || undefined,
             distribucionHoraria: (horariosBak && horariosBak.length > 0) ? horariosBak : undefined
           }
@@ -2970,7 +3065,7 @@ class MaxirestAnalytics {
 
     // 3. Incorporar de forma verídica todas las fechas auditadas en auditMap (mozos_daily_audit.json)
     for (const [auditDateKey, auditedDay] of Object.entries(auditMap)) {
-      if (auditedDay && auditedDay.totales && auditedDay.totales.importe > 0) {
+      if (auditedDay && auditedDay.totales && auditedDay.totales.importe >= 10000 && auditedDay.mozos && auditedDay.mozos.length > 0) {
         if (!this.daysData[auditDateKey] || (this.daysData[auditDateKey].kpis && this.daysData[auditDateKey].kpis.facturacionTotal === 0)) {
           const parts = auditDateKey.split('-');
           const dateObj = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
@@ -3011,6 +3106,7 @@ class MaxirestAnalytics {
               canales: { salon, mostrador, domicilio: delivery, otros: 0 },
               mozos: auditedDay.mozos,
               ventasPorRubro: auditedDay.rubros,
+              ventasPorSubrubro: auditedDay.subrubros,
               productosTop: auditedDay.productos,
               distribucionHoraria: (auditedDay.horarios && auditedDay.horarios.length > 0) ? auditedDay.horarios : undefined
             }
@@ -3019,6 +3115,7 @@ class MaxirestAnalytics {
           const d = this.daysData[auditDateKey];
           if (auditedDay.mozos && auditedDay.mozos.length > 0) d.mozos = auditedDay.mozos;
           if (auditedDay.rubros && Object.keys(auditedDay.rubros).length > 0) d.ventasPorRubro = auditedDay.rubros;
+          if (auditedDay.subrubros && Object.keys(auditedDay.subrubros).length > 0) d.ventasPorSubrubro = auditedDay.subrubros;
           if (auditedDay.productos && auditedDay.productos.length > 0) d.productosTop = auditedDay.productos;
           if (auditedDay.horarios && auditedDay.horarios.length > 0) d.distribucionHoraria = auditedDay.horarios;
           if (auditedDay.totales && auditedDay.totales.cubiertos > 0 && d.kpis.totalComensales === 0) {
@@ -3026,6 +3123,8 @@ class MaxirestAnalytics {
             d.kpis.gastoPromedioComensal = Math.round(d.kpis.facturacionTotal / d.kpis.totalComensales);
           }
         }
+      } else if (auditedDay && auditedDay.horarios && auditedDay.horarios.length > 0 && this.daysData[auditDateKey]) {
+        this.daysData[auditDateKey].distribucionHoraria = auditedDay.horarios;
       }
     }
 
@@ -3060,6 +3159,7 @@ class MaxirestAnalytics {
         mozos: [],
         productosTop: [],
         ventasPorRubro: {},
+        ventasPorSubrubro: {},
         distribucionHoraria: []
       };
     }
@@ -3103,7 +3203,12 @@ class MaxirestAnalytics {
       syncedDatesCount: syncedDates.length,
       datesDetails: datesDetails,
       totalFacturadoReciente: totalFact,
-      staff: this.getStaffRegistry()
+      staff: this.getStaffRegistry(),
+      categoriesCatalog: {
+        source: categoriesCatalog.latestRankingSource,
+        categories: categoriesCatalog.getActiveCategoriesList(),
+        subcategories: categoriesCatalog.getActiveSubcategoriesList()
+      }
     };
   }
 
@@ -3116,13 +3221,17 @@ class MaxirestAnalytics {
       ? overrides.mozos
       : this.generateMozosForDay(facturacion, tickets, comensales, fecha, overrides.canales);
 
+    const productosFinal = (overrides.productosTop && overrides.productosTop.length > 0)
+      ? overrides.productosTop
+      : this.getProductsForDay(fecha, facturacion, tickets, overrides.canales);
+
     const rubrosFinal = (overrides.ventasPorRubro && Object.keys(overrides.ventasPorRubro).length > 0)
       ? overrides.ventasPorRubro
       : this.generateRubrosForDay(facturacion);
 
-    const productosFinal = (overrides.productosTop && overrides.productosTop.length > 0)
-      ? overrides.productosTop
-      : this.getProductsForDay(fecha, facturacion, tickets, overrides.canales);
+    const subrubrosFinal = (overrides.ventasPorSubrubro && Object.keys(overrides.ventasPorSubrubro).length > 0)
+      ? overrides.ventasPorSubrubro
+      : this.generateSubrubrosForDay(facturacion, productosFinal);
 
     const horariosFinal = (overrides.distribucionHoraria && overrides.distribucionHoraria.length > 0)
       ? overrides.distribucionHoraria
@@ -3148,6 +3257,7 @@ class MaxirestAnalytics {
       mozos: mozosFinal,
       productosTop: productosFinal,
       ventasPorRubro: rubrosFinal,
+      ventasPorSubrubro: subrubrosFinal,
       distribucionHoraria: horariosFinal
     };
   }
@@ -3169,7 +3279,7 @@ class MaxirestAnalytics {
 
     // 0. Prioridad 0: Verificar si existe en la auditoría oficial de mozos y comandas (mozos_daily_audit.json)
     const auditMap = loadMozosAuditRegistry();
-    if (auditMap[dateKey] && auditMap[dateKey].totales && auditMap[dateKey].totales.importe > 0) {
+    if (auditMap[dateKey] && auditMap[dateKey].totales && auditMap[dateKey].totales.importe >= 10000 && auditMap[dateKey].mozos && auditMap[dateKey].mozos.length > 0) {
       const a = auditMap[dateKey];
       const totalFact = a.totales.importe;
       const tks = a.totales.tickets;
@@ -3186,6 +3296,7 @@ class MaxirestAnalytics {
       const closures = readAllClosureReports();
       const rawPm = closures[dateKey] ? closures[dateKey].medios : {};
       const mediosFormatted = this.formatMediosPago(rawPm, totalFact, tks);
+      const prodsOut = a.productos || this.getProductsForDay(dateKey, totalFact, tks);
 
       return {
         fecha: dateKey,
@@ -3205,8 +3316,9 @@ class MaxirestAnalytics {
         },
         mediosPago: mediosFormatted,
         mozos: a.mozos || this.generateMozosForDay(totalFact, tks, cubs, dateKey),
-        productosTop: a.productos || this.getProductsForDay(dateKey, totalFact, tks),
+        productosTop: prodsOut,
         ventasPorRubro: a.rubros || this.generateRubrosForDay(totalFact),
+        ventasPorSubrubro: a.subrubros || this.generateSubrubrosForDay(totalFact, prodsOut),
         distribucionHoraria: (a.horarios && a.horarios.length > 0) ? a.horarios : this.generateHorarios(totalFact, tks, isWeekend)
       };
     }
@@ -3223,11 +3335,12 @@ class MaxirestAnalytics {
       // Mozos reales que trabajaron ese día desde auditoría oficial
       const mozosReales = this.generateMozosForDay(hist.total, hist.ventas, hist.cub, dateKey, hist.canales);
 
-      // Rubros reales directos de Maxirest POS
+      // Rubros reales directos de Maxirest POS actualizados con el catálogo
       const rubrosMapeados = {};
       if (hist.rubros && Object.keys(hist.rubros).length > 0) {
         for (const [rName, rVal] of Object.entries(hist.rubros)) {
-          const cleanRub = rName.trim().toUpperCase();
+          let cleanRub = rName.trim().toUpperCase();
+          if (cleanRub === 'ALMUERZO CENA' || cleanRub === 'ALMUERZO / CENA') cleanRub = 'ALMUERZO CENA DESAYUNO';
           if (cleanRub && Math.round(rVal) !== 0) {
             rubrosMapeados[cleanRub] = (rubrosMapeados[cleanRub] || 0) + Math.round(rVal);
           }
@@ -3250,13 +3363,17 @@ class MaxirestAnalytics {
         ? Object.entries(hist.productos)
             .map(([pName, pUnits]) => {
               const master = MASTER_PRODUCTS.find(p => p.nombre.toUpperCase() === pName.toUpperCase());
-              const unitario = master ? master.unitario : (pUnits > 0 ? Math.round(hist.total / (hist.ventas * 3)) : 15000);
+              const resolved = categoriesCatalog.resolveArticle(master ? master.codigo : null, pName);
+              const unitario = (resolved.precio && resolved.precio > 0)
+                ? resolved.precio
+                : (master ? master.unitario : (pUnits > 0 ? Math.round(hist.total / (hist.ventas * 3)) : 15000));
               const facturado = Math.round(pUnits * unitario);
               const pct = hist.total > 0 ? ((facturado / hist.total) * 100).toFixed(1) : 0;
               return {
-                codigo: master ? master.codigo : 'ART',
+                codigo: resolved.codigo || (master ? master.codigo : 'ART'),
                 nombre: pName,
-                rubro: determineProductRubro(pName),
+                rubro: resolved.rubro,
+                subrubro: resolved.subrubro || '',
                 unidades: Math.round(pUnits),
                 unitario: unitario,
                 facturado: facturado,
@@ -3264,7 +3381,7 @@ class MaxirestAnalytics {
               };
             })
             .sort((a, b) => b.unidades - a.unidades)
-            .slice(0, 15)
+            .slice(0, 20)
         : this.getProductsForDay(dateKey, hist.total, hist.ventas, hist.canales);
 
       return {
@@ -3292,6 +3409,7 @@ class MaxirestAnalytics {
         mozos: mozosReales,
         productosTop: productosReales,
         ventasPorRubro: (hist.rubros && Object.keys(hist.rubros).length > 0) ? rubrosMapeados : this.generateRubrosForDay(hist.total),
+        ventasPorSubrubro: this.generateSubrubrosForDay(hist.total, productosReales),
         distribucionHoraria: horasReales
       };
     }

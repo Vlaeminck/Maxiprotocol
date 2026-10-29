@@ -346,15 +346,18 @@
                 <input type="text" id="search-product-input" placeholder="Buscar por nombre o código...">
               </div>
               <select class="filter-category-select" id="select-category-filter">
-                <option value="ALL">Todos los Rubros</option>
+                <option value="ALL">Todos los Rubros y Subcategorías</option>
+                <option value="ALMUERZO CENA DESAYUNO">ALMUERZO CENA DESAYUNO</option>
+                <option value="SUB:DESAYUNO">↳ Subcategoría: DESAYUNO</option>
                 <option value="PASTELERIA">PASTELERIA</option>
-                <option value="ALMUERZO CENA">ALMUERZO CENA</option>
                 <option value="BEBIDAS">BEBIDAS</option>
+                <option value="POSTRES">POSTRES</option>
                 <option value="MARKET">MARKET</option>
                 <option value="ADICIONALES">ADICIONALES</option>
-                <option value="CAFETERIA">CAFETERIA</option>
-                <option value="POSTRES">POSTRES</option>
                 <option value="BOX GDS">BOX GDS</option>
+                <option value="CAFETERIA">CAFETERIA</option>
+                <option value="DESCUENTOS - PROMOS">DESCUENTOS - PROMOS</option>
+                <option value="AGUA">AGUA</option>
               </select>
             </div>
           </div>
@@ -367,7 +370,7 @@
                   <th style="width: 50px;">#</th>
                   <th style="width: 90px;">Código</th>
                   <th>Artículo / Descripción</th>
-                  <th>Rubro</th>
+                  <th>Rubro / Subcategoría</th>
                   <th style="text-align: right;">Unidades</th>
                   <th style="text-align: right;">Precio Unit.</th>
                   <th style="text-align: right;">Facturación Total</th>
@@ -667,15 +670,18 @@
                 </div>
 
                 <select class="filter-category-select" id="range-dish-rubro-filter">
-                  <option value="ALL">Todos los Rubros</option>
+                  <option value="ALL">Todos los Rubros y Subcategorías</option>
+                  <option value="ALMUERZO CENA DESAYUNO">ALMUERZO CENA DESAYUNO</option>
+                  <option value="SUB:DESAYUNO">↳ Subcategoría: DESAYUNO</option>
                   <option value="PASTELERIA">PASTELERIA</option>
-                  <option value="ALMUERZO CENA">ALMUERZO CENA</option>
                   <option value="BEBIDAS">BEBIDAS</option>
+                  <option value="POSTRES">POSTRES</option>
                   <option value="MARKET">MARKET</option>
                   <option value="ADICIONALES">ADICIONALES</option>
-                  <option value="CAFETERIA">CAFETERIA</option>
-                  <option value="POSTRES">POSTRES</option>
                   <option value="BOX GDS">BOX GDS</option>
+                  <option value="CAFETERIA">CAFETERIA</option>
+                  <option value="DESCUENTOS - PROMOS">DESCUENTOS - PROMOS</option>
+                  <option value="AGUA">AGUA</option>
                 </select>
               </div>
             </div>
@@ -687,7 +693,7 @@
                     <th style="width: 45px;">#</th>
                     <th style="width: 70px;">Cód.</th>
                     <th>Plato / Artículo</th>
-                    <th>Categoría</th>
+                    <th>Categoría / Subrubro</th>
                     <th style="text-align: right;">Unidades</th>
                     <th style="text-align: right;">Precio Prom.</th>
                     <th style="text-align: right;">Facturación Total</th>

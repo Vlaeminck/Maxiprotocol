@@ -640,7 +640,7 @@ function renderDayAnalytics(dayData) {
 
   // 3. Gráficos Ejecutivos
   renderChartHorarios(dayData.distribucionHoraria);
-  renderChartRubrosOverview(dayData.ventasPorRubro);
+  renderChartRubrosOverview(dayData.ventasPorRubro, dayData.ventasPorSubrubro);
 
   // 4. Tabla de Rendimiento por Producto
   renderProductsTable(dayData.productosTop);
@@ -801,9 +801,56 @@ function initProductFilters() {
   }
 }
 
+function populateCategorySelectOptions(selectEl, itemsList, currentVal) {
+  if (!selectEl) return;
+  const baseRubros = [
+    'ALMUERZO CENA DESAYUNO',
+    'PASTELERIA',
+    'BEBIDAS',
+    'POSTRES',
+    'MARKET',
+    'ADICIONALES',
+    'BOX GDS',
+    'CAFETERIA',
+    'DESCUENTOS - PROMOS',
+    'AGUA'
+  ];
+  const dynamicRubros = new Set(baseRubros);
+  const dynamicSubrubros = new Set(['DESAYUNO']);
+  (itemsList || []).forEach(p => {
+    if (p.rubro) dynamicRubros.add(p.rubro.trim().toUpperCase());
+    if (p.subrubro) dynamicSubrubros.add(p.subrubro.trim().toUpperCase());
+  });
+
+  let html = `<option value="ALL">Todos los Rubros y Subcategorías</option>`;
+  html += `<optgroup label="Categorías / Rubros Maxirest POS">`;
+  Array.from(dynamicRubros).forEach(r => {
+    html += `<option value="${r}">${r}</option>`;
+  });
+  html += `</optgroup>`;
+  if (dynamicSubrubros.size > 0) {
+    html += `<optgroup label="Subcategorías / Subrubros">`;
+    Array.from(dynamicSubrubros).forEach(sr => {
+      html += `<option value="SUB:${sr}">↳ Subcategoría: ${sr}</option>`;
+    });
+    html += `</optgroup>`;
+  }
+  selectEl.innerHTML = html;
+  if (currentVal && Array.from(selectEl.options).some(o => o.value === currentVal)) {
+    selectEl.value = currentVal;
+  } else {
+    selectEl.value = 'ALL';
+  }
+}
+
 function renderProductsTable(productos) {
   const tbody = document.getElementById('products-table-body');
   if (!tbody) return;
+
+  const catSelect = document.getElementById('select-category-filter');
+  if (catSelect) {
+    populateCategorySelectOptions(catSelect, productos, AppState.productCategoryFilter || 'ALL');
+  }
 
   tbody.innerHTML = '';
   let list = productos || [];
@@ -812,12 +859,24 @@ function renderProductsTable(productos) {
     list = list.filter(p => 
       p.nombre.toLowerCase().includes(AppState.productSearchTerm) ||
       p.codigo.toLowerCase().includes(AppState.productSearchTerm) ||
-      p.rubro.toLowerCase().includes(AppState.productSearchTerm)
+      (p.rubro && p.rubro.toLowerCase().includes(AppState.productSearchTerm)) ||
+      (p.subrubro && p.subrubro.toLowerCase().includes(AppState.productSearchTerm))
     );
   }
 
-  if (AppState.productCategoryFilter !== 'ALL') {
-    list = list.filter(p => p.rubro.toLowerCase().includes(AppState.productCategoryFilter.toLowerCase()));
+  if (AppState.productCategoryFilter && AppState.productCategoryFilter !== 'ALL') {
+    const filterVal = AppState.productCategoryFilter;
+    if (filterVal.startsWith('SUB:')) {
+      const targetSub = filterVal.slice(4).toLowerCase();
+      list = list.filter(p => (p.subrubro || '').toLowerCase() === targetSub);
+    } else {
+      const targetRub = filterVal.toLowerCase();
+      list = list.filter(p => {
+        const r = (p.rubro || '').toLowerCase();
+        if (targetRub.includes('almuerzo') && r.includes('almuerzo')) return true;
+        return r === targetRub || r.includes(targetRub);
+      });
+    }
   }
 
   if (list.length === 0) {
@@ -833,11 +892,17 @@ function renderProductsTable(productos) {
 
   list.forEach((p, idx) => {
     const tr = document.createElement('tr');
+    const subBadge = p.subrubro ? `<span class="badge-subrubro" title="Subcategoría Maxirest POS">↳ ${p.subrubro}</span>` : '';
     tr.innerHTML = `
       <td style="font-weight: 700; color: var(--text-muted);">${idx + 1}</td>
       <td><span class="product-code-badge">#${p.codigo}</span></td>
       <td class="product-name-cell">${p.nombre}</td>
-      <td><span class="product-category-chip">${p.rubro}</span></td>
+      <td>
+        <div class="rubro-cell-badges">
+          <span class="product-category-chip">${p.rubro}</span>
+          ${subBadge}
+        </div>
+      </td>
       <td style="text-align: right; font-weight: 700; color: var(--text-primary);">${p.unidades}</td>
       <td style="text-align: right; color: var(--text-muted);">$${Number(p.unitario).toLocaleString('es-AR')}</td>
       <td style="text-align: right; font-weight: 700; color: var(--accent-emerald);">$${Number(p.facturado).toLocaleString('es-AR')}</td>
@@ -1405,7 +1470,7 @@ function renderChartHorarios(horarios) {
   });
 }
 
-function renderChartRubrosOverview(rubros) {
+function renderChartRubrosOverview(rubros, subrubros) {
   let canvas = document.getElementById('chartRubrosOverview');
   const wrap = canvas ? canvas.parentElement : document.querySelector('.chart-card:has(#chartRubrosOverview) .chart-canvas-wrap');
   if (!wrap) return;
@@ -1434,6 +1499,28 @@ function renderChartRubrosOverview(rubros) {
     canvas = document.getElementById('chartRubrosOverview');
   }
 
+  // Mostrar tira de subcategorías activas debajo del gráfico si existen
+  const parentCard = wrap.closest('.chart-card');
+  if (parentCard) {
+    let subStrip = parentCard.querySelector('.subrubros-overview-strip');
+    const subEntries = Object.entries(subrubros || {}).filter(([k, v]) => Number(v) > 0 && !k.toUpperCase().includes('INEXISTENTE'));
+    if (subEntries.length > 0) {
+      if (!subStrip) {
+        subStrip = document.createElement('div');
+        subStrip.className = 'subrubros-overview-strip';
+        parentCard.appendChild(subStrip);
+      }
+      subStrip.innerHTML = `
+        <span class="subrubros-strip-label"><i class="fa-solid fa-tags"></i> Subcategorías activas:</span>
+        ${subEntries.map(([sName, sVal]) => `
+          <span class="badge-subrubro">↳ ${sName}: $${Number(sVal).toLocaleString('es-AR')}</span>
+        `).join('')}
+      `;
+    } else if (subStrip) {
+      subStrip.remove();
+    }
+  }
+
   // Ordenar rubros por importe descendente
   entries.sort((a, b) => b[1] - a[1]);
   const labels = entries.map(e => e[0]);
@@ -1442,7 +1529,9 @@ function renderChartRubrosOverview(rubros) {
 
   const rubroColorMap = {
     'PASTELERIA': '#ec4899',
+    'ALMUERZO CENA DESAYUNO': '#38bdf8',
     'ALMUERZO CENA': '#38bdf8',
+    'DESAYUNO': '#fb923c',
     'BEBIDAS': '#06b6d4',
     'ADICIONALES': '#10b981',
     'MARKET': '#8b5cf6',
@@ -1869,7 +1958,7 @@ function initRangeModule() {
         toInput.value = '2026-09-30';
       } else if (btn.dataset.preset === 'october' && fromInput && toInput) {
         fromInput.value = '2026-10-01';
-        toInput.value = '2026-10-14';
+        toInput.value = AppState.yesterdayDate || '2026-10-28';
       }
 
       loadRangeData({ preset: AppState.rangePreset });
@@ -2109,6 +2198,11 @@ function renderRangeProductsTable(platos) {
   // Filtrar estrictamente cualquier residuo de CUBIERTO del ranking de platos culinarios
   let list = (platos || []).filter(p => !p.nombre.toUpperCase().includes('CUBIERTO') && p.codigo !== '4031');
 
+  const rubroSelect = document.getElementById('range-dish-rubro-filter');
+  if (rubroSelect) {
+    populateCategorySelectOptions(rubroSelect, list, AppState.rangeDishRubroFilter || 'ALL');
+  }
+
   // Filtro de búsqueda
   if (AppState.rangeDishSearch) {
     const q = AppState.rangeDishSearch;
@@ -2116,13 +2210,25 @@ function renderRangeProductsTable(platos) {
       p.nombre.toLowerCase().includes(q) ||
       (p.codigo && p.codigo.toLowerCase().includes(q)) ||
       (p.rubro && p.rubro.toLowerCase().includes(q)) ||
+      (p.subrubro && p.subrubro.toLowerCase().includes(q)) ||
       (p.topMozo && p.topMozo.nombre && p.topMozo.nombre.toLowerCase().includes(q))
     );
   }
 
-  // Filtro de Rubro
+  // Filtro de Rubro o Subrubro
   if (AppState.rangeDishRubroFilter && AppState.rangeDishRubroFilter !== 'ALL') {
-    list = list.filter(p => (p.rubro || '').toLowerCase().includes(AppState.rangeDishRubroFilter.toLowerCase()));
+    const filterVal = AppState.rangeDishRubroFilter;
+    if (filterVal.startsWith('SUB:')) {
+      const targetSub = filterVal.slice(4).toLowerCase();
+      list = list.filter(p => (p.subrubro || '').toLowerCase() === targetSub);
+    } else {
+      const targetRub = filterVal.toLowerCase();
+      list = list.filter(p => {
+        const r = (p.rubro || '').toLowerCase();
+        if (targetRub.includes('almuerzo') && r.includes('almuerzo')) return true;
+        return r === targetRub || r.includes(targetRub);
+      });
+    }
   }
 
   // Orden
@@ -2152,6 +2258,7 @@ function renderRangeProductsTable(platos) {
     const rubroClass = getRubroBadgeClass(p.rubro);
     const currVal = AppState.rangeDishSort === 'facturado' ? p.total : p.unidades;
     const barWidth = Math.max(4, Math.min(100, Math.round((currVal / maxVal) * 100)));
+    const subBadge = p.subrubro ? `<span class="badge-subrubro" title="Subcategoría Maxirest POS">↳ ${p.subrubro}</span>` : '';
 
     const topMozoHtml = p.topMozo && p.topMozo.nombre ? `
       <div class="dish-top-mozo-chip" title="${p.topMozo.nombre} vendió ${p.topMozo.unidades} unidades de este plato">
@@ -2165,7 +2272,12 @@ function renderRangeProductsTable(platos) {
       <td class="dish-rank ${rankClass}">#${idx + 1}</td>
       <td><span class="product-code-badge">${p.codigo || '-'}</span></td>
       <td style="font-weight: 700; color: var(--text-primary);">${p.nombre}</td>
-      <td><span class="badge-rubro ${rubroClass}">${p.rubro || 'General'}</span></td>
+      <td>
+        <div class="rubro-cell-badges">
+          <span class="badge-rubro ${rubroClass}">${p.rubro || 'General'}</span>
+          ${subBadge}
+        </div>
+      </td>
       <td style="text-align: right; font-weight: 800; color: var(--text-primary); font-size: 14px;">${Number(p.unidades).toLocaleString('es-AR')}</td>
       <td style="text-align: right; color: var(--text-muted);">$${Number(p.precioPromedio).toLocaleString('es-AR')}</td>
       <td style="text-align: right; font-weight: 800; color: var(--accent-emerald); font-size: 14px;">$${Number(p.total).toLocaleString('es-AR')}</td>
@@ -2192,6 +2304,15 @@ function renderRangeRubros(rubros, platos, limpiezaCarta) {
   rubros.forEach(r => {
     const card = document.createElement('div');
     card.className = 'range-rubro-card';
+    const subrubrosHtml = (r.subrubros && r.subrubros.length > 0)
+      ? `<div class="range-rubro-subrubros">
+          ${r.subrubros.map(sr => `
+            <span class="badge-subrubro" title="Subcategoría dentro de ${r.rubro}">
+              ↳ Sub: ${sr.subrubro} · ${Number(sr.unidades).toLocaleString('es-AR')} u. · $${Number(sr.facturacion).toLocaleString('es-AR')} (${sr.platosCount || 0} art.)
+            </span>
+          `).join('')}
+        </div>`
+      : '';
     card.innerHTML = `
       <div class="range-rubro-card-head">
         <span class="range-rubro-name">${r.rubro}</span>
@@ -2201,6 +2322,7 @@ function renderRangeRubros(rubros, platos, limpiezaCarta) {
         <span class="range-rubro-revenue">$${Number(r.facturacion).toLocaleString('es-AR')}</span>
         <span class="range-rubro-units">${Number(r.unidades).toLocaleString('es-AR')} unidades · ${r.platosCount || 0} artículos</span>
       </div>
+      ${subrubrosHtml}
       <div class="range-rubro-top-dish">
         Plato Insignia: <span>${r.platoTop}</span>
       </div>
@@ -2220,7 +2342,7 @@ function initMenuEngineeringSection(rubros, platos, limpiezaCarta) {
   // 1. Actualizar contadores del KPI strip
   updateEngineeringKpiCounts(platos, limpiezaCarta);
 
-  // 2. Construir píldoras dinámicas de categoría
+  // 2. Construir píldoras dinámicas de categoría y subcategoría
   const pillsContainer = document.getElementById('eng-category-pills');
   if (pillsContainer) {
     pillsContainer.innerHTML = '';
@@ -2228,7 +2350,7 @@ function initMenuEngineeringSection(rubros, platos, limpiezaCarta) {
     // Píldora "Todas las Categorías"
     const allPill = document.createElement('button');
     allPill.type = 'button';
-    allPill.className = `eng-cat-pill ${AppState.rangeSelectedCategory === 'ALL' ? 'active' : ''}`;
+    allPill.className = `eng-cat-pill ${(!AppState.rangeSelectedCategory || AppState.rangeSelectedCategory === 'ALL') ? 'active' : ''}`;
     allPill.dataset.category = 'ALL';
     allPill.innerHTML = `Todas las Categorías <span class="eng-cat-count">${platos.length}</span>`;
     allPill.addEventListener('click', () => {
@@ -2239,7 +2361,7 @@ function initMenuEngineeringSection(rubros, platos, limpiezaCarta) {
     });
     pillsContainer.appendChild(allPill);
 
-    // Píldoras individuales por rubro
+    // Píldoras individuales por rubro y sus subrubros
     rubros.forEach(r => {
       const pill = document.createElement('button');
       pill.type = 'button';
@@ -2253,6 +2375,24 @@ function initMenuEngineeringSection(rubros, platos, limpiezaCarta) {
         renderMenuEngineeringLists();
       });
       pillsContainer.appendChild(pill);
+
+      if (r.subrubros && r.subrubros.length > 0) {
+        r.subrubros.forEach(sr => {
+          const subKey = `SUB:${sr.subrubro}`;
+          const subPill = document.createElement('button');
+          subPill.type = 'button';
+          subPill.className = `eng-cat-pill eng-subcat-pill ${AppState.rangeSelectedCategory === subKey ? 'active' : ''}`;
+          subPill.dataset.category = subKey;
+          subPill.innerHTML = `↳ Sub: ${sr.subrubro} <span class="eng-cat-count">${sr.platosCount || 0}</span>`;
+          subPill.addEventListener('click', () => {
+            document.querySelectorAll('.eng-cat-pill').forEach(p => p.classList.remove('active'));
+            subPill.classList.add('active');
+            AppState.rangeSelectedCategory = subKey;
+            renderMenuEngineeringLists();
+          });
+          pillsContainer.appendChild(subPill);
+        });
+      }
     });
   }
 
@@ -2346,16 +2486,23 @@ function renderMenuEngineeringLists() {
   const searchTerm = (AppState.rangeCategorySearch || '').toLowerCase();
 
   // Actualizar labels de columnas
-  const catLabel = selectedCat === 'ALL' ? 'Todas las Categorías' : selectedCat;
+  const catLabel = selectedCat === 'ALL'
+    ? 'Todas las Categorías'
+    : (selectedCat.startsWith('SUB:') ? `Subcategoría: ${selectedCat.slice(4)}` : selectedCat);
   const topColLabel = document.getElementById('eng-col-category-top-label');
   const bottomColLabel = document.getElementById('eng-col-category-bottom-label');
   if (topColLabel) topColLabel.textContent = catLabel;
   if (bottomColLabel) bottomColLabel.textContent = catLabel;
 
-  // Filtrar según categoría
+  // Filtrar según categoría o subcategoría
   let filtered = platos;
   if (selectedCat !== 'ALL') {
-    filtered = filtered.filter(p => p.rubro === selectedCat);
+    if (selectedCat.startsWith('SUB:')) {
+      const targetSub = selectedCat.slice(4).toUpperCase();
+      filtered = filtered.filter(p => (p.subrubro || '').toUpperCase() === targetSub);
+    } else {
+      filtered = filtered.filter(p => p.rubro === selectedCat);
+    }
   }
 
   // Actualizar contadores dinámicamente según la categoría activa
@@ -2366,7 +2513,8 @@ function renderMenuEngineeringLists() {
     filtered = filtered.filter(p => 
       p.nombre.toLowerCase().includes(searchTerm) || 
       String(p.codigo).includes(searchTerm) ||
-      (p.rubro && p.rubro.toLowerCase().includes(searchTerm))
+      (p.rubro && p.rubro.toLowerCase().includes(searchTerm)) ||
+      (p.subrubro && p.subrubro.toLowerCase().includes(searchTerm))
     );
   }
 
@@ -2397,6 +2545,7 @@ function renderMenuEngineeringLists() {
         const badgeClass = p.menuEngineering?.badgeClass || 'badge-caballo';
         const badgeLabel = p.menuEngineering?.etiqueta || '🐎 Alto Volumen';
         const topMozoNom = p.topMozo ? p.topMozo.nombre : 'Varios';
+        const subCatLabel = p.subrubro ? ` · <span class="badge-subrubro-inline">↳ ${p.subrubro}</span>` : '';
 
         const card = document.createElement('div');
         card.className = 'eng-dish-card';
@@ -2406,7 +2555,7 @@ function renderMenuEngineeringLists() {
               <span class="eng-dish-rank ${rankClass}">#${idx + 1}</span>
               <div>
                 <h5 class="eng-dish-name">${p.nombre}</h5>
-                <span class="eng-dish-category-code">${p.rubro} · Cód. #${p.codigo}</span>
+                <span class="eng-dish-category-code">${p.rubro}${subCatLabel} · Cód. #${p.codigo}</span>
               </div>
             </div>
             <span class="eng-strategy-badge ${badgeClass}">${badgeLabel}</span>
@@ -2482,13 +2631,14 @@ function renderMenuEngineeringLists() {
 
         const card = document.createElement('div');
         card.className = 'eng-dish-card';
+        const subCatLabel = p.subrubro ? ` · <span class="badge-subrubro-inline">↳ ${p.subrubro}</span>` : '';
         card.innerHTML = `
           <div class="eng-dish-top">
             <div class="eng-dish-rank-title">
               <span class="eng-dish-rank" style="color: ${isEliminar ? '#ef4444' : isImpulsar ? '#38bdf8' : 'var(--text-dim)'};"><i class="fa-solid ${isEliminar ? 'fa-triangle-exclamation' : isImpulsar ? 'fa-gem' : 'fa-circle-info'}"></i></span>
               <div>
                 <h5 class="eng-dish-name">${p.nombre}</h5>
-                <span class="eng-dish-category-code">${p.rubro} · Cód. #${p.codigo}</span>
+                <span class="eng-dish-category-code">${p.rubro}${subCatLabel} · Cód. #${p.codigo}</span>
               </div>
             </div>
             <span class="eng-strategy-badge ${badgeClass}">${badgeLabel}</span>
@@ -3144,12 +3294,14 @@ function renderMozoBreakdownContent(data) {
 
         let itemsRows = '';
         cat.articulos.forEach(art => {
+          const subBadge = art.subrubro ? `<span class="badge-subrubro" style="margin-left: 6px;">↳ ${art.subrubro}</span>` : '';
           itemsRows += `
-            <tr class="breakdown-item-row" data-name="${art.nombre.toLowerCase()}">
+            <tr class="breakdown-item-row" data-name="${art.nombre.toLowerCase()} ${(art.subrubro || '').toLowerCase()}">
               <td>
                 <div class="breakdown-item-name">
                   ${art.codigo && art.codigo !== '-' ? `<span class="breakdown-item-code">#${art.codigo}</span>` : ''}
                   <span>${art.nombre}</span>
+                  ${subBadge}
                 </div>
               </td>
               <td style="text-align: center;">
